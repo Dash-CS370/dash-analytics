@@ -21,7 +21,7 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
     if (href === '') {
         return (
             <button
-                className={styles.btn}
+                className={`${styles.btn} ${className}`}
                 style={{ width: width, height: height }}
                 {...props}
             >

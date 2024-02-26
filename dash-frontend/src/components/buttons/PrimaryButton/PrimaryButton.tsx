@@ -21,7 +21,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     if (href === '') {
         return (
             <button
-                className={styles.btn}
+                className={`${styles.btn} ${className}`}
                 style={{ width: width, height: height }}
                 {...props}
             >
