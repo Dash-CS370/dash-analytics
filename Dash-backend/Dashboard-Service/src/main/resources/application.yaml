@@ -41,13 +41,13 @@ spring:
 
 
           google:
-            client-id: 99003468096-edlth0mmn4urvt70c0nvu85bgd1v12lq.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret: 
 
 
           github:
-            client-id: 9469026e7fe5816fb5e4
-            client-secret: dc6a98aac4590417c1c91f8c59454e5c0be907a3
+            client-id: 
+            client-secret:
 
 
         provider:
