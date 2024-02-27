@@ -1,0 +1,67 @@
+server:
+  port: 8080
+
+
+spring:
+
+  application:
+    name: Dashboard-Service
+
+  data:
+    mongodb:
+      uri: mongodb+srv://gpmoral:gMC20002@dev-cluster.ul8671y.mongodb.net/?retryWrites=true&w=majority
+      database: Dash-Analytics
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+
+          # OIDC protocol for user authentication
+          dash-oidc-client:
+            provider: spring
+            client-id: Dash-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: dash-oidc-client
+
+
+          # Allows for interaction with an OAuth2 Resource Server to access specific resources
+          resource-access-client:
+            provider: spring
+            client-id: Dash-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: api.read
+            client-name: resource-access-client
+
+
+          google:
+            client-id: 99003468096-edlth0mmn4urvt70c0nvu85bgd1v12lq.apps.googleusercontent.com
+            client-secret: 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
+
+
+          github:
+            client-id: 9469026e7fe5816fb5e4
+            client-secret: dc6a98aac4590417c1c91f8c59454e5c0be907a3
+
+
+        provider:
+          spring:
+            issuer-uri: http://auth-server:9000
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+  instance:
+    hostname: localhost

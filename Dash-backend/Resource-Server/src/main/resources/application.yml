@@ -1,0 +1,40 @@
+server:
+  port: 8081
+
+spring:
+
+  application:
+    name: Resource-Server
+
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://auth-server:9000
+
+
+application:
+  bucket:
+    dash-analytics-test
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA6GBMBK5VRAWEST5I
+      secret-key: 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
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+  instance:
+    hostname: localhost
