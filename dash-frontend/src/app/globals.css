@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Colfax';
+    src: local('Colfax'), url('/fonts/Colfax.otf') format('truetype');
+    font-weight: 400;
+}
+
 :root {
     --max-width: 1100px;
     --border-radius: 12px;
@@ -5,14 +11,18 @@
         'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
         'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-    --primary: #fff;
-    --on-background: #000;
+    --background: #000;
+    --on-background: #fff;
+
+    --primary: #5e0eb5;
+
+    --border: #9b9b9b;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary: #000;
-        --on-background: #fff;
+        --background: #fff;
+        --on-background: #000;
     }
 }
 
@@ -31,6 +41,7 @@ body {
 body {
     color: var(--on-background);
     background: var(--primary);
+    font-family: 'Colfax', sans-serif;
 }
 
 a {

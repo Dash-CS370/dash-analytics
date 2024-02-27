@@ -1,0 +1,16 @@
+.btn {
+    padding: 8px 20px;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--on-background);
+    border: 1px solid var(--on-background);
+}
+
+.btn:hover {
+    background-color: var(--on-background);
+    color: var(--background);
+    transition: all 0.3s ease-out;
+}
