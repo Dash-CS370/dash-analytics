@@ -1,0 +1,68 @@
+.sidebarOpen,
+.sidebarClosed {
+    display: flex;
+    height: calc(100% - 4rem);
+    /* height: 100%; */
+    position: relative;
+    left: 0;
+    background-color: var(--background);
+}
+
+.sidebarOpen {
+    flex-direction: column;
+    justify-content: space-between;
+    width: 250px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebarContent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.projectsContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-top: 4rem;
+    width: 230px;
+    height: 100%;
+}
+
+.projectList {
+    background-color: var(--border-darker);
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    /* height: 90%; */
+    overflow-y: scroll;
+}
+
+.createProjectButton {
+    color: var(--on-background);
+    position: relative;
+    /* margin: 2rem 0; */
+}
+
+.sidebarClosed {
+    width: 30px;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+.toggleIcon {
+    align-self: center;
+    margin: auto auto;
+    width: 30px;
+    height: 30px;
+    color: var(--on-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .toggleIcon:hover {
+        color: var(--border);
+        transition: color 0.3s ease;
+    }
+}
