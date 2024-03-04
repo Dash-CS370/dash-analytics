@@ -6,6 +6,10 @@ spring:
   application:
     name: Resource-Server
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
   security:
     oauth2:
       resource-server:
@@ -21,8 +25,8 @@ application:
 cloud:
   aws:
     credentials:
-      access-key: 
-      secret-key:
+      access-key: AKIA6GBMBK5V3PJVL6W5
+      secret-key: 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
     region:
       static: us-east-2
     stack:

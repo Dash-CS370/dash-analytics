@@ -5,6 +5,10 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/Dash-backend/pom.xml" />
+        <option value="$PROJECT_DIR$/Dash/pom.xml" />
+        <option value="$PROJECT_DIR$/Dash-backend/OAuthorization-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/Dash-backend/Dashboard-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Dash-backend/Eureka-Server/pom.xml" />
       </list>
     </option>
   </component>

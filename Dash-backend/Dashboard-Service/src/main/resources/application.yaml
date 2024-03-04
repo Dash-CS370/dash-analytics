@@ -12,11 +12,23 @@ spring:
       uri: mongodb+srv://gpmoral:gMC20002@dev-cluster.ul8671y.mongodb.net/?retryWrites=true&w=majority
       database: Dash-Analytics
 
+  servlet:
+    multipart:
+      max-file-size: 5MB
 
   security:
     oauth2:
       client:
         registration:
+
+          # Custom Client Registrations
+
+          # We define two custom client registrations: dash-client-oidc and dash-client-authorization-code
+          # Each registration is a set of credentials and configuration specific to a certain role or use case of your application.
+
+          # "api-client-oidc" is a custom name for a specific OAuth 2.0 client registration within your application.
+          # Scopes: openid: This line indicates that your application is requesting the "openid" scope.
+          # In OpenID Connect, the "openid" scope is used for AUTHENTICATION and includes the ability to obtain identity information about the user.
 
           # OIDC protocol for user authentication
           dash-oidc-client:
@@ -28,6 +40,10 @@ spring:
             scope: openid
             client-name: dash-oidc-client
 
+
+          # The api-client-authorization-code configuration is designed for interactions with a resource server to read data.
+          # Purpose: Used for interacting with a resource server to read data.
+          # Scopes: Includes a custom scope "api.read," signaling a request for read access to the resource server.
 
           # Allows for interaction with an OAuth2 Resource Server to access specific resources
           resource-access-client:
@@ -41,18 +57,20 @@ spring:
 
 
           google:
-            client-id:
-            client-secret: 
-
+            client-id: 99003468096-pgqlfu3k5adomto817ikbmvjtg0td6j8.apps.googleusercontent.com
+            client-secret: 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
 
           github:
-            client-id: 
-            client-secret: 
+            client-id: 9469026e7fe5816fb5e4
+            client-secret: 40fd68cd556f43437f0762794c6ca66e53a3a5f9
 
+        # These configurations help the Dashboard microservice establish secure connections with the
+        # OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.
 
         provider:
           spring:
             issuer-uri: http://auth-server:9000
+
 
 
 eureka:

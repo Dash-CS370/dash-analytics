@@ -4,8 +4,13 @@ import com.Dash.Dashboard.Models.Project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -53,7 +58,7 @@ public class DashboardService {
 
         // Hit Resource Server
         final List<Project> userProjects = this.webClient.get().uri(resourceUrl)
-                                        .attributes(oauth2AuthorizedClient(client))
+                                        //.attributes(oauth2AuthorizedClient(client))
                                         .retrieve()
                                         .bodyToMono(new ParameterizedTypeReference<List<Project>>() {})
                                         .block();
@@ -72,10 +77,10 @@ public class DashboardService {
      * @throws WebClientException
      * @throws IOException
      */
-    public Optional<Project> createProject(String projectName, String projectDescription, MultipartFile csvFile//,
-                                          /*OAuth2AuthorizedClient client*/) throws WebClientResponseException, IOException {
+    public Optional<Project> createProject(OAuth2AuthorizedClient client, String projectName,
+                                           String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
 
-        final String userId = "user123@gmail.com"; //client.getPrincipalName();
+        String userId = "user456@gmail.com"; //client.getPrincipalName(); // TODO --> get user email
 
         // Check if User has enough credits to create new project
         if (!userHasEnoughCredits(userId)) {
@@ -92,19 +97,49 @@ public class DashboardService {
 
 
         final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/resources/api/generate-project")
-                .buildAndExpand(userId).toUriString();
+                .toUriString();
 
+        MultipartBodyBuilder csvBuilder = new MultipartBodyBuilder();
+        csvBuilder.part("csv-file", csvFile.getResource());
 
         // Make HTTP request to upload CSV sheet + create Project JSON (create project folder + project json file)
         return this.webClient.post()
                 .uri(createProjectUrl)
-                .body(BodyInserters.fromMultipartData("template-project", templateProject).
-                with("csv-data", csvFile.getBytes()))
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(csvBuilder.build())
+                .with("template-project", templateProject))
                 //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Project>>() {})
                 .block();
     }
+
+
+
+
+    /**
+     *
+     * @param client
+     * @param projectKey
+     * @return
+     * @throws WebClientResponseException
+     */
+    public Optional<String> deleteProject(OAuth2AuthorizedClient client, String projectKey) throws WebClientResponseException {
+
+        final String deleteProjectUrl = UriComponentsBuilder
+                .fromUriString("http://127.0.0.1:8081/resources/api/delete-project")
+                .path("/{project-key}")
+                .encode()
+                .buildAndExpand(projectKey).toUriString();
+
+        return this.webClient.delete()
+                .uri(deleteProjectUrl)
+                .attributes(oauth2AuthorizedClient(client))
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
+                .block();
+    }
+
 
 
 

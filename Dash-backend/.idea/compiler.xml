@@ -8,25 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Resource-Server" />
-        <module name="OAuthorization-Server" />
         <module name="Eureka-Server" />
         <module name="Dashboard-Service" />
+        <module name="OAuthorization-Server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Dash-Backend" target="1.5" />
-      <module name="Dashboard-Service (1)" target="17" />
-      <module name="Eureka-Server (1)" target="17" />
-      <module name="OAuthorization-Server (1)" target="17" />
-      <module name="OAuthorization-Server (2)" target="17" />
-      <module name="Resource-Server (1)" target="17" />
-      <module name="Resource-Server (2)" target="17" />
+      <module name="DooleyDates" target="17" />
+      <module name="UserService" target="17" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Dash-Backend" options="" />
-      <module name="Dashboard-Service" options="" />
-    </option>
   </component>
 </project>

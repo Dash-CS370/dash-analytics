@@ -1,5 +1,6 @@
 package com.Dash.Dashboard.Controllers;
 
+import com.Dash.Dashboard.Event.OAuthUserLoginEvent;
 import com.Dash.Dashboard.Models.Project;
 import com.Dash.Dashboard.Services.DashboardService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +48,9 @@ public class DashboardController {
      * @return ResponseEntity containing a list of {@link Project} objects for the authenticated user, or an appropriate HTTP status code in case of errors or empty data.
      */
     @GetMapping
-    public ResponseEntity<List<Project>> loadDashboardForGoogleClient(@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                                      OAuth2AuthorizedClient authorizedClient,
-                                                                      @AuthenticationPrincipal OidcUser oidcUser) {
+    public ResponseEntity<List<Project>> loadDashboard(@RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                       OAuth2AuthorizedClient authorizedClient,
+                                                       @AuthenticationPrincipal OidcUser oidcUser) {
         try {
 
             // authorizedClient -> injected with authorization details to make calls to my Resource server
@@ -59,13 +60,14 @@ public class DashboardController {
 
             log.warn(authorizedClient.getAccessToken().getTokenValue());
 
-            // TODO publish event to create user OR ensure user email doesnt alr exist in our IN-HOUSE-USER DB
+            // TODO publish event to create user OR ensure user email doesnt alr exist in our IN-HOUSE-USER DB (UPON REGISTRATION)
             if (!isPresent(oidcUser)) {
                 log.warn("Github");
+                //loginEventPublisher.publishEvent(new OAuthUserLoginEvent(oidcUser));
                 projectList = dashboardService.loadAllProjects(authorizedClient, "");
             } else if (isPresent(oidcUser.getEmail())) {
                 log.warn("Google");
-                //loginEventPublisher.publishEvent(new OAuthUserLoginEvent(oidcUser));
+                loginEventPublisher.publishEvent(new OAuthUserLoginEvent(oidcUser)); // Is to check whether you use email/acct alr exists
                 projectList = dashboardService.loadAllProjects(authorizedClient, oidcUser.getEmail());
             } else {
                 log.warn("DASH-OIDC");
@@ -89,7 +91,6 @@ public class DashboardController {
 
 
 
-    // TODO ---> HOW DO WE HAVE CLIENT INJECTED AUTO? *****************
     /**
      * Handles the creation of a new project by processing provided project details and an optional CSV file.
      *
@@ -101,13 +102,10 @@ public class DashboardController {
     @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
                                                  @RequestPart("project-description") String projectDescription,
-                                                 @RequestPart("csv-file") MultipartFile csvFile) {
-                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 //OAuth2AuthorizedClient authorizedClientConfig) { // TODO - UNCOMMENT
+                                                 @RequestPart("csv-file") MultipartFile csvFile,
+                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 OAuth2AuthorizedClient authorizedClient) { // TODO - UNCOMMENT
         try {
-
-            // TODO - UNDER CONSTRUCTION
-            if (true) return new ResponseEntity<>(new Project(), HttpStatus.OK);
 
             // Ensure request can be made by user
             if (!dashboardService.userHasEnoughCredits("userId")) {
@@ -115,7 +113,7 @@ public class DashboardController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            final Optional<Project> generatedProjectConfig = dashboardService.createProject(projectName, projectDescription, csvFile); //, authorizedClientConfig);
+            final Optional<Project> generatedProjectConfig = dashboardService.createProject(null, projectName, projectDescription, csvFile);
 
             if (generatedProjectConfig.isPresent() && !generatedProjectConfig.get().getWidgets().isEmpty()) {
                 return new ResponseEntity<>(generatedProjectConfig.get(), HttpStatus.OK);
@@ -128,6 +126,37 @@ public class DashboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+    @DeleteMapping(value = "/delete-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<String> deleteProject(@RequestPart("project-key") String projectKey,
+                                                @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                OAuth2AuthorizedClient authorizedClient) {
+        try {
+
+            final String REGEX = "[0-9A-Za-z]+@[A-Za-z]+\\.com/project-[A-Za-z0-9-]+/[A-Za-z0-9-]+\\.csv";
+
+            if (!projectKey.matches(REGEX)) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, projectKey);
+
+            if (projectDeletionConfirmation.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
 
 
 }

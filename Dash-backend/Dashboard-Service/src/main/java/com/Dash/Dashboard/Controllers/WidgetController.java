@@ -26,7 +26,7 @@ public class WidgetController {
 
     // TODO - use client for ASYNC CALLS -> MAKE FRONTEND SEND ME 1 JSON OBJECTS!
     /** While working on a project, allow user to add new Widget */
-    @PostMapping(value = "/add-widget")
+    @PutMapping(value = "/add-widget")
     public ResponseEntity<Object> addWidget(@RequestPart("project-config-link") String projectLink,
                                             @RequestPart("widget") Widget widget) {
         try {
