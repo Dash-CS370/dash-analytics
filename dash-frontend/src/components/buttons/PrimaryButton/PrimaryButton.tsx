@@ -31,7 +31,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     }
 
     return (
-        <Link href={href}>
+        <Link href={href} className={className}>
             <button
                 className={styles.btn}
                 style={{ width: width, height: height }}
