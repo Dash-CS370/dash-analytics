@@ -2,17 +2,21 @@
 .sidebarClosed {
     display: flex;
     height: calc(100% - 4rem);
-    /* height: 100%; */
     position: relative;
     left: 0;
+    top: 4rem;
     background-color: var(--background);
 }
 
 .sidebarOpen {
-    flex-direction: column;
-    justify-content: space-between;
+    margin-left: 0.5rem;
     width: 250px;
     transition: all 0.3s ease-in-out;
+}
+
+.sidebarClosed {
+    margin-right: -220px;
+    transition: margin-right 0.3s ease;
 }
 
 .sidebarContent {
@@ -25,8 +29,6 @@
 .projectsContainer {
     display: flex;
     flex-direction: column;
-    margin-left: 1rem;
-    margin-top: 4rem;
     width: 230px;
     height: 100%;
 }
@@ -34,16 +36,14 @@
 .projectList {
     background-color: var(--border-darker);
     border-radius: 12px;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    /* height: 90%; */
+    flex: 1;
+    margin: 0.5rem 0;
     overflow-y: scroll;
 }
 
 .createProjectButton {
     color: var(--on-background);
-    position: relative;
-    /* margin: 2rem 0; */
+    margin: 0.5rem 0;
 }
 
 .sidebarClosed {

@@ -53,18 +53,16 @@ export const Sidebar: React.FC = () => {
             {isOpen ? (
                 <div className={styles.sidebarContent}>
                     <div className={styles.projectsContainer}>
-                        <div>
-                            <h1>Projects</h1>
-                            <div className={styles.projectList}>
-                                {projects.map((project) => (
-                                    <ProjectListItem
-                                        key={project.id}
-                                        id={project.id}
-                                        name={project.name}
-                                        onNameChange={updateProjectName}
-                                    />
-                                ))}
-                            </div>
+                        <h1>Projects</h1>
+                        <div className={styles.projectList}>
+                            {projects.map((project) => (
+                                <ProjectListItem
+                                    key={project.id}
+                                    id={project.id}
+                                    name={project.name}
+                                    onNameChange={updateProjectName}
+                                />
+                            ))}
                         </div>
                         <PrimaryButton
                             width="215px"
