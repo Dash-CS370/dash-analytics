@@ -29,12 +29,10 @@ import static com.Dash.Dashboard.Services.DashboardService.isPresent;
 public class DashboardController {
 
     final private DashboardService dashboardService;
-    final private ApplicationEventPublisher loginEventPublisher;
 
     @Autowired
-    DashboardController(DashboardService dashboardService, ApplicationEventPublisher loginEventPublisher) {
+    DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;
-        this.loginEventPublisher = loginEventPublisher;
     }
 
 
@@ -43,8 +41,8 @@ public class DashboardController {
      * Fetches and returns a list of projects for the user upon dashboard initialization. Utilizes OAuth2 authentication
      * details to access the resource server.
      *
-     * @param authorizedClient The OAuth2 authorized client, injected with authorization details for resource server calls.
-     * @param oidcUser The OIDC authenticated user, obtained after OAuth2 authentication. This parameter is optional and specific to OIDC providers.
+     * param authorizedClient The OAuth2 authorized client, injected with authorization details for resource server calls.
+     * param oidcUser The OIDC authenticated user, obtained after OAuth2 authentication. This parameter is optional and specific to OIDC providers.
      * @return ResponseEntity containing a list of {@link Project} objects for the authenticated user, or an appropriate HTTP status code in case of errors or empty data.
      */
     @GetMapping
@@ -53,27 +51,23 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OidcUser oidcUser) {
         try {
 
-            // authorizedClient -> injected with authorization details to make calls to my Resource server
-            // oidcUser -> injected after authentication with OAuth2 server (AuthenticationPrincipal) (OPTIONAL)
+            /*
+             authorizedClient -> injected with authorization details to make calls to my Resource server
+             oidcUser -> injected after authentication with OAuth2 server (AuthenticationPrincipal) (OPTIONAL)
+            */
 
             final Optional<List<Project>> projectList;
 
             log.warn(authorizedClient.getAccessToken().getTokenValue());
 
             // TODO publish event to create user OR ensure user email doesnt alr exist in our IN-HOUSE-USER DB (UPON REGISTRATION)
-            if (!isPresent(oidcUser)) {
-                log.warn("Github");
-                //loginEventPublisher.publishEvent(new OAuthUserLoginEvent(oidcUser));
-                projectList = dashboardService.loadAllProjects(authorizedClient, "");
-            } else if (isPresent(oidcUser.getEmail())) {
+            if (isPresent(oidcUser.getEmail())) {
                 log.warn("Google");
-                loginEventPublisher.publishEvent(new OAuthUserLoginEvent(oidcUser)); // Is to check whether you use email/acct alr exists
                 projectList = dashboardService.loadAllProjects(authorizedClient, oidcUser.getEmail());
             } else {
                 log.warn("DASH-OIDC");
                 projectList = dashboardService.loadAllProjects(authorizedClient, authorizedClient.getPrincipalName());
             }
-
 
             if (projectList.isPresent() && !projectList.get().isEmpty()) {
                 return ResponseEntity.ok().header("Content-Type", "application/json").
@@ -102,9 +96,9 @@ public class DashboardController {
     @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
                                                  @RequestPart("project-description") String projectDescription,
-                                                 @RequestPart("csv-file") MultipartFile csvFile,
-                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 OAuth2AuthorizedClient authorizedClient) { // TODO - UNCOMMENT
+                                                 @RequestPart("csv-file") MultipartFile csvFile) { //,
+                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 //OAuth2AuthorizedClient authorizedClient) { // TODO - UNCOMMENT
         try {
 
             // Ensure request can be made by user
@@ -130,9 +124,9 @@ public class DashboardController {
 
 
     @DeleteMapping(value = "/delete-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> deleteProject(@RequestPart("project-key") String projectKey,
-                                                @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                OAuth2AuthorizedClient authorizedClient) {
+    public ResponseEntity<String> deleteProject(@RequestPart("project-key") String projectKey) { //,
+                                                //@RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                //OAuth2AuthorizedClient authorizedClient) {
         try {
 
             final String REGEX = "[0-9A-Za-z]+@[A-Za-z]+\\.com/project-[A-Za-z0-9-]+/[A-Za-z0-9-]+\\.csv";
@@ -141,7 +135,7 @@ public class DashboardController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, projectKey);
+            final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(null, projectKey);
 
             if (projectDeletionConfirmation.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.OK);

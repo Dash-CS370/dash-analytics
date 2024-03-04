@@ -57,12 +57,12 @@ spring:
 
 
           google:
-            client-id: 99003468096-pgqlfu3k5adomto817ikbmvjtg0td6j8.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret:
 
           github:
-            client-id: 9469026e7fe5816fb5e4
-            client-secret: 40fd68cd556f43437f0762794c6ca66e53a3a5f9
+            client-id:
+            client-secret:
 
         # These configurations help the Dashboard microservice establish secure connections with the
         # OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.

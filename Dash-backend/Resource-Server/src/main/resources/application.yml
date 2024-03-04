@@ -10,11 +10,11 @@ spring:
     multipart:
       max-file-size: 5MB
 
-  security:
-    oauth2:
-      resource-server:
-        jwt:
-          issuer-uri: http://auth-server:9000
+  #security:
+    #oauth2:
+      #resource-server:
+        #jwt:
+          #issuer-uri: http://auth-server:9000
 
 
 application:
@@ -25,8 +25,8 @@ application:
 cloud:
   aws:
     credentials:
-      access-key: AKIA6GBMBK5V3PJVL6W5
-      secret-key: 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
+      access-key:
+      secret-key:
     region:
       static: us-east-2
     stack:

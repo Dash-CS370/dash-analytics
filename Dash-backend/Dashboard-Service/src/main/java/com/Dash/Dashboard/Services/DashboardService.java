@@ -134,7 +134,7 @@ public class DashboardService {
 
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
-                .attributes(oauth2AuthorizedClient(client))
+                //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
                 .block();
