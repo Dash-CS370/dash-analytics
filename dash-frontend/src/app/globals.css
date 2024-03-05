@@ -21,7 +21,8 @@
     --navbar-height: 4rem;
 }
 
-/* @media (prefers-color-scheme: dark) {
+/* 
+@media (prefers-color-scheme: dark) {
     :root {
         --background: #fff;
         --on-background: #000;
