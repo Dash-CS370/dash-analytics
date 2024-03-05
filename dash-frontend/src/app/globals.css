@@ -17,6 +17,8 @@
     --primary: #5e0eb5;
 
     --border: #9b9b9b;
+
+    --navbar-height: 4rem;
 }
 
 @media (prefers-color-scheme: dark) {
