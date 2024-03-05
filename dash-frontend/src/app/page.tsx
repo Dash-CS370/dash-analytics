@@ -16,7 +16,7 @@ export default function Home() {
                 <div className={styles.heroBtns}>
                     <PrimaryButton
                         className={styles.btns}
-                        href="/signup"
+                        href="/start"
                         width="200px"
                         height="50px"
                     >
