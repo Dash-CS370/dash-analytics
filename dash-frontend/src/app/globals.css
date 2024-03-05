@@ -14,19 +14,19 @@
     --background: #000;
     --on-background: #fff;
 
-    --primary: #5e0eb5;
+    --primary: #8b67c5;
 
     --border: #9b9b9b;
 
     --navbar-height: 4rem;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         --background: #fff;
         --on-background: #000;
     }
-}
+} */
 
 * {
     box-sizing: border-box;

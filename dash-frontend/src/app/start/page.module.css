@@ -3,7 +3,6 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    align-items: center;
     justify-content: center;
     background-color: var(--background);
 }
@@ -11,5 +10,37 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 8rem;
+}
+
+.content h1 {
+    margin: 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.dash {
+    font-family: 'Colfax';
+    font-size: 100px;
+    color: var(--on-background);
+}
+
+.analytics {
+    font-family: 'Colfax';
+    font-size: 105px;
+    color: var(--primary);
 }
