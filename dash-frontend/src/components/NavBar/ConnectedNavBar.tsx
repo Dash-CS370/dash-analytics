@@ -1,6 +1,7 @@
 import styles from '@/components/NavBar/NavBar.module.css';
 import Link from 'next/link';
 import { FC } from 'react';
+import { IoLogOutOutline } from 'react-icons/io5';
 import { VscAccount } from 'react-icons/vsc';
 
 export const ConnectedNavBar: FC = () => {
@@ -17,7 +18,7 @@ export const ConnectedNavBar: FC = () => {
             </div>
             <div className={styles.logout}>
                 <Link href="/">
-                    <p>Logout</p>
+                    <IoLogOutOutline />
                 </Link>
             </div>
         </div>
