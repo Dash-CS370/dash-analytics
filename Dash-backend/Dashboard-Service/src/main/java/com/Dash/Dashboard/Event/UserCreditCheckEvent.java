@@ -8,10 +8,10 @@ import org.springframework.context.ApplicationEvent;
 @Setter
 public class UserCreditCheckEvent extends ApplicationEvent {
 
-    private final String userId;
+    private final String userAccount;
 
-    public UserCreditCheckEvent(String userId) {
-        super(userId);
-        this.userId = userId;
+    public UserCreditCheckEvent(String userAccount) {
+        super(userAccount);
+        this.userAccount = userAccount;
     }
 }

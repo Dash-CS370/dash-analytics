@@ -48,6 +48,7 @@ public class User implements UserDetails {
 
     private boolean enabled;
 
+    private UserType userType;
     public String getId() { return Id; }
 
     /** UserDetails interface methods concretely implemented here */

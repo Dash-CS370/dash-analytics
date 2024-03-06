@@ -50,9 +50,11 @@ public class User implements UserDetails {
 
     private boolean enabled;
 
-    private Role role;
+    private UserType userType;
 
     public String getId() { return id; }
+
+    public Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

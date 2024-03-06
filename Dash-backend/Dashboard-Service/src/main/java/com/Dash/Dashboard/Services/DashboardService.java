@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -18,7 +19,6 @@ import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +31,8 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 @Service
 @Slf4j
 public class DashboardService {
+
+    public final static String THIRD_PARTY_SERVICES = "(.*microsoft.*)|(.*google.*)";
 
     private final static String S3URL = "s3://dash-analytics-test/";
 
@@ -46,15 +48,15 @@ public class DashboardService {
 
 
     /**
+     *
      * @param client
-     * @param userId
+     * @param oidcUser
      * @return
      * @throws WebClientResponseException
      */
-    public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, String userId) throws WebClientResponseException {
+    public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, OidcUser oidcUser) throws WebClientResponseException {
 
-        //TODO DUMMY USER
-        userId = "user123@gmail.com";
+        final String userId = extractUserAccount(oidcUser);
 
         // Encode url with username
         final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/resources/api/all-projects/{userId}")
@@ -79,7 +81,6 @@ public class DashboardService {
      * @param csvFile
      * @return
      * @throws WebClientException
-     * @throws IOException
      */
     public Optional<Project> createProject(OAuth2AuthorizedClient client, String projectName,
                                            String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
@@ -116,6 +117,15 @@ public class DashboardService {
 
 
 
+
+    // TODO *******************
+    public Optional<Object> updateProjects(List<Project> projects) {
+        return null;
+    }
+
+
+
+
     /**
      *
      * @param client
@@ -142,14 +152,23 @@ public class DashboardService {
 
 
 
+    /**
+     *  Utility methods
+     */
 
     // TODO - add Token attribute to User Entity
     public void verifyUserCreditCount(String userId) throws NotEnoughCreditsException {
         userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
     }
 
-    public static boolean isPresent(Object obj) {
-        return obj != null;
+    public String extractUserAccount(OidcUser oidcUser) {
+        if (oidcUser.getIssuer().getHost().matches(THIRD_PARTY_SERVICES)) {
+            //return oidcUser.getEmail();
+            return "user456@gmail.com";
+        } else {
+            //return oidcUser.getName();
+            return "user123@gmail.com";
+        }
     }
 
 }

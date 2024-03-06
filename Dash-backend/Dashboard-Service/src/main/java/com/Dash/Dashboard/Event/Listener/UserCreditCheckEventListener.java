@@ -25,10 +25,10 @@ public class UserCreditCheckEventListener implements  ApplicationListener<UserCr
 
     @Override
     public void onApplicationEvent(UserCreditCheckEvent event) throws NotEnoughCreditsException {
-        final String userId = event.getUserId();
+        final String userAccount = event.getUserAccount();
 
         Optional<User> queriedUser = Optional.ofNullable(
-                userDAO.findOne(new Query(Criteria.where("email").is(userId)), User.class)
+                userDAO.findOne(new Query(Criteria.where("email").is(userAccount)), User.class)
         );
 
         queriedUser.ifPresent((user) -> {

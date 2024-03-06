@@ -2,11 +2,13 @@ package com.Dash.Dashboard.Services;
 
 import com.Dash.Dashboard.Entites.Role;
 import com.Dash.Dashboard.Entites.User;
+import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,6 +30,9 @@ import java.util.UUID;
 @Service
 public class AuthenticationService {
 
+    @Value("${spring.application.default-start-credits}")
+    private int DEFAULT_STARTING_CREDIT_AMOUNT;
+
     // Dependency injections done by constructor (all private and final fields)
     private final MongoTemplate userDAO;
     private final MongoTemplate verificationTokenDAO;
@@ -45,7 +50,6 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
     }
-
 
 
 
@@ -151,8 +155,9 @@ public class AuthenticationService {
                     .set("lastName", registrationRequest.getLastName())
                     .set("password", passwordEncoder.encode(registrationRequest.getPassword()))
                     .set("phoneNumber", registrationRequest.getPhoneNumber())
-                    .set("role", Role.USER);
-
+                    .set("credits", DEFAULT_STARTING_CREDIT_AMOUNT)
+                    .set("role", Role.USER)
+                    .set("userType", UserType.DASH);
 
         // Update customer
         userDAO.updateFirst(oldUser, registeredUser, User.class);
@@ -201,7 +206,7 @@ public class AuthenticationService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 3); // TODO
+        calendar.add(Calendar.MINUTE, 5); // TODO
 
         final Query query = new Query(Criteria.where("userId").is(userId));
 
