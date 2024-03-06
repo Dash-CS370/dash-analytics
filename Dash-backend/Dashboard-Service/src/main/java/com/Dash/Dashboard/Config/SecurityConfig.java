@@ -24,12 +24,7 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
-          //.antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
-
-            .antMatchers("/my-dashboard").authenticated() // Secured endpoints for authenticated users only
-            .antMatchers("/my-dashboard/create-project").permitAll() // Secured endpoints for authenticated users only
-            .antMatchers("/my-dashboard/delete-project").permitAll() // Secured endpoints for authenticated users only
-
+            .antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
             .and()
             .oauth2Login(oauth2login -> oauth2login
                     //.loginPage("http://localhost:3000") // TODO - HOME PAGE -> GUCCI

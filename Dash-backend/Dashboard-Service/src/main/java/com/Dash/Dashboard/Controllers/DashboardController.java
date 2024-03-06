@@ -1,11 +1,13 @@
 package com.Dash.Dashboard.Controllers;
 
-import com.Dash.Dashboard.Event.OAuthUserLoginEvent;
+import com.Dash.Dashboard.Event.Listener.OAuthUserLoginEventListener;
+import com.Dash.Dashboard.Event.OAuth2UserLoginEvent;
+import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
+import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
 import com.Dash.Dashboard.Services.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClientException;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +33,13 @@ public class DashboardController {
 
     final private DashboardService dashboardService;
 
-    @Autowired
-    DashboardController(DashboardService dashboardService) {
-        this.dashboardService = dashboardService;
-    }
+    final private OAuthUserLoginEventListener oAuthUserLoginEventListener;
 
+    @Autowired
+    DashboardController(DashboardService dashboardService, OAuthUserLoginEventListener oAuthUserLoginEventListener) {
+        this.dashboardService = dashboardService;
+        this.oAuthUserLoginEventListener = oAuthUserLoginEventListener;
+    }
 
 
     /**
@@ -58,15 +63,12 @@ public class DashboardController {
 
             final Optional<List<Project>> projectList;
 
-            log.warn(authorizedClient.getAccessToken().getTokenValue());
-
-            // TODO publish event to create user OR ensure user email doesnt alr exist in our IN-HOUSE-USER DB (UPON REGISTRATION)
+            //For Microsoft | Google
             if (isPresent(oidcUser.getEmail())) {
-                log.warn("Google");
+                oAuthUserLoginEventListener.onApplicationEvent(new OAuth2UserLoginEvent(oidcUser));
                 projectList = dashboardService.loadAllProjects(authorizedClient, oidcUser.getEmail());
             } else {
-                log.warn("DASH-OIDC");
-                projectList = dashboardService.loadAllProjects(authorizedClient, authorizedClient.getPrincipalName());
+                projectList = dashboardService.loadAllProjects(authorizedClient, oidcUser.getName());
             }
 
             if (projectList.isPresent() && !projectList.get().isEmpty()) {
@@ -76,8 +78,10 @@ public class DashboardController {
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        } catch (UserAlreadyExistsException e) {
+            log.warn(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        } catch (WebClientException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -102,10 +106,7 @@ public class DashboardController {
         try {
 
             // Ensure request can be made by user
-            if (!dashboardService.userHasEnoughCredits("userId")) {
-                log.warn("You do not sufficient credits to create a new project ... ");
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+            dashboardService.verifyUserCreditCount("oidcUser");
 
             final Optional<Project> generatedProjectConfig = dashboardService.createProject(null, projectName, projectDescription, csvFile);
 
@@ -115,8 +116,10 @@ public class DashboardController {
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        } catch (NotEnoughCreditsException e) {
+            log.warn("You do not sufficient credits to create a new project ... ");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (WebClientException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -143,7 +146,7 @@ public class DashboardController {
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
-        } catch (Exception e) {
+        } catch (WebClientException e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -45,6 +45,9 @@ public class User implements UserDetails {
 
     private String phoneNumber;
 
+    @NotNull
+    private Integer credits;
+
     private boolean enabled;
 
     private Role role;
@@ -85,5 +88,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public boolean hasSufficientCredits() { return credits > 0; }
 
 }

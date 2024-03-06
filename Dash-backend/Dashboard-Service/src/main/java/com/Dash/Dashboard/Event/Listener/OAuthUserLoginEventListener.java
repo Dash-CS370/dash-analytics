@@ -1,7 +1,8 @@
 package com.Dash.Dashboard.Event.Listener;
 
 import com.Dash.Dashboard.Entites.User;
-import com.Dash.Dashboard.Event.OAuthUserLoginEvent;
+import com.Dash.Dashboard.Event.OAuth2UserLoginEvent;
+import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class OAuthUserLoginEventListener implements ApplicationListener<OAuthUserLoginEvent> {
+public class OAuthUserLoginEventListener implements ApplicationListener<OAuth2UserLoginEvent> {
 
 
     private final MongoTemplate userDAO;
@@ -27,15 +28,19 @@ public class OAuthUserLoginEventListener implements ApplicationListener<OAuthUse
     }
 
     @Override
-    public void onApplicationEvent(OAuthUserLoginEvent event) {
-        // User identification will be there unique email
+    public void onApplicationEvent(OAuth2UserLoginEvent event) throws UserAlreadyExistsException {
         final OidcUser oidcUser = event.getUser();
 
-        Optional<User> user = Optional.ofNullable(
+        Optional<User> inHouseUser = Optional.ofNullable(
                 userDAO.findOne(new Query(Criteria.where("email").is(oidcUser.getEmail())), User.class)
         );
 
-
-
+        if (inHouseUser.isPresent()) {
+            throw new UserAlreadyExistsException("User with email " + oidcUser.getEmail() + " already exists.");
+        } else {
+            userDAO.insert(
+                    User.builder().build()
+            );
+        }
     }
 }

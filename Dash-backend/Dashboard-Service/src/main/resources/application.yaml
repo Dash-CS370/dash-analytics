@@ -31,14 +31,14 @@ spring:
           # In OpenID Connect, the "openid" scope is used for AUTHENTICATION and includes the ability to obtain identity information about the user.
 
           # OIDC protocol for user authentication
-          dash-oidc-client:
+          Dash:
             provider: spring
             client-id: Dash-client
             client-secret: secret
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
-            client-name: dash-oidc-client
+            client-name: Dash
 
 
           # The api-client-authorization-code configuration is designed for interactions with a resource server to read data.
@@ -60,16 +60,22 @@ spring:
             client-id:
             client-secret:
 
-          github:
+
+          azure-ad:
             client-id:
             client-secret:
+            provider: azure
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/azure"
+            scope: openid
 
-        # These configurations help the Dashboard microservice establish secure connections with the
-        # OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.
+        # These configurations help the Dashboard microservice establish secure connections with the OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.
 
         provider:
           spring:
             issuer-uri: http://auth-server:9000
+          azure:
+            issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
 
 
 

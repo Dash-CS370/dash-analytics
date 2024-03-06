@@ -40,7 +40,11 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     private String password;
+
     private String phoneNumber;
+
+    @NotNull
+    private Integer credits;
 
     private boolean enabled;
 
@@ -83,5 +87,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public boolean hasSufficientCredits() { return credits > 0; }
 
 }

@@ -1,16 +1,16 @@
 package com.Dash.Dashboard.Services;
 
+import com.Dash.Dashboard.Event.Listener.UserCreditCheckEventListener;
+import com.Dash.Dashboard.Event.UserCreditCheckEvent;
+import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Models.Project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -34,11 +34,14 @@ public class DashboardService {
 
     private final static String S3URL = "s3://dash-analytics-test/";
 
+    private final UserCreditCheckEventListener userCreditCheckEventListener;
+
     private final WebClient webClient;
 
     @Autowired
-    DashboardService(WebClient webClient) {
+    DashboardService(WebClient webClient, UserCreditCheckEventListener userCreditCheckEventListener) {
         this.webClient = webClient;
+        this.userCreditCheckEventListener = userCreditCheckEventListener;
     }
 
 
@@ -50,7 +53,8 @@ public class DashboardService {
      */
     public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, String userId) throws WebClientResponseException {
 
-        userId = "user123@gmail.com"; //TODO DUMMY USER
+        //TODO DUMMY USER
+        userId = "user123@gmail.com";
 
         // Encode url with username
         final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/resources/api/all-projects/{userId}")
@@ -80,12 +84,7 @@ public class DashboardService {
     public Optional<Project> createProject(OAuth2AuthorizedClient client, String projectName,
                                            String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
 
-        String userId = "user456@gmail.com"; //client.getPrincipalName(); // TODO --> get user email
-
-        // Check if User has enough credits to create new project
-        if (!userHasEnoughCredits(userId)) {
-            return Optional.empty();
-        }
+        String userId = "user789@gmail.com"; //oidcUser.getPrincipalName(); // TODO --> get user email
 
         final String projectId = UUID.randomUUID().toString();
 
@@ -145,8 +144,8 @@ public class DashboardService {
 
 
     // TODO - add Token attribute to User Entity
-    public boolean userHasEnoughCredits(String userId) {
-        return userId.length() > 0;
+    public void verifyUserCreditCount(String userId) throws NotEnoughCreditsException {
+        userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
     }
 
     public static boolean isPresent(Object obj) {
