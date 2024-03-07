@@ -46,23 +46,24 @@ public class S3Service {
      */
     public List<Project> getProjectsBelongingTo(String userId) {
 
+        final List<Project> userProjects = new ArrayList<>();
+
         ListObjectsV2Request listObjectsRequest = new ListObjectsV2Request().withBucketName(BUCKET).withPrefix(userId + "/");
 
         ListObjectsV2Result listObjectsResponse = amazonS3Client.listObjectsV2(listObjectsRequest);
 
-        List<String> projectConfigs = listObjectsResponse.getObjectSummaries().stream()
-                .map(S3ObjectSummary::getKey).filter(key -> key.endsWith(".json")).toList();
+        // If user has not uploaded anything
+        if (listObjectsResponse.getObjectSummaries().isEmpty()) return List.of();
 
-        final List<Project> userProjects = new ArrayList<>();
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> projectConfigs = listObjectsResponse.getObjectSummaries().stream().map(S3ObjectSummary::getKey)
+                .filter(key -> key.endsWith(".json")).toList();
 
         for (String projectConfigLink : projectConfigs) {
             S3Object projectConfigObj = amazonS3Client.getObject(BUCKET, projectConfigLink);
 
             try {
                 final byte[] jsonData = IOUtils.toByteArray(projectConfigObj.getObjectContent());
-                final Project projectConfig = objectMapper.readValue(jsonData, Project.class);
+                final Project projectConfig = (new ObjectMapper()).readValue(jsonData, Project.class);
                 projectConfig.setLastModified(projectConfigObj.getObjectMetadata().getLastModified().toString());
                 userProjects.add(projectConfig);
             } catch (IOException | AmazonServiceException e) {
@@ -80,11 +81,10 @@ public class S3Service {
      * @param projectConfig
      * @param csvFile
      */
-    //@Async
+    // TODO @Async > ?????????
     public void uploadProjectFiles(Project projectConfig, MultipartFile csvFile) {
 
         // TODO - UNDER CONSTRUCTION
-        //log.warn("RUNS ASYNC");
 
         final String jsonString;
         final byte[] csvByteArray;
@@ -92,11 +92,7 @@ public class S3Service {
         try {
             jsonString = (new ObjectMapper()).writeValueAsString(projectConfig);
             csvByteArray = csvFile.getBytes();
-        } catch (JsonProcessingException e) {
-            log.warn("Error converting projectConfig to JSON: {}", e.getMessage());
-            return;
         } catch (IOException e) {
-            log.warn("Error reading bytes from csvFile: {}", e.getMessage());
             return;
         }
 
@@ -124,13 +120,14 @@ public class S3Service {
 
 
 
-    //@Async
+
     /**
      *
      * @param projectCsvKey
      * @return
      * @throws SdkClientException
      */
+    // TODO @Async > ?????????
     public Optional<String> deleteProject(String projectCsvKey) throws SdkClientException {
         if (amazonS3Client.doesObjectExist(BUCKET, projectCsvKey)) {
             amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET, projectCsvKey));
@@ -149,13 +146,12 @@ public class S3Service {
 
 
 
-    // TODO --> ASYNC???)
     // UPDATE Project.json config file by adding/deleting/or modifying its widgets
     /**
      * @param projectsToUpdate
      * @return
      */
-    @Async
+    // TODO @Async > ?????????
     public Void updateProjects(List<Project> projectsToUpdate) {
         // Let's get the parsed JSON object (Project)
         // So that we can rewrite the old projects

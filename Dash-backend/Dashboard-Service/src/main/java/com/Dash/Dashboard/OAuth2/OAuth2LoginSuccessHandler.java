@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.Dash.Dashboard.Services.DashboardService.THIRD_PARTY_SERVICES;
 
 
 @Slf4j
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    private final static String DEFAULT_SUCCESS_URL = "/my-dashboard";
 
     private final OAuth2UserLoginEventListener thirdPartyLoginEventListener;
 
@@ -34,11 +35,13 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         assert authentication.getPrincipal() instanceof OAuth2User;
 
-        final OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+        final CustomAuthUser authUser = new CustomAuthUser((OAuth2User) authentication.getPrincipal());
 
-        if (oauth2User instanceof OidcUser user && user.getIssuer().getHost().matches(THIRD_PARTY_SERVICES)) {
-            thirdPartyLoginEventListener.onApplicationEvent(new OAuth2UserLoginEvent(user));
+        if (authUser.wasIssuedExternally()) {
+            thirdPartyLoginEventListener.onApplicationEvent(new OAuth2UserLoginEvent(authUser));
         }
+
+        response.sendRedirect(DEFAULT_SUCCESS_URL);
 
         super.onAuthenticationSuccess(request, response, authentication);
     }

@@ -28,16 +28,20 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
-            .antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
-
+            //.antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
+            .antMatchers("/my-dashboard/**").permitAll() // TODO - REMOVE
             .and()
             .oauth2Login(oauth2login -> oauth2login
                     //.loginPage("http://localhost:3000") // TODO - HOME PAGE -> GUCCI
                     .successHandler(loginSuccessHandler)
-                    .defaultSuccessUrl("/my-dashboard") // Where to redirect after successful authentication
             )
             .oauth2Client(Customizer.withDefaults());
             /*
+            .sessionManagement(sessionManagement ->
+                sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session if required
+                        .sessionFixation().newSession() // Protect against session fixation
+            );
             // TODO => not way to end userSession???
             .logout(logout -> logout
                     .logoutUrl("/logout")

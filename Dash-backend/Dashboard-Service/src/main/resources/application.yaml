@@ -58,8 +58,8 @@ spring:
 
 
           google:
-            client-id: 99003468096-q8ibp2bt09ps163rsaaekivb16qs358s.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret:
 
 
           azure-ad:

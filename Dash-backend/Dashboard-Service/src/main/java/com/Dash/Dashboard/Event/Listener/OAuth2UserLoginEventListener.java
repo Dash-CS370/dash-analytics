@@ -5,6 +5,7 @@ import com.Dash.Dashboard.Entites.User;
 import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Event.OAuth2UserLoginEvent;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
+import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,20 +36,20 @@ public class OAuth2UserLoginEventListener implements ApplicationListener<OAuth2U
     @Override
     public void onApplicationEvent(OAuth2UserLoginEvent event) throws UserAlreadyExistsException {
 
-        final OidcUser oidcUser = event.getUser();
+        final CustomAuthUser authUser = event.getUser();
 
         Optional<User> user = Optional.ofNullable(
-                userDAO.findOne(new Query(Criteria.where("email").is(oidcUser.getEmail())), User.class)
+                userDAO.findOne(new Query(Criteria.where("email").is(authUser.getEmail())), User.class)
         );
 
         if (user.isPresent() && user.get().getUserType() == UserType.DASH)
-            throw new UserAlreadyExistsException("In-House account is already associated with this email " + oidcUser.getEmail());
+            throw new UserAlreadyExistsException("In-House account is already associated with this email " + authUser.getEmail());
 
         else if (user.isEmpty()) {
             userDAO.insert(
                 User.builder().
-                    email(oidcUser.getEmail()).enabled(true).
-                    firstName(oidcUser.getGivenName()).
+                    email(authUser.getEmail()).enabled(true).
+                    firstName(authUser.getName()).
                     credits(DEFAULT_STARTING_CREDIT_AMOUNT).
                     userType(UserType.THIRD_PARTY).
                     role(Role.USER)
