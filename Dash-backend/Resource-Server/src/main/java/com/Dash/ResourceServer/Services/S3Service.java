@@ -19,9 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -64,7 +62,7 @@ public class S3Service {
             try {
                 final byte[] jsonData = IOUtils.toByteArray(projectConfigObj.getObjectContent());
                 final Project projectConfig = (new ObjectMapper()).readValue(jsonData, Project.class);
-                projectConfig.setLastModified(projectConfigObj.getObjectMetadata().getLastModified().toString());
+                projectConfig.setLastModified(projectConfigObj.getObjectMetadata().getLastModified());
                 userProjects.add(projectConfig);
             } catch (IOException | AmazonServiceException e) {
                 log.warn(e.getMessage());
@@ -100,13 +98,13 @@ public class S3Service {
              final InputStream jsonStream = new ByteArrayInputStream(jsonString.getBytes())) {
 
             // Upload CSV
-            final String csvFileLocation = projectConfig.getCsvSheetLink();
+            final String csvFileLocation = projectConfig.getProjectCsvLink();
             ObjectMetadata csvMetaData = new ObjectMetadata();
             csvMetaData.setContentLength(csvByteArray.length);
             amazonS3Client.putObject(new PutObjectRequest(BUCKET, csvFileLocation, csvStream, csvMetaData));
 
             // Upload Json
-            final String jsonFileLocation = csvFileLocation.replace(".csv", ".json");
+            final String jsonFileLocation = projectConfig.getProjectConfigLink();
             ObjectMetadata jsonMetaData = new ObjectMetadata();
             jsonMetaData.setContentLength(jsonString.getBytes().length);
             amazonS3Client.putObject(new PutObjectRequest(BUCKET, jsonFileLocation, jsonStream, jsonMetaData));
@@ -120,43 +118,63 @@ public class S3Service {
 
 
 
-
-    /**
-     *
-     * @param projectCsvKey
-     * @return
-     * @throws SdkClientException
-     */
-    // TODO @Async > ?????????
-    public Optional<String> deleteProject(String projectCsvKey) throws SdkClientException {
-        if (amazonS3Client.doesObjectExist(BUCKET, projectCsvKey)) {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET, projectCsvKey));
-        } else return Optional.empty();
-
-        final String projectConfigKey = projectCsvKey.replace(".csv", ".json");
-
-        if (amazonS3Client.doesObjectExist(BUCKET, projectConfigKey)) {
-            amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET, projectConfigKey));
-        } else return Optional.empty();
-
-        return Optional.of(projectConfigKey);
-    }
-
-
-
-
-
-    // UPDATE Project.json config file by adding/deleting/or modifying its widgets
     /**
      * @param projectsToUpdate
      * @return
      */
     // TODO @Async > ?????????
-    public Void updateProjects(List<Project> projectsToUpdate) {
-        // Let's get the parsed JSON object (Project)
-        // So that we can rewrite the old projects
-        return null;
+    public Optional<Object> updateProjects(List<Project> projectsToUpdate) throws JsonProcessingException {
+        // UPDATE Project.json config file by adding/deleting/or modifying its widgets
+
+        for (Project project : projectsToUpdate) {
+
+            String projectConfigKey = project.getProjectConfigLink();
+
+            if (amazonS3Client.doesObjectExist(BUCKET, projectConfigKey)) {
+                final String jsonString = (new ObjectMapper()).writeValueAsString(project);
+                final InputStream jsonStream = new ByteArrayInputStream(jsonString.getBytes());
+                ObjectMetadata jsonMetaData = new ObjectMetadata();
+                jsonMetaData.setContentLength(jsonString.getBytes().length);
+                amazonS3Client.putObject(new PutObjectRequest(BUCKET, projectConfigKey, jsonStream, jsonMetaData));
+            }
+        }
+
+        return Optional.of(Object.class);
     }
 
+
+
+
+    /**
+     *
+     * @param projectId
+     * @return
+     * @throws SdkClientException
+     */
+    // TODO @Async > ?????????
+    public Optional<String> deleteProject(String userId, String projectId) throws SdkClientException {
+        final String projectKey = userId.concat("/project-").concat(projectId).concat("/");
+        final String configKey = projectKey.concat(projectId + ".json");
+        final String csvKey = projectKey.concat(projectId + ".csv");
+
+        if (amazonS3Client.doesObjectExist(BUCKET, csvKey)) {
+            amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET, csvKey));
+        } else return Optional.empty();
+
+        if (amazonS3Client.doesObjectExist(BUCKET, configKey)) {
+            amazonS3Client.deleteObject(new DeleteObjectRequest(BUCKET, configKey));
+        } else return Optional.empty();
+
+        return Optional.of(projectKey);
+    }
+
+
+
+
+    private static Date getTimeNow() {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        return new Date(calendar.getTime().getTime());
+    }
 
 }

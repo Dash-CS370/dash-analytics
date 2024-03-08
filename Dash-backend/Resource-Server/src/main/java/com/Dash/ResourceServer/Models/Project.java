@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 
-/** Little Tab rep Projects of User */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,18 +26,24 @@ public class Project {
     @JsonProperty("projectName")
     private String projectName;
 
+    @JsonProperty("projectConfigLink")
+    private String projectConfigLink;
+
     @NotNull
     @NotEmpty
-    @JsonProperty("csvSheetLink")
-    private String csvSheetLink;
+    @JsonProperty("projectCsvLink")
+    private String projectCsvLink;
 
     @NotEmpty
     @NotNull
     @JsonProperty("projectDescription")
     private String projectDescription;
 
+    @JsonProperty("createdDate")
+    private Date createdDate;
+
     @JsonProperty("lastModified")
-    private String lastModified;
+    private Date lastModified;
 
     @NotNull
     @JsonProperty("widgets")

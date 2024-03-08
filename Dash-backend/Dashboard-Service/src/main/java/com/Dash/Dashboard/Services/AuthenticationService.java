@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -59,7 +60,7 @@ public class AuthenticationService {
      * @return
      * @throws WebClientException
      */
-    public ResponseEntity<String> sendActivationRequest(String email) throws WebClientException {
+    public ResponseEntity<String> sendActivationRequest(String email) {
 
         // Check if User exists and is already enabled
         Optional<User> user = Optional.ofNullable(
@@ -76,7 +77,11 @@ public class AuthenticationService {
         }
 
         // Otherwise this is a completely new User (email has not been used)
-        final User tempUser = User.builder().email(email).enabled(false).build();
+        final User tempUser = User.builder().
+                email(email).
+                enabled(false).
+                creationDate(getTimeNow()).
+                build();
 
         userDAO.insert(tempUser);
 
@@ -134,9 +139,8 @@ public class AuthenticationService {
      *
      * @param registrationRequest
      * @return
-     * @throws WebClientException
      */
-    public ResponseEntity<String> register(UserRegistrationRequest registrationRequest) throws WebClientException {
+    public ResponseEntity<String> register(UserRegistrationRequest registrationRequest) {
 
         // Ensure account has been activated (from emailed activation key)
         final Query oldUser = new Query(Criteria.where("email").is(registrationRequest.getEmail()));
@@ -174,33 +178,17 @@ public class AuthenticationService {
      * Utility Methods
      *
      */
-
     private boolean hasExpired(VerificationToken verificationToken) {
         final Calendar cal = Calendar.getInstance();
         return (verificationToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0;
     }
 
-
-
-    /**
-     *
-     * @param userId
-     * @return
-     * @throws WebClientException
-     */
-    private boolean activateAccount(String userId) throws WebClientException {
+    private boolean activateAccount(String userId) {
         final Query oldUser = new Query(Criteria.where("id").is(userId));
         final Update activatedUser = Update.update("enabled", true);
         return userDAO.updateFirst(oldUser, activatedUser, User.class).wasAcknowledged();
     }
 
-
-
-    /**
-     *
-     * @param userId
-     * @return
-     */
     private String generateNewVerificationToken(String userId) {
         final String activationKey = UUID.randomUUID().toString();
 
@@ -220,15 +208,8 @@ public class AuthenticationService {
     }
 
 
-
     // TODO *** *** *** *** *** *** *** (ASYNC)
-    /**
-     *
-     * @param email
-     * @param activationToken
-     * @return
-     */
-    private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) throws WebClientException {
+    private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
 
@@ -244,4 +225,13 @@ public class AuthenticationService {
         }
     }
 
+
+    private static Date getTimeNow() {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        return new Date(calendar.getTime().getTime());
+    }
+
+
 }
+

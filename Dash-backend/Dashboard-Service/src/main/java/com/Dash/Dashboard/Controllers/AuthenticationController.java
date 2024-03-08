@@ -42,7 +42,7 @@ public class AuthenticationController {
             return authenticationService.sendActivationRequest(userEmail);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("Something went wrong... "  + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -65,7 +65,7 @@ public class AuthenticationController {
             return authenticationService.verifyActivationKey(activationKey);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("Something went wrong... " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -107,7 +107,7 @@ public class AuthenticationController {
             return authenticationService.register(registrationRequest);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("Something went wrong ... " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

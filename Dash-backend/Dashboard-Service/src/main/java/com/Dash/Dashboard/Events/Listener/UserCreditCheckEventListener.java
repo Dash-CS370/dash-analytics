@@ -1,7 +1,7 @@
-package com.Dash.Dashboard.Event.Listener;
+package com.Dash.Dashboard.Events.Listener;
 
 import com.Dash.Dashboard.Entites.User;
-import com.Dash.Dashboard.Event.UserCreditCheckEvent;
+import com.Dash.Dashboard.Events.UserCreditCheckEvent;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

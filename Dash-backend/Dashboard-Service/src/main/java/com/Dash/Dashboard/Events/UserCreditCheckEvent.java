@@ -1,4 +1,4 @@
-package com.Dash.Dashboard.Event;
+package com.Dash.Dashboard.Events;
 
 import lombok.Getter;
 import lombok.Setter;

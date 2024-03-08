@@ -1,12 +1,8 @@
 package com.Dash.Dashboard.Controllers;
 
-import com.Dash.Dashboard.Entites.UserType;
-import com.Dash.Dashboard.Event.Listener.OAuth2UserLoginEventListener;
-import com.Dash.Dashboard.Event.OAuth2UserLoginEvent;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
-import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,8 +42,8 @@ public class DashboardController {
      * Fetches and returns a list of projects for the user upon dashboard initialization. Utilizes OAuth2 authentication
      * details to access the resource server.
      *
-     * param authorizedClient The OAuth2 authorized client, injected with authorization details for resource server calls.
-     * param oidcUser The OIDC authenticated user, obtained after OAuth2 authentication. This parameter is optional and specific to OIDC providers.
+     * @param authorizedClient The OAuth2 authorized client, injected with authorization details for resource server calls.
+     * @param oauth2User The OAuth2 authenticated user, obtained after OAuth2 authentication.
      * @return ResponseEntity containing a list of {@link Project} objects for the authenticated user, or an appropriate HTTP status code in case of errors or empty data.
      */
     @GetMapping
@@ -90,10 +85,11 @@ public class DashboardController {
         try {
 
             // Ensure request can be made by user
-            final Optional<Project> generatedProjectConfig = dashboardService.createProject(null, projectName, projectDescription, csvFile);
+            final Optional<Project> generatedProject = dashboardService.createProject(null, null,
+                                                                                            projectName, projectDescription, csvFile);
 
-            if (generatedProjectConfig.isPresent() && !generatedProjectConfig.get().getWidgets().isEmpty()) {
-                return new ResponseEntity<>(generatedProjectConfig.get(), HttpStatus.CREATED);
+            if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
+                return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);
             }
 
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -110,22 +106,20 @@ public class DashboardController {
 
 
     // TODO ------------------->
-
     /**
      *
      * @param projects
      * @return
      */
-    @PutMapping(value = "/update-projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Object> updateProjects(@RequestPart("updated-projects") List<Project> projects) { //,
+    @PutMapping(value = "/update-projects", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object> updateProjects(@RequestBody List<Project> projects) { //,
                                                  //@RegisteredOAuth2AuthorizedClient("resource-access-client")
                                                  //OAuth2AuthorizedClient authorizedClient,
                                                  //@AuthenticationPrincipal OAuth2User oauth2User) { // TODO - UNCOMMENT
         try {
+            final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(projects);
 
-            final Optional<Object> updatedProjects = dashboardService.updateProjects(projects);
-
-            if (updatedProjects.isPresent()) {
+            if (updatedProjectsConfirmation.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
             }
 
@@ -138,41 +132,32 @@ public class DashboardController {
 
 
 
-
     /**
      *
-     * @param projectKey
+     * @param projectId
      * @return
      */
-    @DeleteMapping(value = "/delete-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Object> deleteProject(@RequestPart("project-key") String projectKey) { //,
+    @DeleteMapping(value = "/delete-project")
+    public ResponseEntity<String> deleteProject(@RequestParam("project-id") String projectId) {
                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
                                                 //OAuth2AuthorizedClient authorizedClient
-        //                                        @AuthenticationPrincipal OAuth2User oauth2User) {
+                                                //@AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            log.warn(projectKey);
+            // TODO
+            Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(null, null, projectId);
 
-            final String REGEX = "[0-9A-Za-z]+@[A-Za-z]+\\.com/project-[A-Za-z0-9-]+/[A-Za-z0-9-]+\\.csv";
-
-            if (!projectKey.matches(REGEX) || !projectKey.contains(".json")) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
-            final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(null, projectKey);
-
-            if (projectDeletionConfirmation.isPresent()) {
-                return new ResponseEntity<>(HttpStatus.OK);
+            if (projectDeletionConfirmation.isPresent() && projectDeletionConfirmation.get().endsWith("/")) {
+                return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
             }
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
-        } catch (WebClientException e) {
+        } catch (WebClientResponseException e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 
 }

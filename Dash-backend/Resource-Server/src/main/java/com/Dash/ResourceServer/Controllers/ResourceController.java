@@ -96,11 +96,11 @@ public class ResourceController {
     /** TODO
      * @return
      */
-    @PutMapping(value = "/update-projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Optional<String> deleteProject(@RequestPart("projects") List<Project> projects) {
+    @PutMapping(value = "/update-projects")
+    public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
 
-            return null;
+            return resourceService.updateProjects(projects);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -110,19 +110,17 @@ public class ResourceController {
 
 
 
-
-    /** TODO
+    /**
      *
-     * @param projectKey
+     * @param projectId
      * @return
      */
     @DeleteMapping(value = "/delete-project")
-    public Optional<String> deleteProject(@RequestParam("project-key") String projectKey) {
+    public Optional<String> deleteProject(@RequestParam("user-id") String userId,
+                                          @RequestParam("project-id") String projectId) {
         try {
 
-            final String decodedProjectKey = URLDecoder.decode(projectKey, StandardCharsets.UTF_8);
-            log.warn(projectKey);
-            return resourceService.deleteProject(decodedProjectKey);
+            return resourceService.deleteProject(userId, projectId);
 
         } catch (Exception e) {
             log.error(e.getMessage());

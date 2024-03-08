@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -24,14 +25,20 @@ public class Project { // TODO -> FUTURE
     @JsonProperty("projectName")
     private String projectName;
 
-    @JsonProperty("csvSheetLink")
-    private String csvSheetLink;
+    @JsonProperty("projectConfigLink")
+    private String projectConfigLink;
+
+    @JsonProperty("projectCsvLink")
+    private String projectCsvLink;
 
     @JsonProperty("projectDescription")
     private String projectDescription;
 
+    @JsonProperty("createdDate")
+    private Date creationDate;
+
     @JsonProperty("lastModified")
-    private String lastModified;
+    private Date lastModified;
 
     @JsonProperty("widgets")
     private List<Widget> widgets;

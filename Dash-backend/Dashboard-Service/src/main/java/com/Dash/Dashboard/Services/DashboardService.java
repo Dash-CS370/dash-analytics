@@ -1,7 +1,7 @@
 package com.Dash.Dashboard.Services;
 
-import com.Dash.Dashboard.Event.Listener.UserCreditCheckEventListener;
-import com.Dash.Dashboard.Event.UserCreditCheckEvent;
+import com.Dash.Dashboard.Events.Listener.UserCreditCheckEventListener;
+import com.Dash.Dashboard.Events.UserCreditCheckEvent;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Models.Project;
 import com.Dash.Dashboard.OAuth2.CustomAuthUser;
@@ -11,7 +11,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,13 +20,7 @@ import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
-
+import java.util.*;
 
 
 @Service
@@ -81,21 +74,26 @@ public class DashboardService {
      * @return
      * @throws WebClientException
      */
-    public Optional<Project> createProject(OAuth2AuthorizedClient client, String projectName,
+    public Optional<Project> createProject(OAuth2AuthorizedClient client,
+                                           OAuth2User oauth2User, String projectName,
                                            String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
 
-        //final String userId = extractUserDetails(oauth2User);
+        //final String userAccount = extractUserDetails(oauth2User);
+
         //verifyUserCreditCount(userId);
 
-        String userId = "user789@gmail.com";
+        String userAccount = "user345@email.com";
 
         final String projectId = UUID.randomUUID().toString();
 
-        final String projectKey = userId.concat("/").concat("project-").concat(projectId);
+        final String projectKey = userAccount.concat("/").concat("project-").concat(projectId);
 
         final Project templateProject = Project.builder().projectId(projectId).projectName(projectName)
-            .csvSheetLink(projectKey.concat("/").concat(projectId.concat(".csv")))
-            .projectDescription(projectDescription).widgets(new ArrayList<>()).build();
+                .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
+                .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
+                .projectDescription(projectDescription).widgets(new ArrayList<>())
+                .creationDate(getTimeNow())
+                .build();
 
 
         final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/resources/api/generate-project")
@@ -120,39 +118,38 @@ public class DashboardService {
 
 
 
-    // TODO *******************
     public Optional<Object> updateProjects(List<Project> projects) {
+
         final String updateProjectUrl = UriComponentsBuilder
                 .fromUriString("http://127.0.0.1:8081/resources/api/update-projects").toUriString();
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
                 //.attributes(oauth2AuthorizedClient(client))
-                .body(BodyInserters.fromMultipartData("projects", projects))
+                .body(BodyInserters.fromValue(projects))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {})
                 .block();
     }
 
 
-
-
     /**
      *
      * @param client
-     * @param projectKey
+     * @param projectId
      * @return
      * @throws WebClientResponseException
      */
-    public Optional<String> deleteProject(OAuth2AuthorizedClient client, String projectKey) throws WebClientResponseException {
+    public Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException {
+
+        // TODO OAuth2 User email -> extract for userId inside service
+        String userId = "user345@email.com";
 
         final String deleteProjectUrl = UriComponentsBuilder
                 .fromUriString("http://127.0.0.1:8081/resources/api/delete-project")
-                .queryParam("project-key", projectKey)
-                .buildAndExpand(projectKey).toUriString();
-
-        log.warn(deleteProjectUrl);
+                .queryParam("user-id", userId)
+                .queryParam("project-id", projectId)
+                .toUriString();
 
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
@@ -174,9 +171,15 @@ public class DashboardService {
         userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
     }
 
-    public String extractUserDetails(OAuth2User oauth2User) {
+    public static String extractUserDetails(OAuth2User oauth2User) {
         final CustomAuthUser customAuthUser = new CustomAuthUser(oauth2User);
         return customAuthUser.getEmail();
+    }
+
+    private static Date getTimeNow() {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Date().getTime());
+        return new Date(calendar.getTime().getTime());
     }
 
 }

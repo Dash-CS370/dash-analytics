@@ -1,11 +1,10 @@
 package com.Dash.Dashboard.OAuth2;
 
-import com.Dash.Dashboard.Event.Listener.OAuth2UserLoginEventListener;
-import com.Dash.Dashboard.Event.OAuth2UserLoginEvent;
+import com.Dash.Dashboard.Events.Listener.OAuth2UserLoginEventListener;
+import com.Dash.Dashboard.Events.OAuth2UserLoginEvent;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;

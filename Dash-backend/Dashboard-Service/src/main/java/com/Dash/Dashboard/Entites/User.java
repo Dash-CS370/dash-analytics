@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
@@ -51,6 +52,9 @@ public class User implements UserDetails {
     private boolean enabled;
 
     private UserType userType;
+
+    @NotNull
+    private Date creationDate;
 
     public String getId() { return id; }
 
