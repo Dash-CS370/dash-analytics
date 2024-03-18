@@ -15,7 +15,7 @@ import java.util.Date;
 @Document(collection = "PasswordResetTokens")
 public class PasswordResetToken {
 
-    private static final int EXPIRATION_TIME = 5; // Minutes
+    private static final int EXPIRATION_TIME = 5; // FIXME -> change to 24 hours for user to reset password with this token
 
     @Id
     private String id;

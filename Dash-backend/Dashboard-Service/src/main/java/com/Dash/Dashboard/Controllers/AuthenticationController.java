@@ -74,16 +74,16 @@ public class AuthenticationController {
     /**
      * Registers a new user account based on the provided registration details.
      *
-     * @param registrationRequest Contains the user's registration data.
+     * @param registrationRequestDto Contains the user's registration data.
      * @param bindingResult Contains validation results.
      * @return ResponseEntity with either success message or error details, including HTTP status code.
      */
     @PostMapping(value = "/register-account", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequest registrationRequest,
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequest registrationRequestDto,
                                                BindingResult bindingResult) {
         try {
 
-            if (registrationRequest == null) {
+            if (registrationRequestDto == null) {
                 return new ResponseEntity<>("Request was empty", HttpStatus.BAD_REQUEST);
             }
 
@@ -104,7 +104,7 @@ public class AuthenticationController {
 
             }
 
-            return authenticationService.register(registrationRequest);
+            return authenticationService.register(registrationRequestDto);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

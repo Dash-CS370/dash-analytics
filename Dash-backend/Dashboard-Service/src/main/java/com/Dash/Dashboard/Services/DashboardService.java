@@ -74,15 +74,14 @@ public class DashboardService {
      * @return
      * @throws WebClientException
      */
-    public Optional<Project> createProject(OAuth2AuthorizedClient client,
-                                           OAuth2User oauth2User, String projectName,
-                                           String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
+    public Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User,
+                                           String projectName, String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
 
         //final String userAccount = extractUserDetails(oauth2User);
 
         //verifyUserCreditCount(userId);
 
-        String userAccount = "user345@email.com";
+        String userAccount = "georgepm20002@gmail.com";
 
         final String projectId = UUID.randomUUID().toString();
 
@@ -92,7 +91,7 @@ public class DashboardService {
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
                 .projectDescription(projectDescription).widgets(new ArrayList<>())
-                .creationDate(getTimeNow())
+                .creationDate(getCurrentDate())
                 .build();
 
 
@@ -118,7 +117,7 @@ public class DashboardService {
 
 
 
-    public Optional<Object> updateProjects(List<Project> projects) {
+    public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
                 .fromUriString("http://127.0.0.1:8081/resources/api/update-projects").toUriString();
@@ -143,11 +142,11 @@ public class DashboardService {
     public Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException {
 
         // TODO OAuth2 User email -> extract for userId inside service
-        String userId = "user345@email.com";
+        String userAccount = "user345@email.com"; // = extractUserDetails(oauth2User);
 
         final String deleteProjectUrl = UriComponentsBuilder
                 .fromUriString("http://127.0.0.1:8081/resources/api/delete-project")
-                .queryParam("user-id", userId)
+                .queryParam("user-id", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();
 
@@ -176,7 +175,7 @@ public class DashboardService {
         return customAuthUser.getEmail();
     }
 
-    private static Date getTimeNow() {
+    private static Date getCurrentDate() {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
         return new Date(calendar.getTime().getTime());

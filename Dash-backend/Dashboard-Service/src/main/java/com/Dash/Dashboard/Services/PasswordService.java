@@ -1,6 +1,5 @@
 package com.Dash.Dashboard.Services;
 
-
 import com.Dash.Dashboard.Entites.PasswordResetToken;
 import com.Dash.Dashboard.Entites.User;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +31,11 @@ public class PasswordService {
     private final TaskExecutor taskExecutor;
 
     @Autowired
-    PasswordService(@Qualifier("passwordResetMongoTemplate") MongoTemplate passwordResetTokenDAO,
-                    @Qualifier("userMongoTemplate") MongoTemplate userDAO,
-                    PasswordEncoder passwordEncoder,
-                    TaskExecutor taskExecutor) {
+    public PasswordService(@Qualifier("passwordResetMongoTemplate") MongoTemplate passwordResetTokenDAO,
+                           @Qualifier("userMongoTemplate") MongoTemplate userDAO,
+                           PasswordEncoder passwordEncoder,
+                           TaskExecutor taskExecutor) {
+
         this.passwordResetTokenDAO = passwordResetTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
@@ -145,7 +145,7 @@ public class PasswordService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 3); // TODO
+        calendar.add(Calendar.MINUTE, 3); // FIXME -> give them 24 hours to use link to reset password
 
         final String activationKey = UUID.randomUUID().toString();
 

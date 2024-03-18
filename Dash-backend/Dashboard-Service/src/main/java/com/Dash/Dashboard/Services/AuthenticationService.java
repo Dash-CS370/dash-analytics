@@ -18,8 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientException;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -58,7 +56,6 @@ public class AuthenticationService {
      *
      * @param email
      * @return
-     * @throws WebClientException
      */
     public ResponseEntity<String> sendActivationRequest(String email) {
 
@@ -80,7 +77,7 @@ public class AuthenticationService {
         final User tempUser = User.builder().
                 email(email).
                 enabled(false).
-                creationDate(getTimeNow()).
+                creationDate(getCurrentDate()).
                 build();
 
         userDAO.insert(tempUser);
@@ -143,9 +140,9 @@ public class AuthenticationService {
     public ResponseEntity<String> register(UserRegistrationRequest registrationRequest) {
 
         // Ensure account has been activated (from emailed activation key)
-        final Query oldUser = new Query(Criteria.where("email").is(registrationRequest.getEmail()));
+        final Query unactivatedUser = new Query(Criteria.where("email").is(registrationRequest.getEmail()));
 
-        Optional<User> user = Optional.ofNullable(userDAO.findOne(oldUser, User.class));
+        Optional<User> user = Optional.ofNullable(userDAO.findOne(unactivatedUser, User.class));
 
         if (user.isPresent() && !user.get().isEnabled()) {
             return new ResponseEntity<>("An account associated with this email has not been activated yet", HttpStatus.UNAUTHORIZED);
@@ -164,10 +161,11 @@ public class AuthenticationService {
                     .set("userType", UserType.DASH);
 
         // Update customer
-        userDAO.updateFirst(oldUser, registeredUser, User.class);
+        userDAO.updateFirst(unactivatedUser, registeredUser, User.class);
 
         // Send dashboard request
-        return new ResponseEntity<>("Successfully Registered!", HttpStatus.CREATED);
+        //return new ResponseEntity<>(registrationRequest.getEmail(), HttpStatus.CREATED);
+        return new ResponseEntity<>("Successfully registered", HttpStatus.CREATED);
     }
 
 
@@ -194,7 +192,7 @@ public class AuthenticationService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 5); // TODO
+        calendar.add(Calendar.MINUTE, 5); // FIXME -> give user 24 hours
 
         final Query query = new Query(Criteria.where("userId").is(userId));
 
@@ -208,7 +206,8 @@ public class AuthenticationService {
     }
 
 
-    // TODO *** *** *** *** *** *** *** (ASYNC)
+
+    // ASYNC
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
@@ -226,7 +225,7 @@ public class AuthenticationService {
     }
 
 
-    private static Date getTimeNow() {
+    private static Date getCurrentDate() {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
         return new Date(calendar.getTime().getTime());

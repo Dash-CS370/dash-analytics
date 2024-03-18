@@ -47,7 +47,6 @@ public class PasswordController {
 
 
 
-
     /**
      * Verifies the validity of a password reset token. Redirects the user to either the password reset page or error page.
      *
@@ -55,7 +54,7 @@ public class PasswordController {
      * @return A URL redirect string to the password reset page if the token is valid, to the forgot password page if invalid, or to an error page upon exception.
      */
     @GetMapping(value ="/reset-password")
-    public String verifyPasswordResetToken(@RequestParam("token") String passwordResetToken) {
+    public String verifyPasswordResetToken(@RequestParam("reset-key") String passwordResetToken) {
         try {
 
             // No need to check if user email / account exists
@@ -77,22 +76,22 @@ public class PasswordController {
      * Consumes multipart/form-data for secure transmission of sensitive information.
      *
      * @param passwordResetKey The token provided to the user for password reset verification.
-     * @param passwordReset The new password provided by the user.
-     * @param confirmedPasswordReset The new password re-entered by the user for confirmation.
+     * @param newPassword The new password provided by the user.
+     * @param confirmedPassword The new password re-entered by the user for confirmation.
      * @return ResponseEntity with a success message or an error message, including the appropriate HTTP status code.
      */
     @ResponseBody
     @PostMapping(value = "/reset-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> resetPassword(@RequestPart("token") String passwordResetKey,
-                                                @RequestPart("password-reset") String passwordReset,
-                                                @RequestPart("re-enter-password") String confirmedPasswordReset) {
+                                                @RequestPart("new-password") String newPassword,
+                                                @RequestPart("confirmed-password") String confirmedPassword) {
         try {
 
-            if (!passwordReset.equals(confirmedPasswordReset)) {
+            if (!newPassword.equals(confirmedPassword)) {
                 return new ResponseEntity<>("Passwords do not match ..." , HttpStatus.BAD_REQUEST);
             }
 
-            return passwordService.resetUserPassword(passwordResetKey, confirmedPasswordReset);
+            return passwordService.resetUserPassword(passwordResetKey, confirmedPassword);
 
         } catch (Exception e) {
             return new ResponseEntity<>("Something went wrong ... " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
