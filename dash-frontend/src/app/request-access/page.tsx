@@ -1,0 +1,49 @@
+import styles from '@/app/request-access/page.module.css';
+import { TextInput } from '@/components/TextInput/TextInput';
+import { BaseForm } from '@/components/BaseForm/BaseForm';
+import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+
+export default function RequestAccess() {
+    return (
+        <main className={styles.main}>
+            <div className={styles.content}>
+                <BaseForm title="Request Access" width="350px" height="425px">
+                    <TextInput
+                        className={styles.textInput}
+                        defText="Enter Email"
+                    />
+                    <PrimaryButton
+                        className={styles.buttonFormat}
+                        href="/login"
+                    >
+                        Request Access
+                    </PrimaryButton>
+                    <p className={styles.subtext}>
+                        Your activation key will be sent to your email upon
+                        approval
+                    </p>
+                    <hr />
+                    <p className={styles.subtext}>
+                        If you already have an activation key or an account:
+                    </p>
+                    <div className={styles.signinOpts}>
+                        <PrimaryButton
+                            className={styles.buttonFormat}
+                            href="/create-account-opts"
+                            width="150px"
+                        >
+                            Activate Account
+                        </PrimaryButton>
+                        <PrimaryButton
+                            className={styles.buttonFormat}
+                            href="/login"
+                            width="150px"
+                        >
+                            Login
+                        </PrimaryButton>
+                    </div>
+                </BaseForm>
+            </div>
+        </main>
+    );
+}

@@ -1,0 +1,35 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.textInput {
+    margin: 1rem 0;
+}
+
+.subtext {
+    font-size: small;
+    margin: 1rem 0;
+}
+
+.signinOpts {
+    display: flex;
+    flex-direction: row;
+    margin-top: auto;
+    gap: 0.75rem;
+}
+
+.buttonFormat {
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
+}

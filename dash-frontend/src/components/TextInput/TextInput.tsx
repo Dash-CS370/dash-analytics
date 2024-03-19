@@ -1,22 +1,31 @@
 import React from 'react';
-import styles from '@/components/buttons/TextInput/TextInput.module.css';
+import styles from '@/components/TextInput/TextInput.module.css';
 
 interface TextInputProps {
+    className?: string;
     width?: string;
     height?: string;
-    inputPlaceHolder?: string;
+    defText?: string;
+    textIndentation?: string;
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
     width = '250px',
     height = '50px',
-    inputPlaceHolder = '',
+    defText = 'Enter Here',
+    textIndentation = '10px',
+    className,
 }) => {
     return (
         <input
-            style={{ width: width, height: height }}
+            style={{
+                width: width,
+                height: height,
+                paddingLeft: textIndentation,
+            }}
             type="text"
-            placeholder={inputPlaceHolder}
+            placeholder={defText}
+            className={`${styles.inputField} ${className}`}
         ></input>
     );
 };

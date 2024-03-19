@@ -23,6 +23,13 @@ export default function Start() {
                     </SecondaryButton>
                 </div>
             </div>
+            <video
+                className={styles.heroVideo}
+                src="/videos/dash-2.mp4"
+                autoPlay
+                loop
+                muted
+            />
         </main>
     );
 }
