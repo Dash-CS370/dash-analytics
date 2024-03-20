@@ -10,7 +10,7 @@ export default function Dashboard() {
 
             <div className={styles.content}>
                 <h1 className={styles.title}>
-                    Let&apos;s create a new dashboard!
+                    Let&apos;s create a new dashboard.
                 </h1>
                 <div className={styles.horizontalLine}></div>
             </div>

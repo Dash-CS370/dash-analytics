@@ -13,6 +13,7 @@ export const DisconnectedNavBar: FC = () => {
                     src="/DashTitle.svg"
                     alt="Dash Title"
                     width={200}
+                    height={50}
                     className={styles.dashTitle}
                 />
             </Link>
