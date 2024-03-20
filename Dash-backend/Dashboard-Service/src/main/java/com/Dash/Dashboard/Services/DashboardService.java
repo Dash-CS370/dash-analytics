@@ -27,11 +27,9 @@ import java.util.*;
 @Slf4j
 public class DashboardService {
 
-    private final static String S3URL = "s3://dash-analytics-test/";
+    private final WebClient webClient;
 
     private final UserCreditCheckEventListener userCreditCheckEventListener;
-
-    private final WebClient webClient;
 
     @Autowired
     DashboardService(WebClient webClient, UserCreditCheckEventListener userCreditCheckEventListener) {
@@ -79,7 +77,7 @@ public class DashboardService {
 
         //final String userAccount = extractUserDetails(oauth2User);
 
-        //verifyUserCreditCount(userId);
+        verifyUserCreditCount("userAccount");
 
         String userAccount = "georgepm20002@gmail.com";
 
@@ -116,7 +114,13 @@ public class DashboardService {
 
 
 
-
+    /**
+     *
+     * @param client
+     * @param projects
+     * @return
+     * @throws WebClientResponseException
+     */
     public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
@@ -130,6 +134,8 @@ public class DashboardService {
                 .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {})
                 .block();
     }
+
+
 
 
     /**
@@ -167,6 +173,7 @@ public class DashboardService {
 
     // TODO - add Token attribute to User Entity
     public void verifyUserCreditCount(String userId) throws NotEnoughCreditsException {
+        if (true) return;
         userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
     }
 

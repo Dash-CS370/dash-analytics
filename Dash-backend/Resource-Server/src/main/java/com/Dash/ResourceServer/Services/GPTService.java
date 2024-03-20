@@ -16,7 +16,6 @@ import java.util.Optional;
 @Service
 public class GPTService {
 
-
     //private final OpenAPI gptClient;
 
     @Autowired

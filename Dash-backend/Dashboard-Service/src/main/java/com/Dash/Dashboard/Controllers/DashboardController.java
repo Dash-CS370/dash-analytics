@@ -147,13 +147,12 @@ public class DashboardController {
      * @return
      */
     @DeleteMapping(value = "/delete-project")
-    public ResponseEntity<String> deleteProject(@RequestParam("project-id") String projectId) {
+    public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId) {
                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
                                                 //OAuth2AuthorizedClient authorizedClient
                                                 //@AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            // TODO
             Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(null, null, projectId);
 
             if (projectDeletionConfirmation.isPresent() && projectDeletionConfirmation.get().endsWith("/")) {
@@ -172,14 +171,9 @@ public class DashboardController {
 
 
 
-
-
-
+    // FIXME ***********
     @PostMapping("/complete/logout/process")
-    public String testLogout(HttpSession session, HttpServletRequest request,
-                             HttpServletResponse response,
-                             @RegisteredOAuth2AuthorizedClient("resource-access-client") OAuth2AuthorizedClient authorizedClient)
-            throws IOException {
+    public String testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

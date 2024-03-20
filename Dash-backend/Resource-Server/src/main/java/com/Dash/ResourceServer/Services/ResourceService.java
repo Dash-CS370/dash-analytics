@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +22,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class S3Service {
+public class ResourceService {
 
     @Value("${application.bucket}")
     private String BUCKET;
@@ -33,7 +32,7 @@ public class S3Service {
     private final AmazonS3 amazonS3Client;
 
     @Autowired
-    S3Service(@Qualifier("s3Client") AmazonS3 amazonS3Client) {
+    ResourceService(@Qualifier("s3Client") AmazonS3 amazonS3Client) {
         this.amazonS3Client = amazonS3Client;
     }
 
@@ -58,7 +57,6 @@ public class S3Service {
 
         for (String projectConfigLink : projectConfigs) {
             S3Object projectConfigObj = amazonS3Client.getObject(BUCKET, projectConfigLink);
-
             try {
                 final byte[] jsonData = IOUtils.toByteArray(projectConfigObj.getObjectContent());
                 final Project projectConfig = (new ObjectMapper()).readValue(jsonData, Project.class);
@@ -81,8 +79,6 @@ public class S3Service {
      */
     // TODO @Async > ?????????
     public void uploadProjectFiles(Project projectConfig, MultipartFile csvFile) {
-
-        // TODO - UNDER CONSTRUCTION
 
         final String jsonString;
         final byte[] csvByteArray;
@@ -127,7 +123,6 @@ public class S3Service {
         // UPDATE Project.json config file by adding/deleting/or modifying its widgets
 
         for (Project project : projectsToUpdate) {
-
             String projectConfigKey = project.getProjectConfigLink();
 
             if (amazonS3Client.doesObjectExist(BUCKET, projectConfigKey)) {
@@ -139,7 +134,7 @@ public class S3Service {
             }
         }
 
-        return Optional.of(Object.class);
+        return Optional.of(projectsToUpdate);
     }
 
 
@@ -171,10 +166,30 @@ public class S3Service {
 
 
 
-    private static Date getTimeNow() {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        return new Date(calendar.getTime().getTime());
+    /**
+     *
+     * @param userId
+     * @throws SdkClientException
+     */
+    public Optional<String> deleteUserAccount(String userId) throws SdkClientException {
+        ListObjectsV2Request listReq = new ListObjectsV2Request().withBucketName(BUCKET).withPrefix(userId + "/");
+        ListObjectsV2Result listRes;
+
+        do {
+            listRes = amazonS3Client.listObjectsV2(listReq);
+
+            for (S3ObjectSummary objectSummary : listRes.getObjectSummaries()) { // max 1000 deletions
+                amazonS3Client.deleteObject(BUCKET, objectSummary.getKey());
+            }
+
+            listReq.setContinuationToken(listRes.getNextContinuationToken());
+
+        } while (listRes.isTruncated());
+
+        log.warn("Deleted all files in directory: " + userId + "/");
+
+        return Optional.of(userId);
     }
+
 
 }

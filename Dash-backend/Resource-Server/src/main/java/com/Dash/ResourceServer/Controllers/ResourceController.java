@@ -3,7 +3,7 @@ package com.Dash.ResourceServer.Controllers;
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
 import com.Dash.ResourceServer.Services.GPTService;
-import com.Dash.ResourceServer.Services.S3Service;
+import com.Dash.ResourceServer.Services.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,19 +20,19 @@ import java.util.Optional;
 @RequestMapping("/resources/api")
 public class ResourceController {
 
-    private final S3Service resourceService;
+    private final ResourceService resourceService;
 
     private final GPTService gptService;
 
     @Autowired
-    ResourceController(S3Service resourceService, GPTService gptService) {
+    ResourceController(ResourceService resourceService, GPTService gptService) {
         this.resourceService = resourceService;
         this.gptService = gptService;
     }
 
 
 
-    /** TODO
+    /**
      * Retrieves the JSON configuration file located at user/project-{userId}/{userId}.json, which encapsulates the dashboard & widgets configuration for a specified project, including pertinent links and information in JSON format
      *
      * @param userAccount
@@ -52,8 +52,7 @@ public class ResourceController {
 
 
 
-
-    /** TODO
+    /**
      * Generates a new project directory with a CSV sheet file and a generated JSON config file that includes the dashboard & widgets setup, and relevant links, derived from the template Project config
      *
      * @param templateProject
@@ -90,8 +89,7 @@ public class ResourceController {
 
 
 
-
-    /** TODO
+    /**
      * @return
      */
     @PutMapping(value = "/update-projects")
@@ -128,5 +126,20 @@ public class ResourceController {
 
 
 
+    // TODO - VERA
+    /**
+     * Delete the user ids directory Or everything inside the project (csv files and json config files)
+     */
+    @DeleteMapping("/delete-user")
+    public Optional<String> deleteAllUserResources(@RequestParam String userId) {
+        try {
+
+            return resourceService.deleteUserAccount(userId);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Optional.empty();
+        }
+    }
 
 }
