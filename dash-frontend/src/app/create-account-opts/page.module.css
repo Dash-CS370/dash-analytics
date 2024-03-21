@@ -42,6 +42,7 @@
     background-color: var(--primary) !important;
     color: var(--on-background) !important;
     margin: 0.75rem;
+    font-size: 17px;
 }
 
 .buttonFormatTwo {
