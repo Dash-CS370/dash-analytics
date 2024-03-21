@@ -11,33 +11,35 @@ import java.util.Date;
 import java.util.List;
 
 
-/** Little Tab rep Projects of User */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project { // TODO -> FUTURE
+public class Project {
 
     @Id
-    @JsonProperty("projectId")
+    @JsonProperty("project_id")
     private String projectId;
 
-    @JsonProperty("projectName")
+    @JsonProperty("project_name")
     private String projectName;
 
-    @JsonProperty("projectConfigLink")
+    @JsonProperty("project_config_link")
     private String projectConfigLink;
 
-    @JsonProperty("projectCsvLink")
+    @JsonProperty("project_csv_link")
     private String projectCsvLink;
 
-    @JsonProperty("projectDescription")
+    @JsonProperty("project_description")
     private String projectDescription;
 
-    @JsonProperty("createdDate")
+    @JsonProperty("column_descriptions")
+    private List<String> columnDescriptions;
+
+    @JsonProperty("created_date")
     private Date creationDate;
 
-    @JsonProperty("lastModified")
+    @JsonProperty("last_modified")
     private Date lastModified;
 
     @JsonProperty("widgets")

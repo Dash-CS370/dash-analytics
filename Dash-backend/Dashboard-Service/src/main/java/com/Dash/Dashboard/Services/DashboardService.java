@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Service
 @Slf4j
@@ -54,7 +55,7 @@ public class DashboardService {
 
         // Hit Resource Server
         final List<Project> userProjects = this.webClient.get().uri(resourceUrl)
-                                        //.attributes(oauth2AuthorizedClient(client))
+                                        .attributes(oauth2AuthorizedClient(client))
                                         .retrieve()
                                         .bodyToMono(new ParameterizedTypeReference<List<Project>>() {})
                                         .block();
@@ -72,14 +73,12 @@ public class DashboardService {
      * @return
      * @throws WebClientException
      */
-    public Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User,
-                                           String projectName, String projectDescription, MultipartFile csvFile) throws WebClientResponseException {
+    public Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectName,
+                                           String projectDescription, List<String> columnDescriptions, MultipartFile csvFile) throws WebClientResponseException {
 
-        //final String userAccount = extractUserDetails(oauth2User);
+        final String userAccount = extractUserDetails(oauth2User);
 
         verifyUserCreditCount("userAccount");
-
-        String userAccount = "georgepm20002@gmail.com";
 
         final String projectId = UUID.randomUUID().toString();
 
@@ -89,6 +88,7 @@ public class DashboardService {
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
                 .projectDescription(projectDescription).widgets(new ArrayList<>())
+                .columnDescriptions(columnDescriptions)
                 .creationDate(getCurrentDate())
                 .build();
 
@@ -105,7 +105,7 @@ public class DashboardService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(csvBuilder.build())
                 .with("template-project", templateProject))
-                //.attributes(oauth2AuthorizedClient(client))
+                .attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Project>>() {})
                 .block();
@@ -158,7 +158,7 @@ public class DashboardService {
 
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
-                //.attributes(oauth2AuthorizedClient(client))
+                .attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
                 .block();
@@ -179,6 +179,7 @@ public class DashboardService {
 
     public static String extractUserDetails(OAuth2User oauth2User) {
         final CustomAuthUser customAuthUser = new CustomAuthUser(oauth2User);
+        //final CustomAuthUser customAuthUser = (CustomAuthUser) oauth2User;
         return customAuthUser.getEmail();
     }
 

@@ -5,24 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Widget {
 
-    @JsonProperty("name")
-    private String widgetName;
+    @JsonProperty("title")
+    private String title;
 
-    @JsonProperty("bottom-left-X-position")
-    private Integer bottomLeftXPosition;
+    @JsonProperty("graph_type")
+    private GraphType graphType;
 
-    @JsonProperty("bottom-left-Y-position")
-    private Integer bottomLeftYPosition;
+    @JsonProperty("data_operations")
+    private List<DataOperations> dataOperations;
 
-    @JsonProperty("top-right-X-position")
-    private Integer topRightXPosition;
-
-    @JsonProperty("top-right-Y-position")
-    private Integer topRightYPosition;
+    @JsonProperty("required_columns")
+    private List<String> requiredColumns;
 
 }
+

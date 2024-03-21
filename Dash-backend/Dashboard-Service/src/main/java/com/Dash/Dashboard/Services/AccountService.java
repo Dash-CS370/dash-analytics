@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
-    private WebClient webClient;
+    private final WebClient webClient;
 
     private final MongoTemplate userDAO;
 
@@ -41,6 +41,7 @@ public class AccountService {
     }
 
 
+    // FIXME
     public Optional<String> deleteUserById(String id) {
         try {
             // TODO -> 2 steps -> remove from mongo AND delete resources from S3
@@ -99,13 +100,6 @@ public class AccountService {
             return false;
         }
     }
-
-
-
-    // TODO -> Works
-    public void deleteNotEnabledUsersCreated7DaysAgo() {
-    }
-
 
 
 

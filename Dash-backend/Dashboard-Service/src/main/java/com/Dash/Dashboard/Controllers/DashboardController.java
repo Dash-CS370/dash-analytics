@@ -58,8 +58,6 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            log.warn("CALLED"); // FIXME
-
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
             return projectList.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
@@ -68,6 +66,7 @@ public class DashboardController {
         } catch (UserAlreadyExistsException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (WebClientResponseException e) {
+            log.warn(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
         }
     }
@@ -80,21 +79,23 @@ public class DashboardController {
      *
      * @param projectName The name of the project to be created.
      * @param projectDescription A description of the project.
+     * @param columnDescriptions A description of the csv sheet's columns.
      * @param csvFile An optional CSV file containing project data.
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
     @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
                                                  @RequestPart("project-description") String projectDescription,
-                                                 @RequestPart("csv-file") MultipartFile csvFile) { //,
-                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 //OAuth2AuthorizedClient authorizedClient,
-                                                 //@AuthenticationPrincipal OAuth2User oauth2User) { // TODO - UNCOMMENT
+                                                 @RequestPart("column-descriptions") List<String> columnDescriptions,
+                                                 @RequestPart("csv-file") MultipartFile csvFile,
+                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 OAuth2AuthorizedClient authorizedClient,
+                                                 @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
             // Ensure request can be made by user
-            final Optional<Project> generatedProject = dashboardService.createProject(null, null,
-                                                                                      projectName, projectDescription, csvFile);
+            final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectName,
+                                                                                      projectDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
                 return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);

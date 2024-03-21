@@ -51,7 +51,7 @@ spring:
             provider: spring
             client-id: Dash-client
             client-secret: secret
-            authorization-grant-type: authorization_code
+            authorization-grant-type: client_credentials
             redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: api.read
             client-name: resource-access-client

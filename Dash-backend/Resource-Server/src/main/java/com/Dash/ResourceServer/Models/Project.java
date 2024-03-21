@@ -2,50 +2,44 @@ package com.Dash.ResourceServer.Models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Project {
 
-    @NotNull
-    @NotEmpty
-    @JsonProperty("projectId")
+    @JsonProperty("project_id")
     private String projectId;
 
-    @NotNull
-    @NotEmpty
-    @JsonProperty("projectName")
+    @JsonProperty("project_name")
     private String projectName;
 
-    @JsonProperty("projectConfigLink")
+    @JsonProperty("project_config_link")
     private String projectConfigLink;
 
-    @NotNull
-    @NotEmpty
-    @JsonProperty("projectCsvLink")
+    @JsonProperty("project_csv_link")
     private String projectCsvLink;
 
-    @NotEmpty
-    @NotNull
-    @JsonProperty("projectDescription")
+    @JsonProperty("project_description")
     private String projectDescription;
 
-    @JsonProperty("createdDate")
-    private Date createdDate;
+    @JsonProperty("column_descriptions")
+    private List<String> columnDescriptions;
 
-    @JsonProperty("lastModified")
+    @JsonProperty("created_date")
+    private Date creationDate;
+
+    @JsonProperty("last_modified")
     private Date lastModified;
 
-    @NotNull
     @JsonProperty("widgets")
     private List<Widget> widgets;
 

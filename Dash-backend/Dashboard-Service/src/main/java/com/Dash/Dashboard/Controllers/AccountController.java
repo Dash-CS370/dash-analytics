@@ -2,6 +2,7 @@ package com.Dash.Dashboard.Controllers;
 
 import com.Dash.Dashboard.Entites.User;
 import com.Dash.Dashboard.Services.AccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/vera/api")
 public class AccountController {

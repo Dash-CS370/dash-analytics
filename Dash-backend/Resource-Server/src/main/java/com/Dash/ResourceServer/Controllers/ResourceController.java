@@ -2,7 +2,7 @@ package com.Dash.ResourceServer.Controllers;
 
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
-import com.Dash.ResourceServer.Services.GPTService;
+import com.Dash.ResourceServer.Services.OpenAPIService;
 import com.Dash.ResourceServer.Services.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class ResourceController {
 
     private final ResourceService resourceService;
 
-    private final GPTService gptService;
+    private final OpenAPIService openAPIService;
 
     @Autowired
-    ResourceController(ResourceService resourceService, GPTService gptService) {
+    ResourceController(ResourceService resourceService, OpenAPIService openAPIService) {
         this.resourceService = resourceService;
-        this.gptService = gptService;
+        this.openAPIService = openAPIService;
     }
 
 
@@ -66,7 +66,7 @@ public class ResourceController {
 
             // TODO Create Config with GPT API
             //final String generatedProjectConfig = gptService.promptGpt(project);
-            final Optional<Project> generatedProjectConfig = gptService.promptGptWith(templateProject);
+            final Optional<Project> generatedProjectConfig = openAPIService.promptGptWith(templateProject);
 
             if (generatedProjectConfig.isEmpty()) {
                 log.error("GPT API COULD NOT GENERATE CONFIG");
