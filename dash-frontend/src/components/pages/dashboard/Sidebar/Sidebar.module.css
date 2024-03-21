@@ -11,12 +11,14 @@
 .sidebarOpen {
     margin-left: 0.5rem;
     width: 250px;
-    transition: all 0.3s ease-in-out;
+    transition: margin-left 0.3s ease;
 }
 
 .sidebarClosed {
-    margin-right: -220px;
-    transition: margin-right 0.3s ease;
+    margin-right: 220px;
+    width: 30px;
+    overflow: hidden;
+    transition: margin-left 0.3s ease;
 }
 
 .sidebarContent {
@@ -42,14 +44,8 @@
 }
 
 .createProjectButton {
-    color: var(--on-background);
+    /* color: var(--on-background); */
     margin: 0.5rem 0;
-}
-
-.sidebarClosed {
-    width: 30px;
-    overflow: hidden;
-    transition: width 0.3s ease;
 }
 
 .toggleIcon {
