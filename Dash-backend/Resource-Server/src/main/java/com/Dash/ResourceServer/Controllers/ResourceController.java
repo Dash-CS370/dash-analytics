@@ -2,7 +2,7 @@ package com.Dash.ResourceServer.Controllers;
 
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
-import com.Dash.ResourceServer.Services.OpenAPIService;
+import com.Dash.ResourceServer.Services.Impl.OpenAIServiceImpl;
 import com.Dash.ResourceServer.Services.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +21,13 @@ public class ResourceController {
 
     private final ResourceService resourceService;
 
-    private final OpenAPIService openAPIService;
+    private final OpenAIServiceImpl openAIService;
 
     @Autowired
-    ResourceController(ResourceService resourceService, OpenAPIService openAPIService) {
+    ResourceController(ResourceService resourceService, OpenAIServiceImpl openAIService) {
         this.resourceService = resourceService;
-        this.openAPIService = openAPIService;
+        this.openAIService = openAIService;
     }
-
 
 
     /**
@@ -55,31 +53,30 @@ public class ResourceController {
     /**
      * Generates a new project directory with a CSV sheet file and a generated JSON config file that includes the dashboard & widgets setup, and relevant links, derived from the template Project config
      *
-     * @param templateProject
+     * @param project
      * @param csvFile
      * @return
      */
     @PostMapping(value = "/generate-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Optional<Project> addProject(@RequestPart("template-project") Project templateProject,
+    public Optional<Project> addProject(@RequestPart("template-project") Project project,
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
 
             // TODO Create Config with GPT API
-            //final String generatedProjectConfig = gptService.promptGpt(project);
-            final Optional<Project> generatedProjectConfig = openAPIService.promptGptWith(templateProject);
+            //final Optional<Project> generatedProjectConfig = openAPIService.generateProjectConfig(templateProject.getProjectDescription(), templateProject.getColumnDescriptions());
+            final Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs();
 
-            if (generatedProjectConfig.isEmpty()) {
-                log.error("GPT API COULD NOT GENERATE CONFIG");
-                // TODO generate default widgets??
-                List<Widget> defaultWidgets = new ArrayList<>(6);
-                templateProject.setWidgets(defaultWidgets);
-                resourceService.uploadProjectFiles(templateProject, csvFile);
-                return Optional.of(templateProject);
+            if (widgets.isEmpty()) {
+                log.error("GPT API COULD NOT GENERATE CONFIGS");
+                return Optional.empty();
             }
 
-            resourceService.uploadProjectFiles(generatedProjectConfig.get(), csvFile);
+            project.setWidgets(widgets.get());
 
-            return generatedProjectConfig;
+            // FIXME -> ASYNC
+            resourceService.uploadProjectFiles(project, csvFile);
+
+            return Optional.of(project);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -134,7 +131,7 @@ public class ResourceController {
     public Optional<String> deleteAllUserResources(@RequestParam String userId) {
         try {
 
-            return resourceService.deleteUserAccount(userId);
+            return resourceService.deleteAllUserResources(userId);
 
         } catch (Exception e) {
             log.error(e.getMessage());

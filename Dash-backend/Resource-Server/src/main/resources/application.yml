@@ -34,6 +34,8 @@ cloud:
 
 
 openai:
+  model:
+    version: gpt-3.5-turbo
   credentials:
     secret-key:
 

@@ -1,7 +1,6 @@
 package com.Dash.Dashboard.Schedulers;
 
 import com.Dash.Dashboard.Entites.User;
-import com.Dash.Dashboard.Services.AccountService;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
