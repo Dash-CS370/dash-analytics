@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import styles from '@/components/widgets/widgetPipeline/WidgetCard/WidgetCard.module.css';
 import { TiPin, TiPinOutline } from 'react-icons/ti';
@@ -5,42 +7,45 @@ import { BsArrowsAngleContract, BsArrowsAngleExpand } from 'react-icons/bs';
 
 interface WidgetCardProps {
     title: string;
-    type?: string; // TODO: Change to enum (default, thumbnail, expanded)
+    expanded?: boolean;
     pinned?: boolean;
     children: React.ReactNode;
 }
 
 export const WidgetCard: React.FC<WidgetCardProps> = ({
     title,
-    type = 'default',
+    expanded = false,
     pinned = true,
     children,
 }) => {
-    if (type === 'thumbnail') {
-        // TODO: handle thumbnail type
-    }
-    let w = '';
-    let h = '';
-    let expanded = false;
-    if (type === 'default') {
-        w = '450px';
-        h = '300px';
-    } else if (type === 'expanded') {
-        w = '650px';
-        h = '500px';
-        expanded = true;
-    }
+    const [isExpanded, setIsExpanded] = React.useState(expanded);
+    const toggleExpand = () => setIsExpanded(!isExpanded);
+
+    const [isPinned, setIsPinned] = React.useState(pinned);
+    const togglePinned = () => {
+        // TODO: change value for pinned in config
+
+        setIsPinned(!isPinned);
+    };
+
+    const cardClassName = `${styles.widgetCard} ${
+        isExpanded ? styles.expanded : styles.default
+    }`;
 
     return (
-        <div className={styles.widgetCard} style={{ width: w, height: h }}>
+        <div className={cardClassName}>
             <div className={styles.widgetCardHeader}>
                 <h1>{title}</h1>
                 <div className={styles.widgetHeaderButtons}>
-                    {pinned ? <TiPin /> : <TiPinOutline />}
-                    {expanded ? (
-                        <BsArrowsAngleContract />
+                    {isPinned ? (
+                        <TiPin onClick={togglePinned} />
                     ) : (
-                        <BsArrowsAngleExpand />
+                        <TiPinOutline onClick={togglePinned} />
+                    )}
+                    {isExpanded ? (
+                        <BsArrowsAngleContract onClick={toggleExpand} />
+                    ) : (
+                        <BsArrowsAngleExpand onClick={toggleExpand} />
                     )}
                 </div>
             </div>

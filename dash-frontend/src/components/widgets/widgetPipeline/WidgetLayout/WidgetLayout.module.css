@@ -1,0 +1,34 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - var(--navbar-height));
+    margin-top: var(--navbar-height);
+}
+
+.dashboardTitle {
+    padding-bottom: 1.5rem;
+}
+
+.widgetGrid {
+    display: grid;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 90%;
+}
+
+/* Responsive grid setup */
+@media (min-width: 600px) {
+    .widgetGrid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media (min-width: 1200px) {
+    .widgetGrid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}

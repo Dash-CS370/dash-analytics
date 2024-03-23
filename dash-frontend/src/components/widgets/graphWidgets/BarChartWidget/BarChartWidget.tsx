@@ -29,7 +29,7 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({ title, data }) => {
     }, []);
 
     return (
-        <WidgetCard title={title} type="default" pinned={true}>
+        <WidgetCard title={title} pinned={true}>
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data} width={500} height={300}>
                     <XAxis dataKey={xDataKey} />
