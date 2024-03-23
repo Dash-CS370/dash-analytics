@@ -31,14 +31,12 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
     }
 
     return (
-        <Link href={href} className={className}>
-            <button
-                className={styles.btn}
-                style={{ width: width, height: height }}
-                {...props}
-            >
-                {children}
-            </button>
-        </Link>
+        <button
+            className={`${styles.btn} ${className}`}
+            style={{ width: width, height: height }}
+            {...props}
+        >
+            <Link href={href}>{children}</Link>
+        </button>
     );
 };

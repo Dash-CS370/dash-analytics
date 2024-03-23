@@ -1,4 +1,4 @@
-import styles from '@/components/pages/dashboard/Sidebar/ProjectListItem.module.css';
+import styles from '@/components/pages/dashboards/Sidebar/ProjectListItem.module.css';
 import { FC, useState, KeyboardEvent } from 'react';
 import { FiCheck, FiEdit2, FiTrash2 } from 'react-icons/fi';
 

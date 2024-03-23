@@ -31,14 +31,12 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     }
 
     return (
-        <Link href={href}>
-            <button
-                className={`${styles.btn} ${className}`}
-                style={{ width: width, height: height }}
-                {...props}
-            >
-                {children}
-            </button>
-        </Link>
+        <button
+            className={`${styles.btn} ${className}`}
+            style={{ width: width, height: height }}
+            {...props}
+        >
+            <Link href={href}>{children}</Link>
+        </button>
     );
 };

@@ -1,9 +1,9 @@
 'use client';
 
-import styles from '@/components/pages/dashboard/Sidebar/Sidebar.module.css';
+import styles from '@/components/pages/dashboards/Sidebar/Sidebar.module.css';
 import React, { useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { ProjectListItem } from '@/components/pages/dashboard/Sidebar/ProjectListItem';
+import { ProjectListItem } from '@/components/pages/dashboards/Sidebar/ProjectListItem';
 import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
 import Link from 'next/link';
 
