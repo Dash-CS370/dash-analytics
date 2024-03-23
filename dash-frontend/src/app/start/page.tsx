@@ -14,13 +14,13 @@ export default function Start() {
                     <PrimaryButton href="/login" width="350px" height="60px">
                         Login
                     </PrimaryButton>
-                    <SecondaryButton
+                    <PrimaryButton
                         href="/request-access"
                         width="350px"
                         height="60px"
                     >
                         Request Access
-                    </SecondaryButton>
+                    </PrimaryButton>
                 </div>
             </div>
             <video

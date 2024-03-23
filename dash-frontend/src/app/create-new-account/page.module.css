@@ -30,9 +30,11 @@
     margin-top: 1rem;
     background-color: var(--primary) !important;
     color: var(--on-background) !important;
+    font-size: 20px;
 }
 
 .warningFormat {
     color: var(--background);
-    margin-top: 1rem;
+    margin-top: 1.25rem;
+    font-size: 10px !important;
 }
