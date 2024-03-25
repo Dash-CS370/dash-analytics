@@ -3,9 +3,13 @@ package com.Dash.Dashboard.Services.Impl;
 import com.Dash.Dashboard.Events.Listener.UserCreditCheckEventListener;
 import com.Dash.Dashboard.Events.UserCreditCheckEvent;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
+import com.Dash.Dashboard.Models.ColumnDescriptionDto;
 import com.Dash.Dashboard.Models.Project;
 import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.DashboardService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -48,7 +52,9 @@ public class DashboardServiceImpl implements DashboardService {
      */
     public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, OAuth2User oauth2User) throws WebClientResponseException {
 
-        final String userAccount = extractUserDetails(oauth2User);
+        //final String userAccount = extractUserDetails(oauth2User);
+
+        String userAccount = "user345@email.com";
 
         // Encode url with username
         final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/resources/api/all-projects/{userAccount}")
@@ -56,7 +62,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         // Hit Resource Server
         final List<Project> userProjects = this.webClient.get().uri(resourceUrl)
-                                        .attributes(oauth2AuthorizedClient(client))
+                                        //.attributes(oauth2AuthorizedClient(client))
                                         .retrieve()
                                         .bodyToMono(new ParameterizedTypeReference<List<Project>>() {})
                                         .block();
@@ -75,11 +81,13 @@ public class DashboardServiceImpl implements DashboardService {
      * @throws WebClientException
      */
     public Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectName,
-                                           String projectDescription, List<String> columnDescriptions, MultipartFile csvFile) throws WebClientResponseException {
+                                           String projectDescription, String columnDescriptions, MultipartFile csvFile) throws WebClientResponseException, JsonProcessingException {
 
-        final String userAccount = extractUserDetails(oauth2User);
+        //final String userAccount = extractUserDetails(oauth2User);
 
-        verifyUserCreditCount("userAccount");
+        String userAccount = "georgepm20002@gmail.com";
+
+        //verifyUserCreditCount("userAccount");
 
         final String projectId = UUID.randomUUID().toString();
 
@@ -89,7 +97,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
                 .projectDescription(projectDescription).widgets(new ArrayList<>())
-                .columnDescriptions(columnDescriptions)
+                .columnDescriptions(Arrays.asList(columnDescriptions.split(">")))
                 .creationDate(getCurrentDate())
                 .build();
 
@@ -106,7 +114,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(csvBuilder.build())
                 .with("template-project", templateProject))
-                .attributes(oauth2AuthorizedClient(client))
+                //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Project>>() {})
                 .block();

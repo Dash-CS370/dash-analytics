@@ -34,24 +34,27 @@ public class SecurityConfig {
 
         http
             .csrf().disable()
-            .cors(cors -> cors.configurationSource(configurationSource()))
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1:5173")); // Adjust as necessary
+                configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS")); // Include any methods you need
+                configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type")); // Adjust as necessary
+                return configuration;
+            }))
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
+            .antMatchers("/logout/**").authenticated() // Secured endpoints for authenticated users only
             .antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://localhost:5173")
+                    .loginPage("http://127.0.0.1:5173")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults());
-            /*.logout((logout) ->
-                    //logout.logoutUrl("/logout")
-                    //logout.logoutSuccessUrl("http://auth-server:9000/oauth/logout")
-                        //.invalidateHttpSession(true)
-                        //.clearAuthentication(true)
-                        //.deleteCookies("JSESSIONID")
-            )
+
+         /*
             .sessionManagement(sessionManagement ->
                 sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session if required
@@ -59,22 +62,11 @@ public class SecurityConfig {
             );
              */
 
-        // FIXME => not way to end userSession???
-
         return http.build();
     }
 
 
-    @Bean
-    CorsConfigurationSource configurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:5173"));
-        configuration.addAllowedHeader("*");;
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
-        return urlBasedCorsConfigurationSource;
-    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

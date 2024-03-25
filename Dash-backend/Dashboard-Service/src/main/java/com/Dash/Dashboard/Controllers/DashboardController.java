@@ -4,6 +4,7 @@ import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
 import com.Dash.Dashboard.Services.DashboardService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +58,7 @@ public class DashboardController {
                                                        OAuth2AuthorizedClient authorizedClient,
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
+            log.warn("CALLED");
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
@@ -78,22 +81,22 @@ public class DashboardController {
      *
      * @param projectName The name of the project to be created.
      * @param projectDescription A description of the project.
-     * @param columnDescriptions A description of the csv sheet's columns.
+     /
      * @param csvFile An optional CSV file containing project data.
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
     @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
                                                  @RequestPart("project-description") String projectDescription,
-                                                 @RequestPart("column-descriptions") List<String> columnDescriptions,
-                                                 @RequestPart("csv-file") MultipartFile csvFile,
-                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 OAuth2AuthorizedClient authorizedClient,
-                                                 @AuthenticationPrincipal OAuth2User oauth2User) {
+                                                 @RequestPart("column-descriptions") String columnDescriptions,
+                                                 @RequestPart("csv-file") MultipartFile csvFile) {
+                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 //OAuth2AuthorizedClient authorizedClient,
+                                                 //@AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
             // Ensure request can be made by user
-            final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectName,
+            final Optional<Project> generatedProject = dashboardService.createProject(null, null, projectName,
                                                                                       projectDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
@@ -107,6 +110,8 @@ public class DashboardController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         } catch (WebClientResponseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -165,38 +170,6 @@ public class DashboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-    // FIXME ***********
-    @PostMapping("/complete/logout/process")
-    public String testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-            auth.setAuthenticated(false);
-            SecurityContextHolder.clearContext();
-            for (Cookie cookie : request.getCookies()) {
-                String cookieName = cookie.getName();
-                log.info("cookie name={}", cookieName);
-                Cookie cookieToDelete = new Cookie(cookieName, null);
-                cookieToDelete.setPath(request.getContextPath() + "/");
-                cookieToDelete.setMaxAge(0);
-                response.addCookie(cookieToDelete);
-            }
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
-
-        return "logout";
-    }
-
-
-
-
 
 
 }

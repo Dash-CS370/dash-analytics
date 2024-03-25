@@ -1,6 +1,8 @@
 package com.Dash.Dashboard.Services;
 
+import com.Dash.Dashboard.Models.ColumnDescriptionDto;
 import com.Dash.Dashboard.Models.Project;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +17,7 @@ public interface DashboardService {
     Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, OAuth2User oauth2User) throws WebClientResponseException;
 
     Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectName,
-                                    String projectDescription, List<String> columnDescriptions, MultipartFile csvFile) throws WebClientResponseException;
+                                    String projectDescription, String columnDescriptions, MultipartFile csvFile) throws WebClientResponseException, JsonProcessingException;
 
     Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException;
 

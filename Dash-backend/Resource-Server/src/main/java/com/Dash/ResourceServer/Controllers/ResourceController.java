@@ -1,5 +1,7 @@
 package com.Dash.ResourceServer.Controllers;
 
+import com.Dash.ResourceServer.Models.DataOperations;
+import com.Dash.ResourceServer.Models.GraphType;
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
 import com.Dash.ResourceServer.Services.Impl.OpenAIServiceImpl;
@@ -63,15 +65,29 @@ public class ResourceController {
         try {
 
             // TODO Create Config with GPT API
-            //final Optional<Project> generatedProjectConfig = openAPIService.generateProjectConfig(templateProject.getProjectDescription(), templateProject.getColumnDescriptions());
-            final Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs();
+            // final Optional<Project> generatedProjectConfig = openAPIService.generateProjectConfig(templateProject.getProjectDescription(), templateProject.getColumnDescriptions());
+            // final Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs();
 
-            if (widgets.isEmpty()) {
+            //if (widgets.isEmpty()) {
+            if (false) {
                 log.error("GPT API COULD NOT GENERATE CONFIGS");
                 return Optional.empty();
             }
 
-            project.setWidgets(widgets.get());
+            //project.setWidgets(widgets.get());
+            project.setWidgets(
+                    List.of(
+                            new Widget("Graph 1",
+                                    GraphType.BAR_GRAPH,
+                                    List.of(DataOperations.AVERAGE_N_ROWS, DataOperations.DROP_NAN_ROWS),
+                                    List.of("Column 1", "Column 2", "Column 3")),
+
+                            new Widget("Graph 2",
+                                    GraphType.LINE_GRAPH,
+                                    List.of(DataOperations.AVERAGE_N_ROWS, DataOperations.SLICE),
+                                    List.of("Column 4", "Column 5", "Column 6"))
+                    )
+            );
 
             // FIXME -> ASYNC
             resourceService.uploadProjectFiles(project, csvFile);
@@ -123,7 +139,6 @@ public class ResourceController {
 
 
 
-    // TODO - VERA
     /**
      * Delete the user ids directory Or everything inside the project (csv files and json config files)
      */
@@ -138,5 +153,6 @@ public class ResourceController {
             return Optional.empty();
         }
     }
+
 
 }

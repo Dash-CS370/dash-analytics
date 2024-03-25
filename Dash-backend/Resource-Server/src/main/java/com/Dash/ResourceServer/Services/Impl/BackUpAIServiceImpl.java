@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.Dash.ResourceServer.Models.Widget;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ import java.util.Optional;
 // FIXME -> SERVICE LAYER NOT REST GATEWAY
 @Slf4j
 public class BackUpAIServiceImpl implements OpenAIService {
+
+    public String foo() { return " "; };
 
     private static final String BASE_PROMPT = "\n\nUsing the GenerateWidgetList function, generate 10 configuration options" +
             " for graph widgets based on the following dataset description (ONLY RETURN A JSON OBJECT): ";
@@ -38,7 +40,7 @@ public class BackUpAIServiceImpl implements OpenAIService {
     }
 
 
-    @PreAuthorize("permitAll()")
+    //@PreAuthorize("permitAll()")
     @GetMapping
     public Optional<List<Widget>> generateWidgetConfigs() throws RuntimeException { // TODO
 

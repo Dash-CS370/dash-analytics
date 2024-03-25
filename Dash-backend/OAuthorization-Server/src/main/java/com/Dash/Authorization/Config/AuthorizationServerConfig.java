@@ -39,6 +39,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
+
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -65,7 +66,6 @@ public class AuthorizationServerConfig {
                 .scope("api.read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
                 .build();
-
 
         return new InMemoryRegisteredClientRepository(customClient);
     }

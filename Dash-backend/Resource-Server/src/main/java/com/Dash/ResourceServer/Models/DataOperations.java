@@ -12,7 +12,6 @@ public enum DataOperations {
     SUMMARIZE("SUMMARIZE", "Generates summary statistics for each column, including mean, median, mode, and standard deviation"),
     GROUP_BY_AVERAGE("GROUP_BY_AVERAGE", "Groups the dataset by a specified column and calculates the average of other columns within each group"),
     CALCULATE_DELTA("CALCULATE_DELTA", "Calculates the change (delta) between consecutive rows in a specified column"),
-    ONE_HOT_ENCODING("ONE_HOT_ENCODING", "Converts categorical variables into a form that could be provided to ML algorithms to do a better job in prediction"),
     CONVERT_DATATYPE("CONVERT_DATATYPE", "Changes the data type of a specified column, such as converting strings to integers or floats to strings");
 
     private final String value;
@@ -42,4 +41,5 @@ public enum DataOperations {
         }
         throw new IllegalArgumentException("Unknown value: " + value);
     }
+
 }
