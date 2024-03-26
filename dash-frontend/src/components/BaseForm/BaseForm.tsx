@@ -5,16 +5,33 @@ import Image from 'next/image';
 interface BaseFormProps {
     width?: string;
     height?: string;
-    title: string;
+    title?: string;
     children?: React.ReactNode;
 }
 
 export const BaseForm: React.FC<BaseFormProps> = ({
     width = '300px',
     height = '450px',
-    title,
+    title = '',
     children,
 }) => {
+    if (title == '') {
+        return (
+            <div
+                className={styles.baseForm}
+                style={{ width: width, height: height }}
+            >
+                <Image
+                    src="DashLogo.svg"
+                    alt="Dash Logo"
+                    width="70"
+                    height="70"
+                />
+
+                {children}
+            </div>
+        );
+    }
     return (
         <div
             className={styles.baseForm}
