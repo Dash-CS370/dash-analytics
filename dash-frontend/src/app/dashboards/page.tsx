@@ -131,21 +131,19 @@ export default function Dashboards() {
     // TODO: load initial projects from backend API
     const initialProjects = exampleProjects;
     const [projects, setProjects] = useState<ProjectConfig[]>(initialProjects);
-    const [activeProject, setActiveProject] = useState<ProjectConfig | null>(
+    const [activeProject, setActiveProject] = useState<ProjectConfig>(
         projects[0], // TODO: change to null and make it default to new project view
     );
 
-    // TODO: load initial configs from backend API
-    const initialConfigs = exampleConfigs;
-    const [configs, setConfigs] = useState<WidgetConfig[]>(initialConfigs);
     const togglePinned = (id: string) => {
-        const newConfigs = configs.map((config) => {
+        const newWidgets = activeProject.widgets.map((config) => {
             if (config.id === id) {
                 return { ...config, pinned: !config.pinned };
             }
             return config;
         });
-        setConfigs(newConfigs);
+
+        setActiveProject({ ...activeProject, widgets: newWidgets });
     };
 
     // TODO: Add API interaction to update project name
@@ -159,6 +157,10 @@ export default function Dashboards() {
                 : projectConfig,
         );
         setProjects(updatedProjects);
+
+        if (activeProject.id === id) {
+            setActiveProject({ ...activeProject, title: newTitle });
+        }
     };
 
     // TODO: Add API interaction to delete project
@@ -170,6 +172,21 @@ export default function Dashboards() {
             (projectConfig) => projectConfig.id !== id,
         );
         setProjects(updatedProjects);
+
+        if (activeProject.id === id) {
+            // TODO: change so that if active project is deleted, it defaults to new project view
+            setActiveProject(updatedProjects[0]);
+        }
+    };
+
+    const handleProjectSelection = (id: string) => {
+        const selectedProject = projects.find(
+            (projectConfig) => projectConfig.id === id,
+        );
+        if (!selectedProject) {
+            return;
+        }
+        setActiveProject(selectedProject);
     };
 
     return (
@@ -181,7 +198,11 @@ export default function Dashboards() {
             />
             <NavBar connected={true} />
 
-            <WidgetLayout configs={configs} togglePinned={togglePinned} />
+            {/* TODO: useState that toggles between WidgetLayout and NewProject */}
+            <WidgetLayout
+                projectConfig={activeProject}
+                togglePinned={togglePinned}
+            />
         </main>
     );
 }

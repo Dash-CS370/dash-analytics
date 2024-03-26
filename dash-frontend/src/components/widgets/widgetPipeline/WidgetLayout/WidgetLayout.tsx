@@ -3,32 +3,25 @@
 import styles from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout.module.css';
 import React, { useState } from 'react';
 import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer';
-import { WidgetConfig } from '../../WidgetTypes';
+import { ProjectConfig, WidgetConfig } from '../../WidgetTypes';
 
 interface WidgetLayoutProps {
-    initialConfigs: WidgetConfig[];
+    projectConfig: ProjectConfig;
+    togglePinned: (id: string) => void;
 }
 
 export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
-    initialConfigs,
+    projectConfig,
+    togglePinned,
 }) => {
-    const [configs, setConfigs] = useState(initialConfigs);
-    const togglePinned = (id: string) => {
-        const newConfigs = configs.map((config) => {
-            if (config.id === id) {
-                return { ...config, pinned: !config.pinned };
-            }
-            return config;
-        });
-        setConfigs(newConfigs);
-    };
-
     const [expandedWidgetId, setExpandedWidgetId] = useState('');
     const handleExpand = (id: string) => {
         setExpandedWidgetId(expandedWidgetId === id ? '' : id);
     };
 
-    const pinnedConfigs = configs.filter((config) => config.pinned);
+    const pinnedConfigs = projectConfig.widgets.filter(
+        (config) => config.pinned,
+    );
 
     return (
         <div className={styles.content}>
@@ -37,17 +30,25 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                     expandedWidgetId === '' ? '' : styles.active
                 }`}
             ></div>
-            <h1 className={styles.dashboardTitle}>Dashboard</h1>
+            <h1 className={styles.dashboardTitle}>{projectConfig.title}</h1>
             <div className={styles.widgetGrid}>
-                {pinnedConfigs.map((config: WidgetConfig) => (
-                    <WidgetRenderer
-                        key={config.id}
-                        config={config}
-                        isExpanded={expandedWidgetId === config.id}
-                        onExpand={() => handleExpand(config.id)}
-                        onTogglePin={() => togglePinned(config.id)}
-                    />
-                ))}
+                {pinnedConfigs.map((config: WidgetConfig) => {
+                    const isExpanded = expandedWidgetId === config.id;
+                    return (
+                        <>
+                            <WidgetRenderer
+                                key={config.id}
+                                config={config}
+                                isExpanded={isExpanded}
+                                onExpand={() => handleExpand(config.id)}
+                                onTogglePin={() => togglePinned(config.id)}
+                            />
+                            {isExpanded && (
+                                <div className={styles.placeholder} />
+                            )}
+                        </>
+                    );
+                })}
             </div>
         </div>
     );

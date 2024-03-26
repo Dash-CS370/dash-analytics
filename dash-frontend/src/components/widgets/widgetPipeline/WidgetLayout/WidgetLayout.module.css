@@ -13,9 +13,11 @@
 }
 
 .widgetGrid {
-    display: grid;
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    justify-items: center;
+    gap: 2rem;
     width: 100%;
     max-width: 90%;
 }
@@ -44,15 +46,7 @@
     visibility: visible;
 }
 
-/* Responsive grid setup */
-@media (min-width: 600px) {
-    .widgetGrid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    }
-}
-
-@media (min-width: 1200px) {
-    .widgetGrid {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
+.placeholder {
+    width: 350px;
+    height: 250px;
 }
