@@ -5,42 +5,59 @@ import { FiCheck, FiEdit2, FiTrash2 } from 'react-icons/fi';
 interface ProjectListItemProps {
     id: string;
     name: string;
+    isActive: boolean;
     onNameChange: (id: string, newName: string) => void;
     deleteProject: (id: string) => void;
+    selectProject: (id: string) => void;
 }
 
 export const ProjectListItem: FC<ProjectListItemProps> = ({
     id,
     name,
+    isActive,
     onNameChange,
     deleteProject,
+    selectProject,
 }) => {
-    // TODO: Add onDelete interaction (same as edit)
+    // const [isActive, setIsActive] = useState(active);
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(name);
 
-    const handleEditClick = () => {
+    const handleEditClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // stops event from triggering selectProject
         setIsEditing(true);
     };
 
-    const handleCheckClick = () => {
+    const handleCheckClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // stops event from triggering selectProject
         // update project name (onNameChange handles database update)
         onNameChange(id, newName);
         setIsEditing(false);
     };
 
     const handleEnterForProjName = (e: KeyboardEvent<HTMLInputElement>) => {
+        e.stopPropagation(); // stops event from triggering selectProject
         if (e.key === 'Enter') {
-            handleCheckClick();
+            // update project name (onNameChange handles database update)
+            onNameChange(id, newName);
+            setIsEditing(false);
         }
     };
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (e: React.MouseEvent) => {
+        e.stopPropagation(); // stops event from triggering selectProject
         deleteProject(id);
     };
 
+    const handleSelectProject = () => {
+        selectProject(id);
+    };
+
     return (
-        <div className={styles.item}>
+        <div
+            className={`${styles.item} ${isActive ? styles.active : ''}`}
+            onClick={handleSelectProject}
+        >
             {isEditing ? (
                 <div className={styles.editContainer}>
                     <input
@@ -49,6 +66,7 @@ export const ProjectListItem: FC<ProjectListItemProps> = ({
                         onKeyDown={handleEnterForProjName}
                         onChange={(e) => setNewName(e.target.value)}
                         className={styles.editInput}
+                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     />
                     <FiCheck
                         className={styles.icon}

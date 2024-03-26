@@ -9,14 +9,18 @@ import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 
 interface SidebarProps {
     projects: ProjectConfig[];
+    activeProject: ProjectConfig;
     editProjectName: (id: string, newName: string) => void;
     deleteProject: (id: string) => void;
+    selectProject: (id: string) => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
     projects,
+    activeProject,
     editProjectName,
     deleteProject,
+    selectProject,
 }) => {
     const [isOpen, setIsOpen] = useState(true);
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -33,8 +37,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                                     key={project.id}
                                     id={project.id}
                                     name={project.title}
+                                    isActive={project.id === activeProject.id}
                                     onNameChange={editProjectName}
                                     deleteProject={deleteProject}
+                                    selectProject={selectProject}
                                 />
                             ))}
                         </div>

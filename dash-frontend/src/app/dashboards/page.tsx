@@ -5,7 +5,6 @@ import { NavBar } from '@/components/NavBar';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { ProjectConfig, WidgetConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
-import { WidgetRenderer } from '@/components/widgets/widgetPipeline/WidgetRenderer/WidgetRenderer';
 import { useState } from 'react';
 
 const exampleLineData = [
@@ -86,42 +85,42 @@ const exampleConfigs: WidgetConfig[] = [
 
 const exampleProjects: ProjectConfig[] = [
     {
-        title: 'Test Project',
+        title: 'Test Project 1',
         id: '1',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 2',
         id: '2',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 3',
         id: '3',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 4',
         id: '4',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 5',
         id: '5',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 6',
         id: '6',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 7',
         id: '7',
         widgets: exampleConfigs,
     },
     {
-        title: 'Test Project',
+        title: 'Test Project 8',
         id: '8',
         widgets: exampleConfigs,
     },
@@ -174,8 +173,8 @@ export default function Dashboards() {
         setProjects(updatedProjects);
 
         if (activeProject.id === id) {
-            // TODO: change so that if active project is deleted, it defaults to new project view
             setActiveProject(updatedProjects[0]);
+            // TODO: change so that if active project is deleted, it defaults to new project view
         }
     };
 
@@ -193,8 +192,10 @@ export default function Dashboards() {
         <main className={styles.main}>
             <Sidebar
                 projects={projects}
+                activeProject={activeProject}
                 editProjectName={editProjectName}
                 deleteProject={deleteProject}
+                selectProject={handleProjectSelection}
             />
             <NavBar connected={true} />
 
