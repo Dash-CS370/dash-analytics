@@ -1,6 +1,5 @@
 import styles from '@/app/start/page.module.css';
 import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
-import { SecondaryButton } from '@/components/buttons/SecondaryButton/SecondaryButton';
 
 export default function Start() {
     return (
@@ -11,7 +10,7 @@ export default function Start() {
                     <span className={styles.analytics}>Analytics</span>
                 </div>
                 <div className={styles.buttons}>
-                    <PrimaryButton href="/login" width="350px" height="60px">
+                    <PrimaryButton href="/signin" width="350px" height="60px">
                         Login
                     </PrimaryButton>
                     <PrimaryButton

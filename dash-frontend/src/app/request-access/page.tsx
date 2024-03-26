@@ -15,6 +15,10 @@ export default function RequestAccess() {
                     <PrimaryButton
                         className={styles.buttonFormat}
                         href="/login"
+                        /*
+                            ADD POP UP THAT SAYS 
+                            'ACCESS SUCCESSFULLY REQUESTED... CHECK EMAIL'
+                        */
                     >
                         Request Access
                     </PrimaryButton>
@@ -29,14 +33,14 @@ export default function RequestAccess() {
                     <div className={styles.signinOpts}>
                         <PrimaryButton
                             className={styles.buttonFormat}
-                            href="/create-account-opts"
+                            href="/signin"
                             width="150px"
                         >
                             Activate Account
                         </PrimaryButton>
                         <PrimaryButton
                             className={styles.buttonFormat}
-                            href="/login"
+                            href="/signin"
                             width="150px"
                         >
                             Login

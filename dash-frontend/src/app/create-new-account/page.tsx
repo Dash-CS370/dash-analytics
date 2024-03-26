@@ -36,7 +36,10 @@ export default function CreateNewAccount() {
                         width="325px"
                     />
                 </div>
-                <PrimaryButton className={styles.buttonFormat} href="/login">
+                <PrimaryButton
+                    className={styles.buttonFormat}
+                    href="/dashboard"
+                >
                     Create Account
                 </PrimaryButton>
                 <hr className={styles.lineFormat}></hr>
