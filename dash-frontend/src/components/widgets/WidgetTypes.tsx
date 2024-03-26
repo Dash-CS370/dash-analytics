@@ -10,6 +10,12 @@ export interface WidgetConfig {
     data: DataItem[];
 }
 
+export interface ProjectConfig {
+    title: string;
+    id: string;
+    widgets: WidgetConfig[];
+}
+
 export interface BaseGraphProps {
     config: WidgetConfig;
     isExpanded?: boolean;

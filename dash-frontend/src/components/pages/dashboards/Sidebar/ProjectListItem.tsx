@@ -3,15 +3,17 @@ import { FC, useState, KeyboardEvent } from 'react';
 import { FiCheck, FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 interface ProjectListItemProps {
-    id: number;
+    id: string;
     name: string;
-    onNameChange: (id: number, newName: string) => void;
+    onNameChange: (id: string, newName: string) => void;
+    deleteProject: (id: string) => void;
 }
 
 export const ProjectListItem: FC<ProjectListItemProps> = ({
     id,
     name,
     onNameChange,
+    deleteProject,
 }) => {
     // TODO: Add onDelete interaction (same as edit)
     const [isEditing, setIsEditing] = useState(false);
@@ -31,6 +33,10 @@ export const ProjectListItem: FC<ProjectListItemProps> = ({
         if (e.key === 'Enter') {
             handleCheckClick();
         }
+    };
+
+    const handleDeleteClick = () => {
+        deleteProject(id);
     };
 
     return (
@@ -58,7 +64,8 @@ export const ProjectListItem: FC<ProjectListItemProps> = ({
                             onClick={handleEditClick}
                         />
                         <FiTrash2
-                            className={styles.icon} /* onClick={onDelete} */
+                            className={styles.icon}
+                            onClick={handleDeleteClick}
                         />
                     </div>
                 </>
