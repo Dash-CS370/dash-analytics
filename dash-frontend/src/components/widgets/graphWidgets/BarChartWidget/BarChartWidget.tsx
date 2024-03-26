@@ -13,8 +13,13 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 
-export const BarChartWidget: React.FC<BaseGraphProps> = ({ title, data }) => {
-    const keys = data.length > 0 ? Object.keys(data[0]) : [];
+export const BarChartWidget: React.FC<BaseGraphProps> = ({
+    config,
+    isExpanded = false,
+    onExpand = () => {},
+    onTogglePin = () => {},
+}) => {
+    const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
     const xDataKey = keys.length > 0 ? keys[0] : '';
 
     const [colors, setColors] = useState<string[]>([]);
@@ -29,9 +34,15 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({ title, data }) => {
     }, []);
 
     return (
-        <WidgetCard title={title} pinned={true}>
+        <WidgetCard
+            title={config.title}
+            pinned={true}
+            expanded={isExpanded}
+            onExpand={onExpand}
+            onTogglePin={onTogglePin}
+        >
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data} width={500} height={300}>
+                <BarChart data={config.data} width={500} height={300}>
                     <XAxis dataKey={xDataKey} />
                     <YAxis />
                     <Tooltip />

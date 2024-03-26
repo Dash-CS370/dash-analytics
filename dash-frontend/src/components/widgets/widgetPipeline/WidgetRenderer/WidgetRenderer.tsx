@@ -1,34 +1,50 @@
 import React from 'react';
 import { LineGraphWidget } from '../../graphWidgets/LineGraphWidget/LineGraphWidget';
-import { BaseGraphProps } from '../../WidgetTypes';
+import { BaseGraphProps, WidgetConfig } from '../../WidgetTypes';
 import { BarChartWidget } from '../../graphWidgets/BarChartWidget/BarChartWidget';
 
-const renderWidget = (graphType: string, graphInfo: BaseGraphProps) => {
-    switch (graphType) {
+const renderWidget = (
+    config: WidgetConfig,
+    isExpanded: boolean,
+    onExpand: () => void,
+    onTogglePin: () => void,
+) => {
+    switch (config.graphType) {
         case 'bar_chart':
             return (
-                <BarChartWidget title={graphInfo.title} data={graphInfo.data} />
+                <BarChartWidget
+                    config={config}
+                    isExpanded={isExpanded}
+                    onExpand={onExpand}
+                    onTogglePin={onTogglePin}
+                />
             );
         case 'line_graph':
             return (
                 <LineGraphWidget
-                    title={graphInfo.title}
-                    data={graphInfo.data}
+                    config={config}
+                    isExpanded={isExpanded}
+                    onExpand={onExpand}
+                    onTogglePin={onTogglePin}
                 />
             );
         default:
-            throw new Error(`${graphType} is not a valid graph type`);
+            throw new Error(`${config.graphType} is not a valid graph type`);
     }
 };
 
 interface WidgetRendererProps {
-    graphType: string;
-    graphInfo: BaseGraphProps;
+    config: WidgetConfig;
+    isExpanded: boolean;
+    onExpand: () => void;
+    onTogglePin: () => void;
 }
 
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
-    graphType,
-    graphInfo,
+    config,
+    isExpanded = false,
+    onExpand = () => {},
+    onTogglePin = () => {},
 }) => {
-    return renderWidget(graphType, graphInfo);
+    return renderWidget(config, isExpanded, onExpand, onTogglePin);
 };

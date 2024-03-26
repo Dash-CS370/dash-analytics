@@ -7,25 +7,31 @@ import { BsArrowsAngleContract, BsArrowsAngleExpand } from 'react-icons/bs';
 
 interface WidgetCardProps {
     title: string;
-    expanded?: boolean;
     pinned?: boolean;
+    expanded?: boolean;
+    onExpand: () => void;
+    onTogglePin: () => void;
     children: React.ReactNode;
 }
 
 export const WidgetCard: React.FC<WidgetCardProps> = ({
     title,
-    expanded = false,
     pinned = true,
+    expanded = false,
+    onExpand,
+    onTogglePin,
     children,
 }) => {
     const [isExpanded, setIsExpanded] = React.useState(expanded);
-    const toggleExpand = () => setIsExpanded(!isExpanded);
+    const toggleExpand = () => {
+        setIsExpanded(!isExpanded);
+        onExpand();
+    };
 
     const [isPinned, setIsPinned] = React.useState(pinned);
     const togglePinned = () => {
-        // TODO: change value for pinned in config
-
         setIsPinned(!isPinned);
+        onTogglePin();
     };
 
     const cardClassName = `${styles.widgetCard} ${

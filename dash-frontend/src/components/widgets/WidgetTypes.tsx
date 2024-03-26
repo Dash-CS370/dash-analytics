@@ -11,6 +11,8 @@ export interface WidgetConfig {
 }
 
 export interface BaseGraphProps {
-    title: string;
-    data: DataItem[];
+    config: WidgetConfig;
+    isExpanded?: boolean;
+    onExpand: () => void;
+    onTogglePin: () => void;
 }

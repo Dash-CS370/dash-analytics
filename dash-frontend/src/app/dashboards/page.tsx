@@ -56,7 +56,7 @@ export default function Dashboards() {
             <NavBar connected={true} />
 
             <WidgetLayout
-                configs={[
+                initialConfigs={[
                     {
                         title: 'Test',
                         id: '1',
