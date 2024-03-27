@@ -1,0 +1,41 @@
+.dynamicText {
+    display: inline-block;
+    transition: transform 1s ease-in-out;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    color: var(--on-background);
+}
+
+.constantDescription {
+    font-family: 'Colfax';
+    font-size: 33px;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    0% {
+        border-color: transparent;
+    }
+}
+
+.dynamicText {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 4s steps(60, end) infinite;
+    color: var(--primary);
+    font-family: 'Colfax';
+    font-size: 34px;
+    font-weight: bold;
+}

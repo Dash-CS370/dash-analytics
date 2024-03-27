@@ -8,6 +8,7 @@ interface PrimaryButtonProps {
     href?: string;
     width?: string;
     height?: string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
@@ -16,13 +17,15 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     href = '',
     width = '200px',
     height = '50px',
+    onClick,
     ...props
 }) => {
     if (href === '') {
         return (
             <button
-                className={styles.btn}
+                className={`${styles.btn} ${className}`}
                 style={{ width: width, height: height }}
+                onClick={onClick}
                 {...props}
             >
                 {children}
@@ -31,14 +34,14 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     }
 
     return (
-        <Link href={href}>
-            <button
-                className={styles.btn}
-                style={{ width: width, height: height }}
-                {...props}
-            >
+        <button
+            className={`${styles.btn} ${className}`}
+            style={{ width: width, height: height }}
+            {...props}
+        >
+            <Link className={styles.link} href={href}>
                 {children}
-            </button>
-        </Link>
+            </Link>
+        </button>
     );
 };
