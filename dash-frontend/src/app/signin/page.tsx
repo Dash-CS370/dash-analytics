@@ -22,7 +22,7 @@ export default function Signin() {
         return (
             <main className={styles.main}>
                 <div className={styles.content}>
-                    <BaseForm width="425px" height="500px">
+                    <BaseForm width="425px" height="530px">
                         <div className={styles.toggleButtonStyle}>
                             <PrimaryButton
                                 className={

@@ -9,6 +9,8 @@ import { FiUpload } from 'react-icons/fi';
 
 export const NewProject: React.FC = () => {
     const handleNext = (e: React.FormEvent) => {
+        e.preventDefault();
+
         const form = document.getElementById(
             'nameAndDescription',
         ) as HTMLFormElement;
@@ -18,6 +20,18 @@ export const NewProject: React.FC = () => {
         const description = (
             form.elements.namedItem('projectDescription') as HTMLInputElement
         ).value;
+
+        console.log(name, description);
+
+        async function fetchData() {
+            const response = await fetch(
+                `http://127.0.0.1/api/gpt/${description}`,
+            );
+            const result = await response.json();
+            console.log(result);
+        }
+
+        fetchData();
     };
 
     // TODO: work with george to get loaded file
