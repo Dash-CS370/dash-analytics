@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -64,7 +65,7 @@ public class ResourceController {
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
 
-            // TODO Create Config with GPT API
+            // Create Config with GPT API
             // final Optional<Project> generatedProjectConfig = openAPIService.generateProjectConfig(templateProject.getProjectDescription(), templateProject.getColumnDescriptions());
             // final Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs();
 
@@ -79,13 +80,26 @@ public class ResourceController {
                     List.of(
                             new Widget("Graph 1",
                                     GraphType.BAR_GRAPH,
-                                    List.of(DataOperations.AVERAGE_N_ROWS, DataOperations.DROP_NAN_ROWS),
-                                    List.of("Column 1", "Column 2", "Column 3")),
-
+                                    "Trends between x values and y values over time",
+                                    Map.of(
+                                            "Column 1", List.of(DataOperations.STANDARDIZE, DataOperations.CALCULATE_DELTA),
+                                            "Column 2", List.of(DataOperations.ROLLING_AVERAGE, DataOperations.STANDARDIZE)
+                                          )
+                            ),
                             new Widget("Graph 2",
                                     GraphType.LINE_GRAPH,
-                                    List.of(DataOperations.AVERAGE_N_ROWS, DataOperations.SLICE),
-                                    List.of("Column 4", "Column 5", "Column 6"))
+                                    "Trends between col 4 values and col 5 values over a month",
+                                    Map.of(
+                                            "Column 4", List.of(DataOperations.ADD_COLUMN_SUM)
+                                    )
+                            ),
+                            new Widget("Graph 3",
+                                    GraphType.BOX_PLOT,
+                                    "Trends between col 5 values and col 1 values over a month",
+                                    Map.of(
+                                            "Column 4", List.of(DataOperations.DISCRETIZE_COLUMN)
+                                    )
+                            )
                     )
             );
 

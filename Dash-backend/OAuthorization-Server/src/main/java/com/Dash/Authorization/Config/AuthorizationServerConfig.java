@@ -60,8 +60,8 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/Dash")
-                .redirectUri("http://127.0.0.1:8080/authorized")
+                .redirectUri("http://127.0.0.1/login/oauth2/code/Dash")
+                .redirectUri("http://127.0.0.1/authorized")
                 .scope(OidcScopes.OPENID)
                 .scope("api.read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -100,7 +100,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://auth-server:9000").build();
+        return ProviderSettings.builder().issuer("http://auth-server:80").build();
     }
 
 

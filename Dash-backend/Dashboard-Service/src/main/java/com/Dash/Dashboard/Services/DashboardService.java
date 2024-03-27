@@ -1,6 +1,5 @@
 package com.Dash.Dashboard.Services;
 
-import com.Dash.Dashboard.Models.ColumnDescriptionDto;
 import com.Dash.Dashboard.Models.Project;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;

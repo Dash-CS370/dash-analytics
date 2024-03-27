@@ -1,15 +1,8 @@
 package com.Dash.ResourceServer.Services.Impl;
 
-import com.Dash.ResourceServer.Models.FunctionProperties.WidgetProperty;
 import com.Dash.ResourceServer.Services.OpenAIService;
-import com.Dash.ResourceServer.Utils.OpenAIUtils;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
-import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import com.Dash.ResourceServer.Models.Widget;
@@ -19,16 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.Dash.ResourceServer.Utils.OpenAIUtils.extractWidgets;
-import static com.Dash.ResourceServer.Utils.OpenAIUtils.generatePrompt;
-
+import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 
 
 // FIXME -> SERVICE LAYER NOT API GATEWAY
@@ -44,31 +34,50 @@ public class OpenAIServiceImpl implements OpenAIService {
 
     private final OpenAIClient openAIClient;
 
-    private final OpenAIUtils openAIUtils;
-
     @Autowired
-    OpenAIServiceImpl(OpenAIClient openAIClient, OpenAIUtils openAIUtils) {
-        this.openAIUtils = openAIUtils;
+    OpenAIServiceImpl(OpenAIClient openAIClient) {
         this.openAIClient = openAIClient;
     }
 
 
-    //@PreAuthorize("permitAll()")
+    // TODO TEMP
     @GetMapping
-    // args: String projectDescription, List<String> columnDescriptions
-    public Optional<List<Widget>> generateWidgetConfigs() throws RuntimeException { // TODO
+    public void foo() {
+        String projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
+        // FIXME frontend must populate these strings for me this format
+        List<String> columnDescriptions = List.of(
+                        "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken",
+                        "column-name: temperature, column-datatype: double, description: temperature readings of environment",
+                        "column-name: pm10, column-datatype: double, description: concentration of particulate matter of size 10 mm or smaller",
+                        "column-name: pm25, column-datatype: double, description: concentration of particulate matter of size 2.5 mm or smaller",
+                        "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors"
+                );
+
+        generateWidgetConfigs(projectDescription, columnDescriptions);
+    }
+
+
+
+    //@PreAuthorize("permitAll()")
+    public Optional<List<Widget>> generateWidgetConfigs(String projectDescription, List<String> columnDescriptions) throws RuntimeException { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
         // Add context via system message
-        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS."));
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
+                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."));
 
-        // Ask/Request actual command FIXME
-        chatMessages.add(new ChatRequestUserMessage(generatePrompt("user's project description", List.of("column descriptions"))));
+        chatMessages.add(new ChatRequestSystemMessage("Using the GenerateWidgetList function, generate 15 DIFFERENT configuration options for graph " +
+                            "widgets based SOLELY on the User's dataset description and column descriptions"));
+
+        chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
+
+        chatMessages.add(new ChatRequestUserMessage(generatePrompt(projectDescription, columnDescriptions)));
 
 
         // Tool/FunctionCall definition with function alias
-        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(getWidgetsGenerationFunctionDefinition());
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                new FunctionDefinition("GenerateWidgetList"));
 
 
         // As part of the chat completion/response, set the tools attribute
@@ -86,9 +95,7 @@ public class OpenAIServiceImpl implements OpenAIService {
             ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
             assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
 
-            List<ChatRequestMessage> followUpMessages = new ArrayList<>();
-            followUpMessages.add(chatMessages.get(0)); // System message
-            followUpMessages.add(chatMessages.get(1)); // User message
+            List<ChatRequestMessage> followUpMessages = new ArrayList<>(chatMessages);
             followUpMessages.add(assistantMessage);
 
             for (ChatCompletionsToolCall toolCall : choice.getMessage().getToolCalls()) {
@@ -105,12 +112,13 @@ public class OpenAIServiceImpl implements OpenAIService {
                 throw new RuntimeException("Request for follow up Chat failed...");
             }
 
-            // TODO --> Should we have multiple options/choices?
             ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
 
             if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
                 log.warn("\n" + followUpChoice.getMessage().getContent().strip());
                 return extractWidgets(followUpChoice.getMessage().getContent().strip());
+            } else {
+                log.warn(followUpChoice.getFinishReason().toString());
             }
         }
 
@@ -118,37 +126,5 @@ public class OpenAIServiceImpl implements OpenAIService {
     }
 
 
-    private static String widgetSchema() {
-        return  "{"
-                + "  \"type\": \"array\","
-                + "  \"properties\": ["
-                + "    {"
-                + "      \"title\": \"Sample Widget Title\","
-                + "      \"graph_type\": \"LINE_GRAPH\","
-                + "      \"data_operations\": [\"DROP_NAN_ROWS\", \"AVERAGE_N_ROWS\"],"
-                + "      \"required_columns\": [\"column1\", \"column2\"]"
-                + "    }"
-                + "  ]"
-                + "}";
-    }
-
-
-    private static FunctionDefinition getWidgetsGenerationFunctionDefinition() {
-        FunctionDefinition functionDefinition = new FunctionDefinition("GenerateWidgetList");
-        // FIXME?
-        functionDefinition.setDescription("Returns JSON object representing widgets with these EXACT 4 fields: title, graph_type, data_operations, & required_columns");
-        WidgetListParameters parameters = new WidgetListParameters();
-        functionDefinition.setParameters(BinaryData.fromObject(parameters));
-        return functionDefinition;
-    }
-
-
-    private static class WidgetListParameters {
-        @JsonProperty("type")
-        private String type = "object";
-
-        @JsonProperty("properties")
-        private WidgetProperty widgetProperty = new WidgetProperty();
-    }
 
 }

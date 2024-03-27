@@ -10,23 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +49,6 @@ public class DashboardController {
                                                        OAuth2AuthorizedClient authorizedClient,
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            log.warn("CALLED");
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
@@ -70,6 +60,9 @@ public class DashboardController {
         } catch (WebClientResponseException e) {
             log.warn(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -89,14 +82,14 @@ public class DashboardController {
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
                                                  @RequestPart("project-description") String projectDescription,
                                                  @RequestPart("column-descriptions") String columnDescriptions,
-                                                 @RequestPart("csv-file") MultipartFile csvFile) {
-                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 //OAuth2AuthorizedClient authorizedClient,
-                                                 //@AuthenticationPrincipal OAuth2User oauth2User) {
+                                                 @RequestPart("csv-file") MultipartFile csvFile,
+                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 OAuth2AuthorizedClient authorizedClient,
+                                                 @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
             // Ensure request can be made by user
-            final Optional<Project> generatedProject = dashboardService.createProject(null, null, projectName,
+            final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectName,
                                                                                       projectDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
@@ -124,13 +117,13 @@ public class DashboardController {
      * @return
      */
     @PutMapping(value = "/update-projects", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> updateProjects(@RequestBody List<Project> projects) { //,
-                                                 //@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 //OAuth2AuthorizedClient authorizedClient,
-                                                 //@AuthenticationPrincipal OAuth2User oauth2User) { // TODO - UNCOMMENT
+    public ResponseEntity<Object> updateProjects(@RequestBody List<Project> projects,
+                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                 OAuth2AuthorizedClient authorizedClient,
+                                                 @AuthenticationPrincipal OAuth2User oauth2User) { // TODO - UNCOMMENT
         try {
 
-            final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(null, projects);
+            final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
 
             if (updatedProjectsConfirmation.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -151,9 +144,9 @@ public class DashboardController {
      * @return
      */
     @DeleteMapping(value = "/delete-project")
-    public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId) {
-                                                //@RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                //OAuth2AuthorizedClient authorizedClient
+    public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId,
+                                                @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                OAuth2AuthorizedClient authorizedClient) {
                                                 //@AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 

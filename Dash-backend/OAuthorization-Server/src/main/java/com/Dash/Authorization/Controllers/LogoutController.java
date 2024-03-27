@@ -20,29 +20,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogoutController {
 
-
-    @ResponseBody
     @GetMapping("/logout/user")
-    public void doLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-
-        log.warn("ENTERED LOGOUT POINT");
-
-        session.invalidate();
-
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-            auth.setAuthenticated(false);
-            SecurityContextHolder.clearContext();
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
-
-        final Cookie cookieWithSlash = new Cookie("JSESSIONID", null);
-        cookieWithSlash.setPath(request.getContextPath() + "/");
-        cookieWithSlash.setDomain("auth-server");
-        cookieWithSlash.setMaxAge(0);
-        response.addCookie(cookieWithSlash); // For Tomcat
+    public String doLogout() {
+        return "redirect:http://auth-server/logout";
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -19,11 +20,11 @@ public class Widget {
     @JsonProperty("graph_type")
     private GraphType graphType;
 
-    @JsonProperty("data_operations")
-    private List<DataOperations> dataOperations;
+    @JsonProperty("widget_description")
+    private String widgetDescription;
 
-    @JsonProperty("required_columns")
-    private List<String> requiredColumns;
+    @JsonProperty("column_operations")
+    private Map<String, List<DataOperations>> columnOperations;
 
 }
 

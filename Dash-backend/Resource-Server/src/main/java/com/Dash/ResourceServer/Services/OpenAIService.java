@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface OpenAIService {
 
-    Optional<List<Widget>> generateWidgetConfigs() throws RuntimeException;
+    Optional<List<Widget>> generateWidgetConfigs(String description, List<String> columnDescriptions) throws RuntimeException;
 
 }

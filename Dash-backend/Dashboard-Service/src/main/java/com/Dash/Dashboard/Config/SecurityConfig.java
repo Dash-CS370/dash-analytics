@@ -34,26 +34,18 @@ public class SecurityConfig {
 
         http
             .csrf().disable()
-            .cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://127.0.0.1:5173")); // Adjust as necessary
-                configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS")); // Include any methods you need
-                configuration.setAllowCredentials(true);
-                configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type")); // Adjust as necessary
-                return configuration;
-            }))
+            .cors().disable()
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
-            .antMatchers("/logout/**").authenticated() // Secured endpoints for authenticated users only
             .antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
+            .anyRequest().authenticated()
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://127.0.0.1:5173")
+                    .loginPage("http://127.0.0.1/frontend/")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults());
-
          /*
             .sessionManagement(sessionManagement ->
                 sessionManagement

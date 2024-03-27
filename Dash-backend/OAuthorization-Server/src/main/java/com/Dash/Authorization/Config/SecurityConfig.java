@@ -42,8 +42,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-            //.logout(logout -> logout.logoutSuccessUrl("")
+            .authorizeRequests(authorizeRequests -> authorizeRequests
+                    .antMatchers("/logout/user").permitAll()
+                    .anyRequest().authenticated())
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1", "http://auth-server"));
+                configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+                configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+                configuration.setAllowCredentials(true);
+                return configuration;
+            }))
+            .logout(logout -> logout
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("http://127.0.0.1/frontend/")
+            )
             .formLogin(withDefaults());
 
         return http.build();

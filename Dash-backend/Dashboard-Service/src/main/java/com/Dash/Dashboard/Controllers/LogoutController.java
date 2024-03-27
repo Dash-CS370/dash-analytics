@@ -6,10 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,33 +15,38 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Slf4j
-@RestController
-@RequestMapping("/logout")
+@Controller
+@RequestMapping("/log-out")
 public class LogoutController {
 
-    @PostMapping("/user")
-    public String testLogout(HttpSession session, HttpServletRequest request,
-                             HttpServletResponse response)
-            throws IOException {
+    @GetMapping("/")
+    public void testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        try {
 
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            session.invalidate();
 
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-            auth.setAuthenticated(false);
-            SecurityContextHolder.clearContext();
-            for (Cookie cookie : request.getCookies()) {
-                String cookieName = cookie.getName();
-                log.info("cookie name={}", cookieName);
-                Cookie cookieToDelete = new Cookie(cookieName, null);
-                cookieToDelete.setPath(request.getContextPath() + "/");
-                cookieToDelete.setMaxAge(0);
-                response.addCookie(cookieToDelete);
+            final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth != null) {
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+                auth.setAuthenticated(false);
+                SecurityContextHolder.clearContext();
+                for (Cookie cookie : request.getCookies()) {
+                    String cookieName = cookie.getName();
+                    Cookie cookieToDelete = new Cookie(cookieName, null);
+                    log.info("cookie name = {}", cookieName);
+                    cookieToDelete.setPath(request.getContextPath() + "/");
+                    cookieToDelete.setMaxAge(0);
+                    response.addCookie(cookieToDelete);
+                }
+                SecurityContextHolder.getContext().setAuthentication(null);
             }
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
 
-        return "logout";
+            response.sendRedirect("http://127.0.0.1/logout/user");
+
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
     }
 
 }
