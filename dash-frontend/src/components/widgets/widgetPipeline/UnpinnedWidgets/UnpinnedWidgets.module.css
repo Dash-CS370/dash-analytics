@@ -1,0 +1,13 @@
+.carousel {
+    display: flex;
+    position: fixed;
+    bottom: 1rem;
+    overflow: auto;
+    width: 65%;
+    align-self: center;
+}
+
+.carousel > * {
+    margin: 0 1rem;
+    flex-shrink: 0;
+}
