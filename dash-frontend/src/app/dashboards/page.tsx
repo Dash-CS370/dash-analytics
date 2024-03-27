@@ -78,17 +78,7 @@ export default function Dashboards() {
             return;
         }
         setActiveProject(selectedProject);
-    };
-
-    // TODO: work with george to get loaded file
-    // --> scan file in danfo, clean data, get column names and datatypes
-    const handleFileUpload = () => {};
-
-    const geNewProjectNameAndDescription = (
-        name: string,
-        description: string,
-    ) => {
-        console.log(name, description);
+        setNewProject(false);
     };
 
     return (
@@ -104,10 +94,7 @@ export default function Dashboards() {
 
             {/* TODO: useState that toggles between WidgetLayout and NewProject */}
             {newProject ? (
-                <NewProject
-                    onUploadClick={handleFileUpload}
-                    titleAndDescription={geNewProjectNameAndDescription}
-                />
+                <NewProject />
             ) : (
                 <WidgetLayout
                     projectConfig={activeProject}

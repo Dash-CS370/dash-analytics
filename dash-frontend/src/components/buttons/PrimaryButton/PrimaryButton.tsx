@@ -36,7 +36,9 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
             style={{ width: width, height: height }}
             {...props}
         >
-            <Link href={href}>{children}</Link>
+            <Link className={styles.link} href={href}>
+                {children}
+            </Link>
         </button>
     );
 };
