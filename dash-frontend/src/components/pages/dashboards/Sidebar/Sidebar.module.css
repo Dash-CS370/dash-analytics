@@ -9,7 +9,7 @@
 }
 
 .sidebarOpen {
-    margin-left: 0.5rem;
+    margin-left: 0.75rem;
     width: 250px;
 }
 
@@ -44,7 +44,7 @@
     background-color: var(--primary);
     color: var(--on-background);
     border: none;
-    margin: 0.5rem 0;
+    margin: 0.75rem 0;
 }
 
 .createProjectButton:hover {

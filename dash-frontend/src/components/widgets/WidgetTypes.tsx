@@ -22,3 +22,10 @@ export interface BaseGraphProps {
     onExpand: () => void;
     onTogglePin: () => void;
 }
+
+export interface BaseThumbnailProps {
+    title: string;
+    description: string;
+    data: DataItem[];
+    handleClick: () => void;
+}

@@ -4,15 +4,18 @@ import styles from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayou
 import React, { useState } from 'react';
 import { WidgetRenderer } from '../WidgetRenderer/WidgetRenderer';
 import { ProjectConfig, WidgetConfig } from '../../WidgetTypes';
+import { UnpinnedWidgets } from '../UnpinnedWidgets/UnpinnedWidgets';
 
 interface WidgetLayoutProps {
     projectConfig: ProjectConfig;
     togglePinned: (id: string) => void;
+    fetchMoreWidgets: () => void;
 }
 
 export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
     projectConfig,
     togglePinned,
+    fetchMoreWidgets,
 }) => {
     const [expandedWidgetId, setExpandedWidgetId] = useState('');
     const handleExpand = (id: string) => {
@@ -21,6 +24,9 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
 
     const pinnedConfigs = projectConfig.widgets.filter(
         (config) => config.pinned,
+    );
+    const unpinnedConfigs = projectConfig.widgets.filter(
+        (config) => !config.pinned,
     );
 
     return (
@@ -50,6 +56,11 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                     );
                 })}
             </div>
+            <UnpinnedWidgets
+                unpinnedConfigs={unpinnedConfigs}
+                handleClick={togglePinned}
+                fetchMoreWidgets={fetchMoreWidgets}
+            />
         </div>
     );
 };
