@@ -52,11 +52,14 @@ export default function Signin() {
                                 className={styles.textInput}
                                 defText="Enter Email"
                                 width="18rem"
+                                id="email"
                             />
                             <TextInput
                                 className={styles.textInput}
                                 defText="Enter Password"
                                 width="18rem"
+                                id="password"
+                                type="password"
                             />
                             <button
                                 className={styles.buttonFormat}

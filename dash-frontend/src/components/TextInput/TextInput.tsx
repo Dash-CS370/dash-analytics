@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '@/components/TextInput/TextInput.module.css';
 
-interface TextInputProps {
+interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     className?: string;
     width?: string;
     height?: string;
@@ -15,6 +15,7 @@ export const TextInput: React.FC<TextInputProps> = ({
     defText = 'Enter Here',
     textIndentation = '10px',
     className,
+    ...props
 }) => {
     return (
         <input
