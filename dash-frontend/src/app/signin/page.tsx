@@ -43,23 +43,28 @@ export default function Signin() {
                         </div>
 
                         <div className={styles.SignInTextStyle}>Sign In</div>
-                        <TextInput
-                            className={styles.textInput}
-                            defText="Enter Email"
-                            width="18rem"
-                        />
-                        <TextInput
-                            className={styles.textInput}
-                            defText="Enter Password"
-                            width="18rem"
-                        />
-                        <PrimaryButton
-                            className={styles.buttonFormat}
-                            href="/dashboard"
-                            width="250px"
+                        <form
+                            action="http://auth-server:9000/login"
+                            method="post"
+                            className={styles.form}
                         >
-                            Sign In
-                        </PrimaryButton>
+                            <TextInput
+                                className={styles.textInput}
+                                defText="Enter Email"
+                                width="18rem"
+                            />
+                            <TextInput
+                                className={styles.textInput}
+                                defText="Enter Password"
+                                width="18rem"
+                            />
+                            <button
+                                className={styles.buttonFormat}
+                                type="submit"
+                            >
+                                Sign In
+                            </button>
+                        </form>
                         <div className={styles.lineFormat}>
                             <div className={styles.linePos} />
                             <p>or</p>
