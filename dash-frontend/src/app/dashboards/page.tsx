@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '@/app/dashboards/page.module.css';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';

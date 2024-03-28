@@ -1,4 +1,4 @@
-import styles from '@/components/NavBar/NavBar.module.css';
+import styles from '@/components/common/NavBar/NavBar.module.css';
 import Link from 'next/link';
 import { FC } from 'react';
 import { IoLogOutOutline } from 'react-icons/io5';

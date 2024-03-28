@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '@/components/NavBar/NavBar.module.css';
+import styles from '@/components/common/NavBar/NavBar.module.css';
 import { FC } from 'react';
 
 export const DisconnectedNavBar: FC = () => {

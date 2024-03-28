@@ -8,31 +8,63 @@
     margin-top: var(--navbar-height);
 }
 
-.dashboardTitle {
-    padding-bottom: 1.5rem;
+.newProjectContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.newDashboard {
+    justify-content: space-between;
 }
 
 .horizontalLine {
     width: 40%;
     height: 2px;
     background-color: var(--on-background);
+    margin: 1rem 0;
 }
 
-.uploadHeader {
-    margin-top: 3rem;
+.disclaimer,
+.fileType {
+    color: var(--border);
+    margin: 0.5rem 0;
+    font-size: 0.8rem;
+    align-self: center;
+    max-width: 100%;
+}
+
+.disclaimer {
     margin-bottom: 1rem;
+}
+
+.errorMessage {
+    color: red;
+    margin: 0.5rem 0;
+    font-size: 0.8rem;
+    align-self: center;
+    max-width: 80%;
+}
+
+.header {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    align-self: center;
 }
 
 .uploadContainer {
     cursor: pointer;
-    width: 100px;
-    height: 100px;
+    width: 125px;
+    height: 125px;
     background-color: var(--background-contrast);
     border-radius: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    align-self: center;
+    /* margin-bottom: 2rem; */
 }
 
 .icon {
@@ -68,19 +100,32 @@
 }
 
 .submitButton {
-    width: 250px;
-    height: 60px;
-    padding: 8px 20px;
-    margin-top: 2rem;
-    border-radius: 12px;
+    margin: 1rem 0;
     background-color: var(--primary);
     border: 1px solid var(--primary);
     color: var(--on-background);
     align-self: center;
 }
 
-.submitButton:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    transition: all 0.3s ease-out;
+.columnDescription {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    margin-left: 1rem;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    margin-bottom: 1rem;
+}
+
+.backButton {
+    width: 25px;
+    height: 25px;
 }

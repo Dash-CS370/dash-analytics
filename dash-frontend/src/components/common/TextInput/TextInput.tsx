@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/components/TextInput/TextInput.module.css';
+import styles from '@/components/common/TextInput/TextInput.module.css';
 
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     className?: string;

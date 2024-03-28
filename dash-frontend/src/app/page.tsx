@@ -1,6 +1,6 @@
 import styles from './page.module.css';
 import { DynamicDescription } from '@/components/pages/landingPage/DynamicDescription';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 
 export default function Home() {
     return (

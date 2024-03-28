@@ -1,7 +1,7 @@
 import styles from '@/app/create-new-account/page.module.css';
-import { BaseForm } from '@/components/BaseForm/BaseForm';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
-import { TextInput } from '@/components/TextInput/TextInput';
+import { BaseForm } from '@/components/common/BaseForm/BaseForm';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
+import { TextInput } from '@/components/common/TextInput/TextInput';
 
 export default function CreateNewAccount() {
     return (

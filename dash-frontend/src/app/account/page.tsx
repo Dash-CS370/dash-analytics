@@ -1,5 +1,5 @@
 import styles from '@/app/account/page.module.css';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 
 export default function Account() {
     return (
@@ -7,9 +7,7 @@ export default function Account() {
             <NavBar connected={true} />
 
             <div className={styles.content}>
-                <h1 className={styles.title}>
-                    Account
-                </h1>
+                <h1 className={styles.title}>Account</h1>
                 <div className={styles.horizontalLine}></div>
             </div>
         </main>

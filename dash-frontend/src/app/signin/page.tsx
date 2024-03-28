@@ -1,9 +1,9 @@
 'use client';
 
 import styles from '@/app/signin/page.module.css';
-import { TextInput } from '@/components/TextInput/TextInput';
-import { BaseForm } from '@/components/BaseForm/BaseForm';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { TextInput } from '@/components/common/TextInput/TextInput';
+import { BaseForm } from '@/components/common/BaseForm/BaseForm';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { useState } from 'react';
 import Image from 'next/image';
 

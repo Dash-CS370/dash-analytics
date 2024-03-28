@@ -1,23 +1,21 @@
 import React from 'react';
-import styles from '@/components/buttons/PrimaryButton/PrimaryButton.module.css';
+import styles from '@/components/common/buttons/SecondaryButton/SecondaryButton.module.css';
 import Link from 'next/link';
 
-interface PrimaryButtonProps {
+interface SecondaryButtonProps {
     children?: React.ReactNode;
     className?: string;
     href?: string;
     width?: string;
     height?: string;
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
+export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
     children,
     className,
     href = '',
     width = '200px',
     height = '50px',
-    onClick,
     ...props
 }) => {
     if (href === '') {
@@ -25,7 +23,6 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
             <button
                 className={`${styles.btn} ${className}`}
                 style={{ width: width, height: height }}
-                onClick={onClick}
                 {...props}
             >
                 {children}
@@ -39,9 +36,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
             style={{ width: width, height: height }}
             {...props}
         >
-            <Link className={styles.link} href={href}>
-                {children}
-            </Link>
+            <Link href={href}>{children}</Link>
         </button>
     );
 };

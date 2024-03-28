@@ -1,7 +1,7 @@
 import styles from '@/app/request-access/page.module.css';
-import { TextInput } from '@/components/TextInput/TextInput';
-import { BaseForm } from '@/components/BaseForm/BaseForm';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { TextInput } from '@/components/common/TextInput/TextInput';
+import { BaseForm } from '@/components/common/BaseForm/BaseForm';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 
 export default function RequestAccess() {
     return (

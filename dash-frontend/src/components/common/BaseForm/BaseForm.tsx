@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '@/components/baseForm/BaseForm.module.css';
+import styles from '@/components/common/BaseForm/BaseForm.module.css';
 import Image from 'next/image';
 
 interface BaseFormProps {
