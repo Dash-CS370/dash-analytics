@@ -27,6 +27,11 @@ import java.util.Optional;
 @RequestMapping("/my-dashboard")
 public class DashboardController {
 
+    @GetMapping("/foo")
+    public String foo() {
+        return "INSIDE PROTECTED ENDPOINT";
+    }
+
 
     private final DashboardService dashboardService;
 
@@ -72,15 +77,15 @@ public class DashboardController {
     /**
      * Handles the creation of a new project by processing provided project details and an optional CSV file.
      *
-     * @param projectName The name of the project to be created.
-     * @param projectDescription A description of the project.
+     * @param projectTitle The name of the project to be created.
+     * @param datasetDescription A description of the project.
      /
      * @param csvFile An optional CSV file containing project data.
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
     @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectName,
-                                                 @RequestPart("project-description") String projectDescription,
+    public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectTitle,
+                                                 @RequestPart("project-description") String datasetDescription,
                                                  @RequestPart("column-descriptions") String columnDescriptions,
                                                  @RequestPart("csv-file") MultipartFile csvFile,
                                                  @RegisteredOAuth2AuthorizedClient("resource-access-client")
@@ -89,8 +94,8 @@ public class DashboardController {
         try {
 
             // Ensure request can be made by user
-            final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectName,
-                                                                                      projectDescription, columnDescriptions, csvFile);
+            final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectTitle,
+                                                                                      datasetDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
                 return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);

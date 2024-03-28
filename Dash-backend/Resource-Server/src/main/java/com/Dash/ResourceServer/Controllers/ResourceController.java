@@ -42,6 +42,7 @@ public class ResourceController {
     @GetMapping(value = "/all-projects/{userAccount}")
     public List<Project> getUserProjects(@PathVariable String userAccount) {
         try {
+            log.warn("heelo");
 
             return resourceService.getProjectsBelongingTo(userAccount);
 

@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -25,6 +27,9 @@ import org.springframework.security.oauth2.server.authorization.config.ClientSet
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -32,6 +37,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Slf4j
@@ -46,7 +53,16 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        return http.formLogin(Customizer.withDefaults()).build();
+
+        http.
+                exceptionHandling((exceptions) -> exceptions
+                        .defaultAuthenticationEntryPointFor(
+                                new LoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                        )
+                );
+
+        return http.build();
     }
 
     @Bean
@@ -60,8 +76,8 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://127.0.0.1/login/oauth2/code/Dash")
-                .redirectUri("http://127.0.0.1/authorized")
+                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/Dash")
+                .redirectUri("http://127.0.0.1:8080/authorized")
                 .scope(OidcScopes.OPENID)
                 .scope("api.read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -100,7 +116,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://auth-server:80").build();
+        return ProviderSettings.builder().issuer("http://auth-server:9000").build();
     }
 
 

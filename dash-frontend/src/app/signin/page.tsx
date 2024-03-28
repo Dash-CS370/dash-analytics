@@ -8,12 +8,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 export default function Signin() {
-    // true = signin; false = authenticate
-    let [signinState, setSigninState] = useState(true);
+    const [signinState, setSigninState] = useState(true); // true = signin; false = authenticate
 
-    const handleToggle: React.MouseEventHandler<HTMLButtonElement> = (
-        event,
-    ) => {
+    // Toggle between sign-in and activation views
+    const handleToggle = () => {
         setSigninState(!signinState);
     };
 
@@ -43,39 +41,32 @@ export default function Signin() {
                         </div>
 
                         <div className={styles.SignInTextStyle}>Sign In</div>
-                        <form
-                            action="http://auth-server:9000/login"
-                            method="post"
-                            className={styles.form}
+
+                        <PrimaryButton
+                            className={styles.buttonFormatGoogle}
+                            href="http://127.0.0.1:8080/oauth2/authorization/Dash"
+                            width="280px"
                         >
-                            <TextInput
-                                className={styles.textInput}
-                                defText="Enter Email"
-                                width="18rem"
-                                id="email"
-                            />
-                            <TextInput
-                                className={styles.textInput}
-                                defText="Enter Password"
-                                width="18rem"
-                                id="password"
-                                type="password"
-                            />
-                            <button
-                                className={styles.buttonFormat}
-                                type="submit"
-                            >
-                                Sign In
-                            </button>
-                        </form>
+                            <div className={styles.createAccountOptsFormat}>
+                                Login with Existing Account
+                                <Image
+                                    src="DashLogo.svg"
+                                    width="35"
+                                    height="33"
+                                    alt="Dash Logo"
+                                />
+                            </div>
+                        </PrimaryButton>
+
                         <div className={styles.lineFormat}>
                             <div className={styles.linePos} />
                             <p>or</p>
                             <div className={styles.linePos} />
                         </div>
+
                         <PrimaryButton
                             className={styles.buttonFormatGoogle}
-                            href="/login"
+                            href="http://127.0.0.1:8080/oauth2/authorization/google"
                             width="250px"
                         >
                             <div className={styles.createAccountOptsFormat}>
@@ -83,8 +74,40 @@ export default function Signin() {
                                 <Image
                                     src="google.svg"
                                     alt="Google Logo"
+                                    width="36"
+                                    height="37"
+                                />
+                            </div>
+                        </PrimaryButton>
+
+                        <PrimaryButton
+                            className={styles.buttonFormatGoogle}
+                            href="http://127.0.0.1:8080/oauth2/authorization/Microsoft"
+                            width="250px"
+                        >
+                            <div className={styles.createAccountOptsFormat}>
+                                Create Account Using
+                                <Image
+                                    src="microsoft.svg"
+                                    width="30"
+                                    height="30"
+                                    alt="Microsoft Logo"
+                                />
+                            </div>
+                        </PrimaryButton>
+
+                        <PrimaryButton
+                            className={styles.buttonFormatGoogle}
+                            href="http://127.0.0.1:8080/oauth2/authorization/github"
+                            width="250px"
+                        >
+                            <div className={styles.createAccountOptsFormat}>
+                                Create Account Using
+                                <Image
+                                    src="github.svg"
                                     width="35"
                                     height="35"
+                                    alt="Github Logo"
                                 />
                             </div>
                         </PrimaryButton>
