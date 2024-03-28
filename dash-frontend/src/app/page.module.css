@@ -36,19 +36,21 @@
 }
 
 .heroVideo {
+    position: absolute;
     object-fit: cover;
-    height: 25vw;
-    width: 100vh;
+    height: 28vw;
+    width: 110vh;
     transform: rotate(-90deg) translateY(280px);
     position: fixed;
     right: 0;
+    bottom: 20;
 }
 
 /* BUTTONS: SIGN UP & ABOUT */
 .heroBtns {
     display: flex;
     flex-direction: row;
-    gap: 50px;
+    gap: 2rem;
 }
 
 .btns {

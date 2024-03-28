@@ -1,0 +1,52 @@
+.thumbnail {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 150px;
+    height: 100px;
+    background: var(--background-contrast);
+    border-radius: 24px;
+    border: 1px solid;
+    border-color: var(--border);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 75%;
+    width: 15px;
+    height: 15px;
+}
+
+.graphContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+    white-space: normal;
+    overflow: auto;
+}
+
+.infoContainer h3 {
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+.infoContainer p {
+    font-size: 0.6rem;
+    margin: 0;
+    text-align: center;
+}

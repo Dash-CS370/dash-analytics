@@ -8,6 +8,10 @@
     border-radius: 12px;
 }
 
+.item.active {
+    background-color: var(--background-contrast);
+}
+
 .name {
     flex-grow: 1;
 }

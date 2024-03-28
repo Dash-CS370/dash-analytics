@@ -1,6 +1,5 @@
 .main {
     display: flex;
-    /* flex-direction: column; */
     height: 100%;
     width: 100%;
     background-color: var(--background);
@@ -10,13 +9,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 250px;
-    margin-top: 4rem; /* navbar height */
-    transition: margin-left 0.3s ease;
+    width: 100%;
+    height: calc(100% - var(--navbar-height));
+    margin-top: var(--navbar-height);
 }
 
 .title {
-    padding: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
 .horizontalLine {

@@ -12,21 +12,26 @@
         'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
     --background: #000;
+    --background-contrast: #212121;
     --on-background: #fff;
 
-    --primary: #5e0eb5;
+    --form-color: #d9d9d9;
+    --primary: #8b67c5;
+    --secondary: #048c6a;
+    --alternative: #1ae1af;
 
     --border: #9b9b9b;
 
     --navbar-height: 4rem;
 }
 
+/* 
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #fff;
         --on-background: #000;
     }
-}
+} */
 
 * {
     box-sizing: border-box;
