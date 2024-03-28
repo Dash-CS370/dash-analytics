@@ -23,6 +23,7 @@ export const NewProject: React.FC = () => {
 
         console.log(name, description);
 
+        // TODO
         async function fetchData() {
             const response = await fetch(
                 `http://127.0.0.1/api/gpt/${description}`,

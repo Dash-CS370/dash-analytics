@@ -37,7 +37,7 @@ spring:
             client-id: Dash-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
             client-name: Dash
 
@@ -52,7 +52,7 @@ spring:
             client-id: Dash-client
             client-secret: secret
             authorization-grant-type: client_credentials
-            redirect-uri: "http://127.0.0.1/authorized"
+            redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: api.read
             client-name: resource-access-client
 
@@ -62,21 +62,21 @@ spring:
             client-secret:
 
 
-          azure-ad:
-            client-id:
-            client-secret:
-            provider: azure
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/azure"
-            scope: openid
+          #azure-ad:
+            #client-id: cde8bc53-332c-4723-85c1-2d4278e8ee39
+            #client-secret: .cM8Q~45P9K80PYxk2_GBHR_tVe8MD9ztA_Jbaxj
+            #provider: azure
+            #authorization-grant-type: authorization_code
+            #redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
+            #scope: openid
 
         # These configurations help the Dashboard microservice establish secure connections with the OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.
 
         provider:
           spring:
-            issuer-uri: http://auth-server:80
-          azure:
-            issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
+            issuer-uri: http://auth-server:9000
+          #azure:
+            #issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
 
 
 

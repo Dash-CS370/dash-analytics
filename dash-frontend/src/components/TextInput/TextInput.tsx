@@ -10,13 +10,13 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const TextInput: React.FC<TextInputProps> = ({
-    width = '250px',
-    height = '50px',
-    defText = 'Enter Here',
-    textIndentation = '10px',
-    className,
-    ...props
-}) => {
+                                width = '250px',
+                                height = '50px',
+                                defText = 'Enter Here',
+                                textIndentation = '10px',
+                                className,
+                                ...props // Ready to be spread into the input element
+                            }) => {
     return (
         <input
             style={{
@@ -24,9 +24,9 @@ export const TextInput: React.FC<TextInputProps> = ({
                 height: height,
                 paddingLeft: textIndentation,
             }}
-            type="text"
             placeholder={defText}
             className={`${styles.inputField} ${className}`}
-        ></input>
+            {...props} // Spread the rest of the props here
+        />
     );
 };

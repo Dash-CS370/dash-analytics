@@ -34,7 +34,14 @@ public class SecurityConfig {
 
         http
             .csrf().disable()
-            .cors().disable()
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://auth-server"));
+                configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+                configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+                configuration.setAllowCredentials(true);
+                return configuration;
+            }))
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
@@ -42,7 +49,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://127.0.0.1/frontend/")
+                    .loginPage("http://127.0.0.1:3000/signin")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults());

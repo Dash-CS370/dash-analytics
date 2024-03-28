@@ -12,8 +12,6 @@ public enum DataOperations {
     CALCULATE_DELTA("CALCULATE_DELTA", "Calculates the change (delta) between consecutive rows in a specified column"),
     CALCULATE_PERCENT_CHANGE("CALCULATE_PERCENT_CHANGE", "Calculates the percentage change between consecutive rows in a specified column"),
     PERCENTAGE_OF_TOTAL("PERCENTAGE_OF_TOTAL", "Calculates percentages of the total for each row in a column"),
-    ADD_COLUMN_SUM("ADD_COLUMN_SUM", "Adds a new column with the sum of two specified columns"),
-    ADD_COLUMN_DIFFERENCE("ADD_COLUMN_DIFFERENCE", "Adds a new column with the difference between two specified columns"),
     DISCRETIZE_COLUMN("DISCRETIZE_COLUMN", "Splits a numerical column into bins or ranges, essential for histograms");
 
     private final String value;

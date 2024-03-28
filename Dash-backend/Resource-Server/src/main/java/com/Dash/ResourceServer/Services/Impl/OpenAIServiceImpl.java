@@ -9,8 +9,8 @@ import com.Dash.ResourceServer.Models.Widget;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,8 +41,8 @@ public class OpenAIServiceImpl implements OpenAIService {
 
 
     // TODO TEMP
-    @GetMapping
-    public void foo() {
+    @GetMapping("/{desc}")
+    public List<Widget> foo(@PathVariable String desc) {
         String projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
         // FIXME frontend must populate these strings for me this format
         List<String> columnDescriptions = List.of(
@@ -53,7 +53,8 @@ public class OpenAIServiceImpl implements OpenAIService {
                         "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors"
                 );
 
-        generateWidgetConfigs(projectDescription, columnDescriptions);
+        log.warn(desc);
+        return generateWidgetConfigs(projectDescription, columnDescriptions).get();
     }
 
 

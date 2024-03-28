@@ -9,25 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.security.web.server.csrf.ServerCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Slf4j
@@ -45,9 +31,10 @@ public class SecurityConfig {
             .authorizeRequests(authorizeRequests -> authorizeRequests
                     .antMatchers("/logout/user").permitAll()
                     .anyRequest().authenticated())
+            .csrf().disable()
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://127.0.0.1", "http://auth-server"));
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://auth-server:9000"));
                 configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
                 configuration.setAllowCredentials(true);
@@ -57,12 +44,24 @@ public class SecurityConfig {
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("http://127.0.0.1/frontend/")
+                    .logoutSuccessUrl("http://127.0.0.1:3000/start")
             )
-            .formLogin(withDefaults());
+            .formLogin(login -> login
+                    .loginPage("/login")
+                    .permitAll()
+            );
 
         return http.build();
     }
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.debug(false)
+                .ignoring()
+                .mvcMatchers("/webjars/**", "/images/**", "/css/**", "/assets/**", "/favicon.ico");
+    }
+
 
     @Autowired
     public void bindAuthenticationProvider(AuthenticationManagerBuilder authenticationManagerBuilder) {
