@@ -55,6 +55,8 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
+            log.warn(authorizedClient.getClientRegistration().getClientId());
+
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
             return projectList.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
