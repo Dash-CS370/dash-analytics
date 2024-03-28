@@ -22,8 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
-    private final CustomAuthenticationProvider authenticationProvider;
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -59,7 +59,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.debug(false)
                 .ignoring()
-                .mvcMatchers("/webjars/**", "/images/**", "/css/**", "/assets/**", "/favicon.ico");
+                .mvcMatchers("/webjars/**", "/images/**", "/css/**", "/public/**", "/favicon.ico");
     }
 
 

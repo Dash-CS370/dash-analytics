@@ -12,11 +12,3 @@
     font-size: small;
     text-align: center;
 }
-
-.baseForm hr {
-    width: 85%;
-    align-items: center;
-    height: 1.5px;
-    background-color: black;
-    border: none;
-}

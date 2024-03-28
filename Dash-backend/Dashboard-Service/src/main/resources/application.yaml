@@ -57,9 +57,9 @@ spring:
             client-name: resource-access-client
 
 
-          google:
-            client-id:
-            client-secret:
+          #google:
+            #client-id:
+            #client-secret:
 
 
           #azure-ad:

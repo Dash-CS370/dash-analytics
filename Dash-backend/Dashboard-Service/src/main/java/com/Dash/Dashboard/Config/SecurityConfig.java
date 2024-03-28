@@ -36,7 +36,7 @@ public class SecurityConfig {
             .csrf().disable()
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://auth-server"));
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000"));
                 configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
                 configuration.setAllowCredentials(true);
