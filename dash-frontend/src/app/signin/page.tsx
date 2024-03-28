@@ -76,7 +76,7 @@ export default function Signin() {
                                     src="google.svg"
                                     alt="Google Logo"
                                     width="36"
-                                    height="37"
+                                    height="38"
                                 />
                             </div>
                         </PrimaryButton>

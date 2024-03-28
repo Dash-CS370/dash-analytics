@@ -23,7 +23,8 @@ import java.util.List;
 public class SecurityConfig {
 
 
-    private final CustomAuthenticationProvider authenticationProvider;
+    @Autowired
+    private CustomAuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
