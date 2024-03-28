@@ -63,8 +63,8 @@ spring:
 
 
           #azure-ad:
-            #client-id: cde8bc53-332c-4723-85c1-2d4278e8ee39
-            #client-secret: .cM8Q~45P9K80PYxk2_GBHR_tVe8MD9ztA_Jbaxj
+            #client-id:
+            #client-secret:
             #provider: azure
             #authorization-grant-type: authorization_code
             #redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
