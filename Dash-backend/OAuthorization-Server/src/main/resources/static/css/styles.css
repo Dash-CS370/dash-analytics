@@ -43,7 +43,7 @@ html, body {
     align-items: center;
     padding: 1rem;
     width: 300px;
-    height: 425px;
+    height: 400px;
 }
 
 .login-form {
@@ -82,7 +82,7 @@ html, body {
     background-color: var(--primary);
     color: var(--on-background);
     border: 1px solid var(--border);
-    margin: 1rem 0;
+    margin-top: 1rem;
 }
 
 .form .button:hover {
@@ -111,12 +111,7 @@ html, body {
 }
 
 .forgotPass {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.forgotPass a {
     color: #000;
+    font-size: .8rem;
+    justify-self: right;
 }

@@ -56,14 +56,19 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({
                 {errorMessage !== '' && (
                     <div className={styles.errorMessage}>{errorMessage}</div>
                 )}
-                <PrimaryButton
-                    className={styles.submitButton}
-                    height="50px"
-                    onClick={handleCreateDashboard}
-                >
-                    Create Dashboard
-                </PrimaryButton>
+                <div style={{ height: '50px' }}>
+                    <PrimaryButton
+                        className={styles.submitButton}
+                        onClick={handleCreateDashboard}
+                    >
+                        Create Dashboard
+                    </PrimaryButton>
+                </div>
             </form>
+            <p className={styles.disclaimer}>
+                **Data visualizations are limited by the quality of the dataset.
+                By continuing, you are agreeing to our terms of use.
+            </p>
         </div>
     );
 };
