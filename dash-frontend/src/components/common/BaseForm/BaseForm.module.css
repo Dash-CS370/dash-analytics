@@ -8,6 +8,10 @@
     padding: 1rem;
 }
 
+.title {
+    margin-top: 0.25rem;
+}
+
 .baseForm p {
     font-size: small;
     text-align: center;

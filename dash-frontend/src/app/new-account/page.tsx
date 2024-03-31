@@ -3,7 +3,7 @@ import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 
-export default function CreateNewAccount() {
+export default function NewAccount() {
     return (
         <main className={styles.main}>
             <BaseForm title="Create New Account" width="400px" height="600px">

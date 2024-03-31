@@ -38,7 +38,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
             style={{ width: width, height: height }}
         >
             <Image src="DashLogo.svg" alt="Dash Logo" width="70" height="70" />
-            <h1>{title}</h1>
+            <h1 className={styles.title}>{title}</h1>
             {children}
         </div>
     );

@@ -1,22 +1,23 @@
-import styles from '@/app/create-account-opts/page.module.css';
+import styles from '@/app/create-account/page.module.css';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
+import { SecondaryButton } from '@/components/common/buttons/SecondaryButton/SecondaryButton';
 import Image from 'next/image';
 
-export default function CreateAccountOpts() {
+export default function CreateAccount() {
     return (
         <main className={styles.main}>
             <div className={styles.content}>
                 <BaseForm
                     title="Create Your Account"
                     width="425px"
-                    height="365px"
+                    height="375px"
                 >
                     <PrimaryButton
                         className={styles.buttonFormatOne}
-                        href="/create-new-account"
+                        href="/create-account"
                     >
-                        Create New Account
+                        Create Account
                     </PrimaryButton>
                     <div className={styles.lineFormat}>
                         <div className={styles.linePos} />
@@ -24,36 +25,36 @@ export default function CreateAccountOpts() {
                         <div className={styles.linePos} />
                     </div>
                     <div className={styles.signinOpts}>
-                        <PrimaryButton
+                        <SecondaryButton
                             className={styles.buttonFormatTwo}
                             href="/login"
                             width="300px"
                         >
                             <div className={styles.createAccountOptsFormat}>
-                                Create Account Using
+                                Create Account With
                                 <Image
                                     src="google.svg"
                                     alt="Google Logo"
-                                    width="35"
-                                    height="35"
+                                    width="30"
+                                    height="30"
                                 />
                             </div>
-                        </PrimaryButton>
-                        <PrimaryButton
+                        </SecondaryButton>
+                        <SecondaryButton
                             className={styles.buttonFormatTwo}
                             href="/login"
                             width="300px"
                         >
                             <div className={styles.createAccountOptsFormat}>
-                                Create Account Using
+                                Create Account With
                                 <Image
                                     src="microsoft.svg"
                                     alt="Microsoft Logo"
-                                    width="25"
-                                    height="25"
+                                    width="20"
+                                    height="20"
                                 />
                             </div>
-                        </PrimaryButton>
+                        </SecondaryButton>
                     </div>
                 </BaseForm>
             </div>
