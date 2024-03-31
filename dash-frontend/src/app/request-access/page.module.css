@@ -53,3 +53,9 @@
     background-color: var(--primary) !important;
     color: var(--on-background) !important;
 }
+
+.buttonFormat:hover {
+    background-color: var(--form-color) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+}
