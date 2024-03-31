@@ -208,7 +208,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 
-    // ASYNC
+    // TODO !!! ASYNC
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;

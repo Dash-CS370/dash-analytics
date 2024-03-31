@@ -42,8 +42,6 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
 
-    private String phoneNumber;
-
     @NotNull
     private Integer credits;
 

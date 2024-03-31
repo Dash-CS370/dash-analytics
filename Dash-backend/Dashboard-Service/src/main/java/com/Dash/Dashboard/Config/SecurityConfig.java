@@ -12,7 +12,10 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,7 +33,7 @@ public class SecurityConfig {
 
     // TODO
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
 
         http
             .csrf().disable()
@@ -45,21 +48,16 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
-            .antMatchers("/my-dashboard/**").authenticated() // Secured endpoints for authenticated users only
+            .antMatchers("/api/v1/password/**").permitAll()
+            .antMatchers("/api/v1/user/**").permitAll()
+            .antMatchers("/api/v1/dashboards/**").authenticated()
             .anyRequest().authenticated()
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://127.0.0.1:3000/signin")
+                    .loginPage("http://127.0.0.1:3000/start")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults());
-         /*
-            .sessionManagement(sessionManagement ->
-                sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create session if required
-                        .sessionFixation().newSession() // Protect against session fixation
-            );
-             */
 
         return http.build();
     }

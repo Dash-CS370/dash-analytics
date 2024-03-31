@@ -28,8 +28,6 @@ public class ResourceServiceImpl implements ResourceService {
     @Value("${application.bucket}")
     private String BUCKET;
 
-    private final static String S3URL = "https://dash-analytics-test.s3.amazonaws.com/";
-
     private final AmazonS3 amazonS3Client;
 
     @Autowired
@@ -121,7 +119,6 @@ public class ResourceServiceImpl implements ResourceService {
      */
     // TODO @Async > ?????????
     public Optional<Object> updateProjects(List<Project> projectsToUpdate) throws JsonProcessingException {
-        // UPDATE Project.json config file by adding/deleting/or modifying its widgets
 
         for (Project project : projectsToUpdate) {
             String projectConfigKey = project.getProjectConfigLink();

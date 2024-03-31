@@ -34,7 +34,6 @@ public class User implements UserDetails {
 
     private String lastName;
 
-
     @NotNull
     @NotEmpty
     @Indexed(unique = true)
@@ -43,8 +42,6 @@ public class User implements UserDetails {
     @NotNull
     @NotEmpty
     private String password;
-
-    private String phoneNumber;
 
     @NotNull
     private Integer credits;

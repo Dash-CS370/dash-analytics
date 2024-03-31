@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/api/v1/password")
 public class PasswordController {
 
 
@@ -31,7 +31,7 @@ public class PasswordController {
      * @return ResponseEntity indicating the outcome of the operation, with an appropriate message and HTTP status code.
      */
     @ResponseBody
-    @PostMapping(value ="/forgot-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value ="/reset", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> forgotPassword(@RequestPart("email") String userEmail) {
         try {
 
@@ -54,13 +54,13 @@ public class PasswordController {
      * @param passwordResetToken The token used to verify the password reset request.
      * @return A URL redirect string to the password reset page if the token is valid, to the forgot password page if invalid, or to an error page upon exception.
      */
-    @GetMapping(value ="/reset-password")
-    public String verifyPasswordResetToken(@RequestParam("reset-key") String passwordResetToken) {
+    @GetMapping(value ="/")
+    public String verifyPasswordResetToken(@RequestParam("reset-token") String passwordResetToken) {
         try {
 
-            // No need to check if user email / account exists
+            // No need to check if user email / account exists // TODO PASS TOKEN IN REQUEST
             return passwordService.verifyPasswordResetKey(passwordResetToken).map(
-                    s -> "redirect:https://www.dash-analytics.com/reset-password"
+                    s -> "redirect:https://www.dash-analytics.com/reset-password?token={passwordResetToken}"
             ).orElseGet(() -> "redirect:https://www.dash-analytics.com/forgot-password");
 
         } catch (Exception e) {
@@ -76,14 +76,14 @@ public class PasswordController {
      * Processes a password reset request by validating the reset token and comparing the new password entries for a match.
      * Consumes multipart/form-data for secure transmission of sensitive information.
      *
-     * @param passwordResetKey The token provided to the user for password reset verification.
+     * @param passwordResetToken The token provided to the user for password reset verification.
      * @param newPassword The new password provided by the user.
      * @param confirmedPassword The new password re-entered by the user for confirmation.
      * @return ResponseEntity with a success message or an error message, including the appropriate HTTP status code.
      */
     @ResponseBody
     @PostMapping(value = "/reset-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> resetPassword(@RequestPart("token") String passwordResetKey,
+    public ResponseEntity<String> resetPassword(@RequestPart("token") String passwordResetToken,
                                                 @RequestPart("new-password") String newPassword,
                                                 @RequestPart("confirmed-password") String confirmedPassword) {
         try {
@@ -92,7 +92,7 @@ public class PasswordController {
                 return new ResponseEntity<>("Passwords do not match ..." , HttpStatus.BAD_REQUEST);
             }
 
-            return passwordService.resetUserPassword(passwordResetKey, confirmedPassword);
+            return passwordService.resetUserPassword(passwordResetToken, confirmedPassword);
 
         } catch (Exception e) {
             return new ResponseEntity<>("Something went wrong ... " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -52,7 +52,7 @@ public class DashboardServiceImpl implements DashboardService {
         final String userAccount = extractUserDetails(oauth2User);
 
         // Encode url with username
-        final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1/resources/api/all-projects/{userAccount}")
+        final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/api/v1/resources/projects/{userAccount}")
                     .buildAndExpand(userAccount).toUriString();
 
         // Hit Resource Server
@@ -95,7 +95,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .build();
 
 
-        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1/resources/api/generate-project")
+        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/api/v1/resources/project")
                 .toUriString();
 
         MultipartBodyBuilder csvBuilder = new MultipartBodyBuilder();
@@ -127,7 +127,7 @@ public class DashboardServiceImpl implements DashboardService {
     public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1/resources/api/update-projects").toUriString();
+                .fromUriString("http://127.0.0.1:8081/api/v1/resources/projects").toUriString();
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
@@ -154,7 +154,7 @@ public class DashboardServiceImpl implements DashboardService {
         String userAccount = "user345@email.com"; // = extractUserDetails(oauth2User);
 
         final String deleteProjectUrl = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1/resources/api/delete-project")
+                .fromUriString("http://127.0.0.1:8081/api/v1/resources/project")
                 .queryParam("user-id", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();
@@ -176,13 +176,11 @@ public class DashboardServiceImpl implements DashboardService {
 
     // TODO - add Token attribute to User Entity
     public void verifyUserCreditCount(String userId) throws NotEnoughCreditsException {
-        if (true) return;
         userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
     }
 
     public static String extractUserDetails(OAuth2User oauth2User) {
         final CustomAuthUser customAuthUser = new CustomAuthUser(oauth2User);
-        //final CustomAuthUser customAuthUser = (CustomAuthUser) oauth2User;
         return customAuthUser.getEmail();
     }
 
