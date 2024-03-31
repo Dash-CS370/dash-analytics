@@ -27,6 +27,7 @@ export default function NewAccount() {
             form.elements.namedItem('confirmPassword') as HTMLInputElement
         ).value;
 
+        setErrorMessage('');
         if (!email || !username || !password || !confirmPassword) {
             let missingFields = [];
             if (!email) missingFields.push('Email');
@@ -43,9 +44,11 @@ export default function NewAccount() {
         }
 
         // TODO: send request to create account
+        // --> set error message if unsuccessful and return before redirecting
         console.log(email, username, password);
 
-        // TODO: if successful, redirect to login page
+        // redirect to signin options page
+        window.location.href = '/signin';
     };
 
     return (
