@@ -13,18 +13,10 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
-/* 
-.links {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    margin-right: 1rem;
-} */
-
-/* .account {
-    padding: 1.5rem;
-} */
+.dash {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
 
 .accountIcon {
     width: 25px;
