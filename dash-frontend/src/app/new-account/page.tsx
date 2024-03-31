@@ -44,6 +44,8 @@ export default function NewAccount() {
 
         // TODO: send request to create account
         console.log(email, username, password);
+
+        // TODO: if successful, redirect to login page
     };
 
     return (
