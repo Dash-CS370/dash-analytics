@@ -8,14 +8,8 @@ import { FC } from 'react';
 export const DisconnectedNavBar: FC = () => {
     return (
         <div className={styles.main}>
-            <Link href="/">
-                <Image
-                    src="/DashTitle.svg"
-                    alt="Dash Title"
-                    width={200}
-                    className={styles.dashTitle}
-                />
-            </Link>
+            <Link href="/">DASH</Link>
+            <Link href="/signin">Learn More</Link>
         </div>
     );
 };
