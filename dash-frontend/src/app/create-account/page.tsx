@@ -15,7 +15,7 @@ export default function CreateAccount() {
                 >
                     <PrimaryButton
                         className={styles.buttonFormatOne}
-                        href="/create-account"
+                        href="/new-account"
                     >
                         Create Account
                     </PrimaryButton>
