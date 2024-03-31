@@ -1,14 +1,36 @@
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
-import styles from '@/components/pages/dashboards/NewProject/NewProject.module.css';
-import { FiUpload } from 'react-icons/fi';
+import { useState } from 'react';
+import { getColumnInfo } from '@/components/dataPipeline/dataOperations/getColumnInfo';
+import { FileUpload } from './FileUpload';
+import { ColumnForm } from './ColumnForm';
+import { ProjectConfig } from '@/components/widgets/WidgetTypes';
+import { resolve } from 'path';
 
-// interface NewProjectProps {
-//     onUploadClick: () => void;
-//     titleAndDescription: (title: string, description: string) => void;
-// }
+export interface ColumnInfo {
+    colName: string;
+    dataType: string;
+    description: string;
+}
 
 export const NewProject: React.FC = () => {
+    const [descriptionLoaded, setDescriptionLoaded] = useState<boolean>(false); // handles transition from project description to column description
+    const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
+    const [file, setFile] = useState<File | null>(null); // csv file
+    const [columns, setColumns] = useState<ColumnInfo[]>([]); // column info from csv
+    const [description, setDescription] = useState<string>(''); // project description
+    const [projectName, setProjectName] = useState<string>(''); // project name
+
+    const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const f = event.target.files?.[0];
+        if (!f) {
+            return;
+        }
+        setFile(f);
+    };
+
     const handleNext = (e: React.FormEvent) => {
+        e.preventDefault();
+
         const form = document.getElementById(
             'nameAndDescription',
         ) as HTMLFormElement;
@@ -18,54 +40,133 @@ export const NewProject: React.FC = () => {
         const description = (
             form.elements.namedItem('projectDescription') as HTMLInputElement
         ).value;
+
+        if (!name || !description || !file) {
+            let missingFields = [];
+            if (!name) missingFields.push('Project Title');
+            if (!description) missingFields.push('Project Description');
+            if (!file) missingFields.push('.csv file');
+
+            setErrorMessage(
+                `The following fields are required: ${missingFields.join(
+                    ', ',
+                )}`,
+            );
+            return;
+        }
+        setErrorMessage(''); // clears previous messages
+
+        // set column info
+        getColumnInfo(file)
+            .then((result) => {
+                setColumns(result);
+            })
+            .catch((error) => {
+                console.error(error);
+                setErrorMessage('Error reading file');
+                return;
+            });
+
+        setProjectName(name);
+        setDescription(description);
+        setDescriptionLoaded(true);
     };
 
-    // TODO: work with george to get loaded file
-    // --> scan file in danfo, clean data, get column names and datatypes
-    const handleFileUpload = () => {};
+    const handleBackButton = () => {
+        setErrorMessage('');
+        setDescriptionLoaded(false);
+    };
+
+    const handleDescriptionChange = (index: number, value: string) => {
+        columns[index].description = value;
+    };
+
+    const handleCreateDashboard = (e: React.FormEvent) => {
+        e.preventDefault();
+        const form = document.getElementById(
+            'nameAndDescription',
+        ) as HTMLFormElement;
+        setErrorMessage(''); // clears previous messages
+        for (let i = 0; i < columns.length; i++) {
+            const description = (
+                document.getElementById(
+                    `projectDescription-${i}`,
+                ) as HTMLInputElement
+            ).value;
+            if (!description) {
+                setErrorMessage('All fields are required');
+                return;
+            }
+            columns[i].description = description;
+        }
+
+        gptCall(projectName, description, file as File, columns)
+            .then(() => {
+                console.log('Project created');
+            })
+            .catch((error) => {
+                console.error(error);
+                setErrorMessage(
+                    'Error creating project. Check your inputs and try again.',
+                );
+            });
+    };
+
+    if (descriptionLoaded) {
+        return (
+            <ColumnForm
+                columns={columns}
+                errorMessage={errorMessage}
+                handleDescriptionChange={handleDescriptionChange}
+                handleCreateDashboard={handleCreateDashboard}
+                handleBackButton={handleBackButton}
+            />
+        );
+    }
 
     return (
-        <div className={styles.content}>
-            <h1 className={styles.dashboardTitle}>New Dashboard</h1>
-            <div className={styles.horizontalLine} />
-
-            <h2 className={styles.uploadHeader}>Upload a CSV</h2>
-            <div className={styles.uploadContainer} onClick={handleFileUpload}>
-                <FiUpload className={styles.icon} />
-            </div>
-
-            <form id="nameAndDescription" className={styles.form}>
-                <label className={styles.formLabel} htmlFor="projectName">
-                    Project Name:
-                </label>
-                <input
-                    className={styles.formInput}
-                    type="text"
-                    id="projectName"
-                    name="projectName"
-                    required
-                />
-
-                <label
-                    className={styles.formLabel}
-                    htmlFor="projectDescription"
-                >
-                    Project Description:
-                </label>
-                <textarea
-                    className={styles.formDescription}
-                    id="projectDescription"
-                    name="projectDescription"
-                    required
-                />
-                <button
-                    type="submit"
-                    className={styles.submitButton}
-                    onClick={handleNext}
-                >
-                    Next
-                </button>
-            </form>
-        </div>
+        <FileUpload
+            handleFileSelect={handleFileSelect}
+            handleNext={handleNext}
+            file={file}
+            errorMessage={errorMessage}
+        />
     );
 };
+
+// TODO: move to next step, after columns have been described
+async function gptCall(
+    projectName: string,
+    projectDescription: string,
+    csvFile: File,
+    columns: ColumnInfo[],
+): Promise<ProjectConfig> {
+    const columnDesctiptions = columns.map(
+        (column) => `${column.colName}: ${column.description}`,
+    );
+
+    console.log(projectName);
+    console.log(projectDescription);
+    console.log(csvFile.name);
+    console.log(columns);
+
+    // const response = await fetch(
+    //     `http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`,
+    // );
+    // const result = await response.json();
+    // console.log(result);
+
+    // fetch(`http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`).then((response) => {
+    //  const result = await response.json();
+    //  console.log(response);
+    // })
+    // .catch((error) => {
+    //  console.error(error);
+    // });
+
+    return {
+        title: projectName,
+        id: '',
+        widgets: [],
+    };
+}

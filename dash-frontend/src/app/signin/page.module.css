@@ -29,10 +29,34 @@
     gap: 0.75rem;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-self: center;
+    justify-self: center;
+    gap: 0;
+}
+
+.form > * {
+    align-self: center;
+}
+
 .buttonFormat {
-    background-color: var(--primary) !important;
-    color: var(--on-background) !important;
-    margin-top: 1rem;
+    width: 250px;
+    height: 60px;
+    padding: 8px 20px;
+    border-radius: 12px;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--form-color);
+    align-self: center;
+}
+
+.buttonFormat:hover {
+    background-color: var(--form-color);
+    color: var(--primary);
+    transition: all 0.3s ease-out;
 }
 
 .buttonFormatGoogle {

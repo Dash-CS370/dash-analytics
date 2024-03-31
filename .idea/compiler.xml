@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Resource-Server" />
+        <module name="OAuthorization-Server" />
+        <module name="Eureka-Server" />
+        <module name="Dashboard-Service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Dash-Backend" target="1.5" />
+      <module name="Dashboard-Service (1)" target="17" />
+      <module name="Eureka-Server (1)" target="17" />
+      <module name="OAuthorization-Server (1)" target="17" />
+      <module name="OAuthorization-Server (2)" target="17" />
+      <module name="Resource-Server (1)" target="17" />
+      <module name="Resource-Server (2)" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Dash-Backend" options="" />
+      <module name="Dashboard-Service" options="" />
+    </option>
+  </component>
+</project>

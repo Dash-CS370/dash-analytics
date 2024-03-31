@@ -1,0 +1,97 @@
+server:
+  port: 8080
+
+
+spring:
+
+  application:
+    name: Dashboard-Service
+    default-start-credits: 100
+
+  data:
+    mongodb:
+      uri: mongodb+srv://gpmoral:gMC20002@dev-cluster.ul8671y.mongodb.net/?retryWrites=true&w=majority
+      database: Dash-Analytics
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
+  security:
+    oauth2:
+      client:
+        registration:
+
+          # Custom Client Registrations
+
+          # We define two custom client registrations: dash-client-oidc and dash-client-authorization-code
+          # Each registration is a set of credentials and configuration specific to a certain role or use case of your application.
+
+          # "api-client-oidc" is a custom name for a specific OAuth 2.0 client registration within your application.
+          # Scopes: openid: This line indicates that your application is requesting the "openid" scope.
+          # In OpenID Connect, the "openid" scope is used for AUTHENTICATION and includes the ability to obtain identity information about the user.
+
+          # OIDC protocol for user authentication
+          Dash:
+            provider: spring
+            client-id: ${DASH_CLIENT_ID}
+            client-secret: ${DASH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: Dash
+
+
+          # The api-client-authorization-code configuration is designed for interactions with a resource server to read data.
+          # Purpose: Used for interacting with a resource server to read data.
+          # Scopes: Includes a custom scope "api.read," signaling a request for read access to the resource server.
+
+          # Allows for interaction with an OAuth2 Resource Server to access specific resources
+          resource-access-client:
+            provider: spring
+            client-id: ${RESOURCE_CLIENT_ID}
+            client-secret: ${RESOURCE_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: api.read
+            client-name: resource-access-client
+
+
+<<<<<<< HEAD
+          #google:
+            #client-id:
+            #client-secret:
+=======
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+>>>>>>> c10d537dfe2aaf981e32000ea849378e6d0f845c
+
+
+          azure-ad:
+            client-id: ${AZURE_CLIENT_ID}
+            client-secret: ${AZURE_CLIENT_SECRET}
+            provider: azure
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
+            scope: openid
+
+        # These configurations help the Dashboard microservice establish secure connections with the OAuth 2.0 Authorization Server and potentially other resource servers, allowing it to authenticate users and access protected resources.
+
+        provider:
+          spring:
+            issuer-uri: http://auth-server:9000
+          azure:
+            issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+  instance:
+    hostname: localhost

@@ -1,5 +1,5 @@
 import styles from '@/app/start/page.module.css';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 
 export default function Start() {
     return (

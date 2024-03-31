@@ -4,7 +4,7 @@ import styles from '@/components/pages/dashboards/Sidebar/Sidebar.module.css';
 import React, { useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { ProjectListItem } from '@/components/pages/dashboards/Sidebar/ProjectListItem';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 
 interface SidebarProps {

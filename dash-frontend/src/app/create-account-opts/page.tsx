@@ -1,6 +1,6 @@
 import styles from '@/app/create-account-opts/page.module.css';
-import { BaseForm } from '@/components/BaseForm/BaseForm';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { BaseForm } from '@/components/common/BaseForm/BaseForm';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import Image from 'next/image';
 
 export default function CreateAccountOpts() {
