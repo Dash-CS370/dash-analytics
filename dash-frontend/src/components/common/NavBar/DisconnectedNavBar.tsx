@@ -9,7 +9,12 @@ export const DisconnectedNavBar: FC = () => {
     return (
         <div className={styles.main}>
             <Link className={styles.dash} href="/">
-                DASH
+                <Image
+                    src="/assets/dash.svg"
+                    alt="Dash"
+                    width="75"
+                    height="40"
+                />
             </Link>
             <Link className={styles.navLink} href="/signin">
                 Learn More
