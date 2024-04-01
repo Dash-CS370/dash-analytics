@@ -63,11 +63,12 @@ public class ResourceController {
         try {
 
             // Create Config with GPT API
-            Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
+            Optional<List<Widget>> widgets = Optional.empty();
+            //Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
 
             // Try one more time
             if (widgets.isEmpty()) {
-                widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
+                //widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
             }
 
             // TODO

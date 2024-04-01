@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 //@Service
 @RestController
 @RequestMapping("/api/gpt")
-public class OpenAIServiceImpl implements OpenAIService {
+public class OpenAIServiceImpl { //implements OpenAIService {
 
 
     @Value("${openai.model.version}")
@@ -39,7 +40,7 @@ public class OpenAIServiceImpl implements OpenAIService {
 
     // TODO TEMP
     @PostMapping("/{desc}")
-    public List<Widget> foo(@PathVariable String desc, @RequestBody List<String> columnDescriptions) {
+    public List<Widget> foo(@PathVariable String desc, @RequestBody HashMap<String, List<String>> columnDescriptions) throws Exception {
 
         String projectDescription;
 
@@ -48,15 +49,17 @@ public class OpenAIServiceImpl implements OpenAIService {
         else
             projectDescription = desc;
 
-        if (columnDescriptions.isEmpty()) {
+        if (columnDescriptions.keySet().size() == 1) {
             // FIXME frontend must populate these strings for me this format
-            columnDescriptions = List.of(
+            List<String> cols = List.of(
                     "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken, category: TEMPORAL",
                     "column-name: temperature, column-datatype: double, description: temperature readings of environment, category: NUMERICAL",
                     "column-name: pm10, column-datatype: double, description: concentration of particulate matter of size 10 mm or smaller, category: NUMERICAL",
                     "column-name: pm25, column-datatype: double, description: concentration of particulate matter of size 2.5 mm or smaller, category: NUMERICAL",
                     "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors, category: NUMERICAL"
             );
+
+            columnDescriptions.put("desc", cols);
         }
 
         return generateWidgetConfigs(projectDescription, columnDescriptions).get();
@@ -64,8 +67,7 @@ public class OpenAIServiceImpl implements OpenAIService {
 
 
 
-    //@PreAuthorize("permitAll()")
-    public Optional<List<Widget>> generateWidgetConfigs(String projectDescription, List<String> columnDescriptions) throws RuntimeException { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(String projectDescription, HashMap<String, List<String>> columnDescriptions) throws Exception { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -73,24 +75,23 @@ public class OpenAIServiceImpl implements OpenAIService {
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
                 " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."));
 
-        chatMessages.add(new ChatRequestSystemMessage("When selecting a graph type and applying data operations, it's essential to first verify the number and type of columns required to ensure the selected graph type is appropriate for your data. " +
-                "For instance, 'LINE_GRAPH' widgets require two or more columns to effectively depict changes over time or the relationships between variables, making it imperative that at least one of these columns provides a temporal (time-based) dimension to track these changes accurately. " +
-                "This requirement guarantees that each line graph can represent a distinct set of data, offering clear insights into how each series evolves over time. " +
-                "Graph types and the number of available columns must align; not all graph types or data operations will be suitable for every dataset, as the compatibility of column types varies." +
-                "Specifically, IF NONE OF THE PROVIDED COLUMNS ARE OF THE CATEGORY TEMPORAL, NEVER USE 'LINE_GRAPH' or any graph types designed primarily for time series analysis. Categories of data include NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER, " +
-                "and each plays a crucial role in determining the most appropriate graph type. Furthermore, creating widgets that do not logically align with the data type can lead to nonsensical visualizations. For example, applying 'LOGARITHMIC_SCALING' to a 'weight' column and visualizing it with a 'LINE_GRAPH' is not practical without a clear temporal axis." +
-                "Similarly, generating a 'HISTOGRAM' of 'patient_id' values may not provide meaningful insight, as 'patient_id' typically serves as an identifier rather than a numerical variable for distribution analysis." +
-                "Always match your data with the graph type and operations that will best highlight the underlying patterns and insights, ensuring the visualization is both logical and informative."));
-
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
+
+        chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
+                " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
+                " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
+                " data. Similarly, 'PIE_CHART' works best with at least one CATEGORICAL and one NUMERICAL column to show category proportions. For 'SCATTER_PLOT'," +
+                " use two NUMERICAL columns to analyze variable relationships. 'BAR_GRAPH' requires 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. " +
+                "'GAUGE_CHART', 'HISTOGRAM', and 'BOX_PLOT' need one NUMERICAL column each for effective visualization. Lastly, avoid nonsensical widgets by " +
+                " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data or creating a 'HISTOGRAM' of identifiers like 'patient_id'." +
+                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
+                " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
 
         chatMessages.add(new ChatRequestUserMessage(generatePrompt(projectDescription, columnDescriptions)));
 
 
         // Tool/FunctionCall definition with function alias
-        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                new FunctionDefinition("GenerateWidgetList"));
-
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(new FunctionDefinition("GenerateWidgetList"));
 
         // As part of the chat completion/response, set the tools attribute
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
@@ -109,7 +110,6 @@ public class OpenAIServiceImpl implements OpenAIService {
 
             List<ChatRequestMessage> followUpMessages = new ArrayList<>(chatMessages);
             followUpMessages.add(assistantMessage);
-            log.warn(followUpMessages.size() + "");
 
             for (ChatCompletionsToolCall toolCall : choice.getMessage().getToolCalls()) {
                 ChatCompletionsFunctionToolCall prepToolCall = (ChatCompletionsFunctionToolCall) toolCall;
@@ -119,7 +119,7 @@ public class OpenAIServiceImpl implements OpenAIService {
             }
 
             ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
-            ChatCompletions followUpChatCompletions = this.openAIClient.getChatCompletions(MODEL, followUpChatCompletionsOptions);
+            ChatCompletions followUpChatCompletions = this.openAIClient.getChatCompletions("gpt-4", followUpChatCompletionsOptions);
 
             if (followUpChatCompletions.getChoices().isEmpty()) {
                 throw new RuntimeException("Request for follow up Chat failed...");
@@ -137,7 +137,5 @@ public class OpenAIServiceImpl implements OpenAIService {
 
         return Optional.empty();
     }
-
-
 
 }

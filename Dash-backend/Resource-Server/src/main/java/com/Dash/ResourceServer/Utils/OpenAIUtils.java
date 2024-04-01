@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -22,7 +20,7 @@ public class OpenAIUtils {
 
 
     // TODO
-    public static String generatePrompt(String projectDescription, List<String> columnDescriptions) {
+    public static String generatePrompt(String projectDescription, HashMap<String, List<String>> columnDescriptions) {
 
         final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate 20 DISTINCT configuration options for graph " +
                                    "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
@@ -32,11 +30,19 @@ public class OpenAIUtils {
         // Add column descriptions to prompt
         prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
 
-        final String joinedDescriptions = String.join("\n", columnDescriptions);
+        String joinedDescriptions = "";
+        for (String columnDescription : columnDescriptions.get("desc")) {
+            joinedDescriptions += "\n" + columnDescription;
+        }
 
-        prompt += "\n" + joinedDescriptions;
+        prompt += joinedDescriptions;
+
+        prompt += "\n\nThe following are the first 5 rows of data from the CSV sheet. Be considerate of type of data that each row holds as well as the column names: \n";
+
+        prompt += columnDescriptions.get("csv");
 
         log.warn(prompt);
+
         return prompt;
     }
 
@@ -47,10 +53,10 @@ public class OpenAIUtils {
 
         // General context and list of graph types to choose from
         additionalContext =
-                "Each configuration option must include 'title', 'graph_type', 'widget_description', and 'column_operations'. " +
+                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'column_data_operations'. " +
                 "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
-                "The 'column_operations' maps required columns to their data operations, detailing how each column is processed to generate the graph." +
-                "For each widget, the graph_type REQUIREMENTS MUST BE MET and should ONLY be chosen from the following options (the string must match spelling and case):";
+                "The 'column_data_operations' maps required columns to their data operations, detailing how each column is processed to generate the graph." +
+                "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
 
         for (GraphType graphType : GraphType.values()) {
             additionalContext = additionalContext.concat(graphType.getValue() + ": " + graphType.getDescription() + ", ");
@@ -59,14 +65,14 @@ public class OpenAIUtils {
         // List data operations to choose from
         additionalContext += ". The data operations should be a list of strings that represent operations to perform on a column(s). " +
                 "These operations will manipulate the data to calculate more useful metrics to be graphed. " +
-                "The data operations should ONLY be chosen from the following options (the string must match spelling and case):";
+                "The data operations CAN ONLY be chosen from the following options (THE STRING MUST MATCH SPELLING AND CASE):";
 
         for (DataOperations dataOperation : DataOperations.values()) {
             additionalContext = additionalContext.concat(dataOperation.getValue() + ": " + dataOperation.getDescription() + ", ");
         }
 
         additionalContext += ". The column descriptions should include a list of strings that represent the category of represented data they fall under, given below"
-        + ". Use these descriptions and categories to better choose widget graphs and columns";
+        + ". Use these descriptions and categories to better choose Widget graphs and columns";
 
         // Column categories
         for (ColumnCategory columnCategory : ColumnCategory.values()) {
@@ -104,27 +110,33 @@ public class OpenAIUtils {
             if (potentialWidgets == null) return Optional.empty();
 
             // Filter widgets
-            filteredWidgets = potentialWidgets.stream()
-                    .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
-                    .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
-                    .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
-                    .filter(widget -> widget.getColumnOperations() != null)
-                    .filter(widget -> {
-                            boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnOperations().keySet().size() >= 2;
-                            boolean isSingleColumnGraph = List.of(GraphType.BOX_PLOT, GraphType.GAUGE_CHART, GraphType.HISTOGRAM).contains(widget.getGraphType()) && widget.getColumnOperations().keySet().size() >= 1;
-                            return isMultiColumnGraph || isSingleColumnGraph;
-                    })
-                    .collect(Collectors.toList());
+            filteredWidgets = filterWidgetList(potentialWidgets);
 
             return Optional.of(filteredWidgets);
 
         } catch (JsonProcessingException e) {
-            // parseIndividualWidgets(response); // TODO
+            // TODO return preset
             log.warn(e.getMessage());
             return Optional.empty();
         }
     }
 
+
+
+
+    public static List<Widget> filterWidgetList(List<Widget> widgets) {
+        return widgets.stream()
+                .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
+                .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
+                .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
+                .filter(widget -> widget.getColumnDataOperations() != null)
+                .filter(widget -> {
+                    boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
+                    boolean isSingleColumnGraph = List.of(GraphType.BOX_PLOT, GraphType.GAUGE_CHART, GraphType.HISTOGRAM).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 1;
+                    return isMultiColumnGraph || isSingleColumnGraph;
+                })
+                .collect(Collectors.toList());
+    }
 
 
     public static String widgetSchema() {
@@ -142,7 +154,7 @@ public class OpenAIUtils {
                 + "       \"widget_description\": {"
                 + "         \"type\": \"string\""
                 + "       },"
-                + "       \"column_operations\": {"
+                + "       \"column_data_operations\": {"
                 + "         \"type\": \"object\","
                 + "         \"additionalProperties\": {"
                 + "           \"type\": \"array\","
@@ -152,7 +164,7 @@ public class OpenAIUtils {
                 + "         }"
                 + "       }"
                 + "     },"
-                + "     \"required\": [\"title\", \"graph_type\", \"widget_description\", \"column_operations\"]"
+                + "     \"required\": [\"title\", \"graph_type\", \"widget_description\", \"column_data_operations\"]"
                 + "   }"
                 + "},"
                 + "\"required\": [\"widgets\"]"
