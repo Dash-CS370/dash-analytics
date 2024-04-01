@@ -16,7 +16,7 @@ export const DisconnectedNavBar: FC = () => {
                     height="40"
                 />
             </Link>
-            <Link className={styles.navLink} href="/signin">
+            <Link className={styles.navLink} href="/learn-more">
                 Learn More
             </Link>
         </div>
