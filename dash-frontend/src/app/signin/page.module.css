@@ -53,8 +53,8 @@
 }
 
 .toggleButtonFormat_SignIn_SignInView {
-    background-color: var(--primary);
-    color: var(--on-background);
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
     margin-right: -10px;
     z-index: 1;
     position: relative;
@@ -75,8 +75,8 @@
 }
 
 .toggleButtonFormat_Activate_ActivateView {
-    background-color: var(--primary);
-    color: var(--on-background);
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
     margin-left: -10px;
     z-index: 1;
     position: relative;
