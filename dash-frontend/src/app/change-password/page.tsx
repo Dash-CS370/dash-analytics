@@ -6,7 +6,7 @@ import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { useState } from 'react';
 
-export default function RequestAccess() {
+export default function ChangePassword() {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
