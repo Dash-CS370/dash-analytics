@@ -1,6 +1,6 @@
 package com.Dash.ResourceServer.Services.Impl;
 
-import com.Dash.ResourceServer.Services.OpenAIService;
+import com.Dash.ResourceServer.Models.RequestDTO;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
 import lombok.extern.slf4j.Slf4j;
@@ -39,17 +39,18 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
 
     // TODO TEMP
-    @PostMapping("/{desc}")
-    public List<Widget> foo(@PathVariable String desc, @RequestBody HashMap<String, List<String>> columnDescriptions) throws Exception {
+    @PostMapping()
+    public List<Widget> foo(@RequestBody RequestDTO dataDTO) throws Exception {
+        // DTO -> dataset | desc | csv
 
         String projectDescription;
 
-        if (desc.isEmpty() || desc.isBlank())
+        if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
             projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
         else
-            projectDescription = desc;
+            projectDescription = dataDTO.getDatasetDescription();
 
-        if (columnDescriptions.keySet().size() == 1) {
+        if (dataDTO.getColumnData() == null || dataDTO.getColumnData().isEmpty()) {
             // FIXME frontend must populate these strings for me this format
             List<String> cols = List.of(
                     "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken, category: TEMPORAL",
@@ -59,15 +60,15 @@ public class OpenAIServiceImpl { //implements OpenAIService {
                     "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors, category: NUMERICAL"
             );
 
-            columnDescriptions.put("desc", cols);
+            dataDTO.setColumnData(cols);
         }
 
-        return generateWidgetConfigs(projectDescription, columnDescriptions).get();
+        return generateWidgetConfigs(dataDTO).get();
     }
 
 
 
-    public Optional<List<Widget>> generateWidgetConfigs(String projectDescription, HashMap<String, List<String>> columnDescriptions) throws Exception { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) throws Exception { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -87,7 +88,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
                 " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
 
-        chatMessages.add(new ChatRequestUserMessage(generatePrompt(projectDescription, columnDescriptions)));
+        chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
 
 
         // Tool/FunctionCall definition with function alias

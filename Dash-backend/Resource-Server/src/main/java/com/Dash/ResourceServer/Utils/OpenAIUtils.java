@@ -20,7 +20,7 @@ public class OpenAIUtils {
 
 
     // TODO
-    public static String generatePrompt(String projectDescription, HashMap<String, List<String>> columnDescriptions) {
+    public static String generatePrompt(String projectDescription, List<String> columnDescriptions) {
 
         final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate 20 DISTINCT configuration options for graph " +
                                    "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
@@ -31,15 +31,16 @@ public class OpenAIUtils {
         prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
 
         String joinedDescriptions = "";
-        for (String columnDescription : columnDescriptions.get("desc")) {
+        for (String columnDescription : columnDescriptions) {
             joinedDescriptions += "\n" + columnDescription;
         }
 
         prompt += joinedDescriptions;
 
+        /*
         prompt += "\n\nThe following are the first 5 rows of data from the CSV sheet. Be considerate of type of data that each row holds as well as the column names: \n";
-
         prompt += columnDescriptions.get("csv");
+        */
 
         log.warn(prompt);
 
