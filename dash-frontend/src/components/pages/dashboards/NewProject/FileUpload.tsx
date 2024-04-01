@@ -46,7 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         {file == null ? (
                             <FiUpload className={styles.icon} />
                         ) : (
-                            <CiCircleCheck className={styles.icon} />
+                            <CiCircleCheck className={styles.check} />
                         )}
                     </div>
                     <p className={styles.fileType}>
