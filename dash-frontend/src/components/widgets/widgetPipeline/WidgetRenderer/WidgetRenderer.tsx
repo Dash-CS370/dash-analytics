@@ -8,6 +8,7 @@ const renderWidget = (
     isExpanded: boolean,
     onExpand: () => void,
     onTogglePin: () => void,
+    onEditTitle: (id: string, newTitle: string) => void,
 ) => {
     switch (config.graphType) {
         case 'bar_chart':
@@ -17,6 +18,7 @@ const renderWidget = (
                     isExpanded={isExpanded}
                     onExpand={onExpand}
                     onTogglePin={onTogglePin}
+                    onEditTitle={onEditTitle}
                 />
             );
         case 'line_graph':
@@ -26,6 +28,7 @@ const renderWidget = (
                     isExpanded={isExpanded}
                     onExpand={onExpand}
                     onTogglePin={onTogglePin}
+                    onEditTitle={onEditTitle}
                 />
             );
         default:
@@ -38,6 +41,7 @@ interface WidgetRendererProps {
     isExpanded: boolean;
     onExpand: () => void;
     onTogglePin: () => void;
+    onEditTitle: (id: string, newTitle: string) => void;
 }
 
 export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
@@ -45,6 +49,7 @@ export const WidgetRenderer: React.FC<WidgetRendererProps> = ({
     isExpanded = false,
     onExpand = () => {},
     onTogglePin = () => {},
+    onEditTitle = () => {},
 }) => {
-    return renderWidget(config, isExpanded, onExpand, onTogglePin);
+    return renderWidget(config, isExpanded, onExpand, onTogglePin, onEditTitle);
 };

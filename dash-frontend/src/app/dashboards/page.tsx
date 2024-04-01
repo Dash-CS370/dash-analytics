@@ -16,6 +16,11 @@ export default function Dashboards() {
     const [newProject, setNewProject] = useState<boolean>(true);
 
     // TODO: load initial projects from backend API
+    exampleProjects.forEach((project) => {
+        project.widgets.forEach((widget) => {
+            widget.id = `${project.id}-${widget.id}`;
+        });
+    });
     const [projects, setProjects] = useState<ProjectConfig[]>(exampleProjects);
     const [activeProject, setActiveProjectConfig] = useState<ProjectConfig>({
         title: '',
@@ -96,6 +101,26 @@ export default function Dashboards() {
         }
     };
 
+    // TODO: Add API interaction to update widget title
+    // TODO: fix functionality
+    const editWidgetTitle = (id: string, newTitle: string) => {
+        const newWidgets = activeProject.widgets.map((config) => {
+            if (config.id === id) {
+                return { ...config, title: newTitle };
+            }
+            return config;
+        });
+        const updatedActiveProject = { ...activeProject, widgets: newWidgets };
+        const updatedProjects = projects.map((project) => {
+            if (project.id === activeProject.id) {
+                return updatedActiveProject;
+            }
+            return project;
+        });
+        setActiveProject(updatedActiveProject);
+        setProjects(updatedProjects);
+    };
+
     // TODO: Add API interaction to delete project
     const deleteProject = (id: string) => {
         // TODO: API request to delete project from database
@@ -158,6 +183,7 @@ export default function Dashboards() {
                 <WidgetLayout
                     projectConfig={activeProject}
                     togglePinned={togglePinned}
+                    editWidgetTitle={editWidgetTitle}
                     fetchMoreWidgets={() => {}} // TODO: handle fetching more widget configs
                 />
             )}

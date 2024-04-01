@@ -21,6 +21,16 @@
     height: 500px;
     transition: width 0.5s, height 0.5s;
     z-index: 1001;
+    animation: expanded 0.3s ease-out;
+}
+
+@keyframes expanded {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .widgetCardHeader {
@@ -34,8 +44,26 @@
     border-radius: 24px 24px 0 0;
 }
 
-.widgetCardHeader h1 {
+.widgetTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.widgetTitle h1 {
     font-size: 1.5rem;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.editInput {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
 }
 
 .widgetHeaderButtons {
