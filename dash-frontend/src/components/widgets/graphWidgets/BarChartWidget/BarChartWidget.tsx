@@ -18,6 +18,7 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
     isExpanded = false,
     onExpand = () => {},
     onTogglePin = () => {},
+    onEditTitle = () => {},
 }) => {
     const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
     const xDataKey = keys.length > 0 ? keys[0] : '';
@@ -39,6 +40,7 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
             pinned={true}
             expanded={isExpanded}
             onExpand={onExpand}
+            onEditTitle={onEditTitle}
             onTogglePin={onTogglePin}
         >
             <ResponsiveContainer width="100%" height="100%">
