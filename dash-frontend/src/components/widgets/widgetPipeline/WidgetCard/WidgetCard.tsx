@@ -24,7 +24,7 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
 }) => {
     const [isExpanded, setIsExpanded] = React.useState(expanded);
     const toggleExpand = () => {
-        setIsExpanded(!isExpanded);
+        // setIsExpanded(!isExpanded);
         onExpand();
     };
 

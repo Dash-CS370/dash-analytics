@@ -2,14 +2,20 @@
 
 import styles from '@/app/dashboards/page.module.css';
 import { NavBar } from '@/components/common/NavBar';
+import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig, WidgetConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Dashboards() {
+    const searchParams = useSearchParams();
+    const activeProjectId = searchParams.get('activeProjectId');
+    const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+
     const [newProject, setNewProject] = useState<boolean>(true);
 
     // TODO: load initial projects from backend API
@@ -19,6 +25,21 @@ export default function Dashboards() {
         id: '',
         widgets: [],
     });
+
+    useEffect(() => {
+        if (activeProjectId) {
+            console.log(activeProjectId);
+            const project = projects.find(
+                (projectConfig) => projectConfig.id === activeProjectId,
+            );
+            if (project) {
+                // console.log(project);
+                setActiveProject(project);
+                setNewProject(false);
+            }
+        }
+        setPageLoaded(true);
+    }, [activeProjectId, projects]);
 
     const togglePinned = (id: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
@@ -80,6 +101,10 @@ export default function Dashboards() {
         setActiveProject(selectedProject);
         setNewProject(false);
     };
+
+    if (!pageLoaded) {
+        return <LoadingPage />;
+    }
 
     return (
         <main className={styles.main}>
