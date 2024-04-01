@@ -38,6 +38,12 @@
     margin: 1rem 0;
 }
 
+.subtext_top {
+    gap: 2rem;
+    font-size: small;
+    margin: 1rem 1.5rem;
+}
+
 .line {
     width: 80%;
     height: 1px;

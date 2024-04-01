@@ -46,14 +46,14 @@ export default function RequestNewPassword() {
                     height="450px"
                 >
                     {/* <form className={styles.form} id="request-form"> */}
-                    <p className={styles.subtext}>
+                    <p className={styles.subtext_top}>
                         Enter the email address linked with your account and
                         we'll send you a link to reset your password.
                     </p>
                     <TextInput
                         className={styles.textInput}
                         defText="Enter Email"
-                        width="300px"
+                        width="250px"
                         onKeyDown={handleEnterForEmail}
                         onChange={(event) => setEmail(event.target.value)}
                     />
