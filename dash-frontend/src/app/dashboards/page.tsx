@@ -8,11 +8,10 @@ import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig, WidgetConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Dashboards() {
-    const searchParams = new URLSearchParams();
-    const activeProjectId = searchParams.get('activeProjectId');
     const [pageLoaded, setPageLoaded] = useState<boolean>(false);
     const [newProject, setNewProject] = useState<boolean>(true);
 
@@ -23,6 +22,25 @@ export default function Dashboards() {
         id: '',
         widgets: [],
     });
+
+    const searchParams = useSearchParams();
+    const activeProjectId = searchParams.get('activeProjectId');
+    useEffect(() => {
+        console.log('useEffect');
+        console.log(activeProjectId);
+        if (activeProjectId) {
+            console.log(activeProjectId);
+            const project = projects.find(
+                (projectConfig) => projectConfig.id === activeProjectId,
+            );
+            if (project) {
+                setActiveProjectConfig(project);
+                setNewProject(false);
+            }
+        }
+        setPageLoaded(true);
+    }, [activeProjectId, projects]);
+
     const setActiveProject = (project: ProjectConfig) => {
         const searchParams = new URLSearchParams();
         if (!searchParams.has('activeProjectId')) {
@@ -47,21 +65,6 @@ export default function Dashboards() {
 
         setActiveProjectConfig(project);
     };
-
-    useEffect(() => {
-        if (activeProjectId) {
-            console.log(activeProjectId);
-            const project = projects.find(
-                (projectConfig) => projectConfig.id === activeProjectId,
-            );
-            if (project) {
-                // console.log(project);
-                setActiveProject(project);
-                setNewProject(false);
-            }
-        }
-        setPageLoaded(true);
-    });
 
     const togglePinned = (id: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
