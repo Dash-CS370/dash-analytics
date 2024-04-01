@@ -4,21 +4,78 @@ import styles from '@/app/signin/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { SigninButton } from '@/components/common/SigninButton/SigninButton';
+import { NavBar } from '@/components/common/NavBar';
+import { useSearchParams } from 'next/navigation';
+import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 
 export default function Signin() {
-    const [signinState, setSigninState] = useState(true); // true = signin; false = authenticate
+    const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+    const [signinState, toggleSigninState] = useState(true); // true = signin; false = authenticate
+    const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
+    const [activationKey, setActivationKey] = useState<string>(''); // activation key input
+
+    const setSigninState = (state: boolean) => {
+        const searchParams = new URL(window.location.href).searchParams;
+        if (!state) {
+            searchParams.set('activate', 'true');
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            toggleSigninState(state);
+            return;
+        }
+        // if state is true (indicates signin) and activate is true, delete activate from URL
+        const activate = searchParams.get('activate');
+        if (state && activate === 'true') {
+            const newUrl = `${window.location.pathname}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        toggleSigninState(state);
+    };
+
+    const searchParams = useSearchParams();
+    const activate = searchParams.get('activate');
+    useEffect(() => {
+        if (activate && activate === 'true') {
+            toggleSigninState(false);
+        } else {
+            toggleSigninState(true);
+        }
+        setPageLoaded(true);
+    }, [activate]);
 
     // Toggle between sign-in and activation views
     const handleToggle = () => {
         setSigninState(!signinState);
     };
 
+    const handleActivation = () => {
+        // handle empty activation key
+        if (activationKey === '') {
+            setErrorMessage('Activation key is required');
+            return;
+        }
+        setErrorMessage('');
+
+        // TODO: validate activation key, set error message if invalid
+        console.log(activationKey);
+
+        window.location.href = '/create-account'; // redirect to create account page (include activation key as arg if needed)
+    };
+
+    if (!pageLoaded) {
+        return <LoadingPage />;
+    }
+
     // signin
     if (signinState) {
         return (
             <main className={styles.main}>
+                <NavBar connected={false} />
+
                 <div className={styles.content}>
                     <BaseForm width="425px" height="530px">
                         <div className={styles.toggleButtonStyle}>
@@ -40,77 +97,52 @@ export default function Signin() {
                             </PrimaryButton>
                         </div>
 
-                        <div className={styles.SignInTextStyle}>Sign In</div>
+                        <h1 className={styles.SignInTitle}>Sign In</h1>
 
-                        <PrimaryButton
-                            className={styles.buttonFormatGoogle}
+                        <SigninButton
+                            className={styles.signinWithDash}
+                            buttonText="Login with"
                             href="http://127.0.0.1:8080/oauth2/authorization/Dash"
-                            width="280px"
-                        >
-                            <div className={styles.createAccountOptsFormat}>
-                                Login with Existing Account
-                                <Image
-                                    src="DashLogo.svg"
-                                    width="35"
-                                    height="33"
-                                    alt="Dash Logo"
-                                />
-                            </div>
-                        </PrimaryButton>
+                            imgSrc="assets/DashLogo.svg"
+                            alt="Dash Logo"
+                            imgWidth={30}
+                            imgHeight={30}
+                        />
 
                         <div className={styles.lineFormat}>
-                            <div className={styles.linePos} />
+                            <div className={styles.line} />
                             <p>or</p>
-                            <div className={styles.linePos} />
+                            <div className={styles.line} />
                         </div>
 
-                        <PrimaryButton
-                            className={styles.buttonFormatGoogle}
-                            href="http://127.0.0.1:8080/oauth2/authorization/google"
-                            width="250px"
-                        >
-                            <div className={styles.createAccountOptsFormat}>
-                                Create Account Using
-                                <Image
-                                    src="google.svg"
-                                    alt="Google Logo"
-                                    width="36"
-                                    height="38"
-                                />
-                            </div>
-                        </PrimaryButton>
+                        <div className={styles.externalAccountOpts}>
+                            <SigninButton
+                                buttonText="Login with"
+                                href="http://127.0.0.1:8080/oauth2/authorization/google"
+                                imgSrc="assets/google.svg"
+                                alt="Google Logo"
+                                imgWidth={35}
+                                imgHeight={35}
+                            />
 
-                        <PrimaryButton
-                            className={styles.buttonFormatGoogle}
-                            href="http://127.0.0.1:8080/oauth2/authorization/Microsoft"
-                            width="250px"
-                        >
-                            <div className={styles.createAccountOptsFormat}>
-                                Create Account Using
-                                <Image
-                                    src="microsoft.svg"
-                                    width="30"
-                                    height="30"
-                                    alt="Microsoft Logo"
-                                />
-                            </div>
-                        </PrimaryButton>
+                            <SigninButton
+                                buttonText="Login with"
+                                href="http://127.0.0.1:8080/oauth2/authorization/Microsoft"
+                                imgSrc="assets/microsoft.svg"
+                                alt="Microsoft Logo"
+                                imgWidth={22.5}
+                                imgHeight={22.5}
+                            />
 
-                        <PrimaryButton
-                            className={styles.buttonFormatGoogle}
-                            href="http://127.0.0.1:8080/oauth2/authorization/github"
-                            width="250px"
-                        >
-                            <div className={styles.createAccountOptsFormat}>
-                                Create Account Using
-                                <Image
-                                    src="github.svg"
-                                    width="35"
-                                    height="35"
-                                    alt="Github Logo"
-                                />
-                            </div>
-                        </PrimaryButton>
+                            <SigninButton
+                                buttonText="Login with"
+                                href="http://127.0.0.1:8080/oauth2/authorization/github"
+                                imgSrc="assets/github.svg"
+                                alt="Github Logo"
+                                imgWidth={25}
+                                imgHeight={25}
+                            />
+                        </div>
                     </BaseForm>
                 </div>
             </main>
@@ -120,6 +152,8 @@ export default function Signin() {
     // authenticate
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <BaseForm width="425px" height="500px">
                     <div className={styles.toggleButtonStyle}>
@@ -141,22 +175,38 @@ export default function Signin() {
                         </PrimaryButton>
                     </div>
 
-                    <div className={styles.SignInTextStyle}>
-                        Activate Account
-                    </div>
+                    <h1 className={styles.SignInTitle}>Activate Account</h1>
                     <TextInput
                         className={styles.textInput}
+                        id="activation-key-input"
                         defText="Enter Activation Key"
-                        width="18rem"
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                handleActivation();
+                            }
+                        }}
+                        onChange={(event) =>
+                            setActivationKey(event.target.value)
+                        }
                     />
+                    {errorMessage === '' ? (
+                        <div className={styles.errorMessage}></div>
+                    ) : (
+                        <div className={styles.errorMessage}>
+                            {errorMessage}
+                        </div>
+                    )}
                     <PrimaryButton
                         className={styles.buttonFormat}
-                        href="/create-account-opts"
+                        onClick={handleActivation}
                         width="250px"
                     >
                         Use Activation Key
                     </PrimaryButton>
-                    <hr className={styles.lineFormat}></hr>
+                    <div
+                        className={styles.line}
+                        style={{ width: '75%', margin: '1rem 0' }}
+                    ></div>
                     <p className={styles.smallText}>
                         Don’t have an activation key? Request access here:
                     </p>

@@ -10,15 +10,18 @@ export const ConnectedNavBar: FC = () => {
     // -> clear user's account data from context/cookies
 
     return (
-        <div className={styles.main + ` ${styles.connected}`}>
+        <div className={styles.main}>
             <div className={styles.account}>
                 <Link href="/account">
                     <VscAccount className={styles.accountIcon} />
                 </Link>
             </div>
-            <div className={styles.logout}>
+            <div className={styles.right}>
+                <Link className={styles.navLink} href="/">
+                    Learn More
+                </Link>
                 <Link href="/">
-                    <IoLogOutOutline />
+                    <IoLogOutOutline className={styles.icon} />
                 </Link>
             </div>
         </div>

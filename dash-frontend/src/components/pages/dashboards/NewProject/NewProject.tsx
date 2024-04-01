@@ -52,6 +52,10 @@ export const NewProject: React.FC = () => {
                     ', ',
                 )}`,
             );
+
+            // save fields to avoid lost inputs
+            if (name) setProjectName(name);
+            if (description) setDescription(description);
             return;
         }
         setErrorMessage(''); // clears previous messages
@@ -129,6 +133,8 @@ export const NewProject: React.FC = () => {
             handleFileSelect={handleFileSelect}
             handleNext={handleNext}
             file={file}
+            projectName={projectName}
+            projectDescription={description}
             errorMessage={errorMessage}
         />
     );

@@ -1,9 +1,12 @@
 import styles from '@/app/start/page.module.css';
+import { NavBar } from '@/components/common/NavBar';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 
 export default function Start() {
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <div className={styles.titleContainer}>
                     <span className={styles.dash}>Dash</span>
