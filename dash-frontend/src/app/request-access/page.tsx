@@ -6,10 +6,12 @@ import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { useState } from 'react';
 import { NavBar } from '@/components/common/NavBar';
+import { CiCircleCheck } from 'react-icons/ci';
 
 export default function RequestAccess() {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [accessRequested, setAccessRequested] = useState<boolean>(false);
 
     const handleEnterForEmail = (
         event: React.KeyboardEvent<HTMLInputElement>,
@@ -33,10 +35,37 @@ export default function RequestAccess() {
             setEmail('');
             return;
         }
+        setErrorMessage('');
 
-        // TODO: send email to backend
+        // TODO: send email to backend, set error message if failed and return
         console.log(email);
+
+        setAccessRequested(true);
     };
+
+    if (accessRequested) {
+        return (
+            <main className={styles.main}>
+                <NavBar connected={false} />
+
+                <div className={styles.content}>
+                    <BaseForm
+                        title="Request Access"
+                        width="350px"
+                        height="450px"
+                    >
+                        <div className={styles.successContent}>
+                            <CiCircleCheck className={styles.check} />
+                            <p className={styles.successMessage}>
+                                Access requested successfully! You will receive
+                                an email with an activation key upon approval.
+                            </p>
+                        </div>
+                    </BaseForm>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className={styles.main}>
@@ -44,7 +73,6 @@ export default function RequestAccess() {
 
             <div className={styles.content}>
                 <BaseForm title="Request Access" width="350px" height="450px">
-                    {/* <form className={styles.form} id="request-form"> */}
                     <TextInput
                         className={styles.textInput}
                         defText="Enter Email"
@@ -75,7 +103,7 @@ export default function RequestAccess() {
                     <div className={styles.signinOpts}>
                         <PrimaryButton
                             className={styles.buttonFormat}
-                            href="/signin"
+                            href="/signin?activate=true"
                             width="150px"
                         >
                             Activate Account

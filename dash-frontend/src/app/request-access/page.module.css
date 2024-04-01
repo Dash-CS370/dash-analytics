@@ -59,3 +59,25 @@
     color: var(--primary) !important;
     border: 1px solid var(--primary) !important;
 }
+
+.successContent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+.check {
+    color: green;
+    font-size: 7rem;
+    margin-top: 1.5rem;
+}
+
+.successMessage {
+    font-size: 1rem !important;
+    line-height: 1.5rem;
+    width: 80%;
+    text-align: center;
+}

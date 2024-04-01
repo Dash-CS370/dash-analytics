@@ -26,10 +26,7 @@ export default function Dashboards() {
     const searchParams = useSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
     useEffect(() => {
-        console.log('useEffect');
-        console.log(activeProjectId);
         if (activeProjectId) {
-            console.log(activeProjectId);
             const project = projects.find(
                 (projectConfig) => projectConfig.id === activeProjectId,
             );

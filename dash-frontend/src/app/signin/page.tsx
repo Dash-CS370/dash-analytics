@@ -4,15 +4,28 @@ import styles from '@/app/signin/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { SigninButton } from '@/components/common/SigninButton/SigninButton';
 import { NavBar } from '@/components/common/NavBar';
+import { useSearchParams } from 'next/navigation';
 
 export default function Signin() {
+    const [pageLoaded, setPageLoaded] = useState<boolean>(false);
     const [signinState, setSigninState] = useState(true); // true = signin; false = authenticate
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
     const [activationKey, setActivationKey] = useState<string>(''); // activation key input
+
+    const searchParams = useSearchParams();
+    const activate = searchParams.get('activate');
+    useEffect(() => {
+        if (activate && activate === 'true') {
+            setSigninState(false);
+        } else {
+            setSigninState(true);
+        }
+        setPageLoaded(true);
+    }, [activate]);
 
     // Toggle between sign-in and activation views
     const handleToggle = () => {
