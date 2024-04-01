@@ -41,17 +41,17 @@ export default function Dashboards() {
     const setActiveProject = (project: ProjectConfig) => {
         const searchParams = new URLSearchParams();
         if (!searchParams.has('activeProjectId')) {
-            console.log('no activeProjectId');
             // if null, append to URL
             searchParams.append('activeProjectId', project.id);
             const newUrl = `${
                 window.location.pathname
             }?${searchParams.toString()}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
+            setActiveProjectConfig(project);
+            return;
         }
         const activeProjectId = searchParams.get('activeProjectId');
         if (activeProjectId !== project.id) {
-            console.log('activeProjectId is not null');
             // if different, update URL
             searchParams.set('activeProjectId', project.id);
             const newUrl = `${
@@ -59,7 +59,6 @@ export default function Dashboards() {
             }?${searchParams.toString()}`;
             window.history.pushState({ path: newUrl }, '', newUrl);
         }
-
         setActiveProjectConfig(project);
     };
 
