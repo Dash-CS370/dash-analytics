@@ -23,7 +23,26 @@
     height: 25px;
 }
 
-.logout {
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.right {
     /* padding: 1.5rem; */
-    font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navLink {
+    font-size: 1em;
+}
+
+.navLink:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-underline-offset: 0.5em;
 }

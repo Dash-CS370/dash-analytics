@@ -11,7 +11,9 @@ export const DisconnectedNavBar: FC = () => {
             <Link className={styles.dash} href="/">
                 DASH
             </Link>
-            <Link href="/signin">Learn More</Link>
+            <Link className={styles.navLink} href="/signin">
+                Learn More
+            </Link>
         </div>
     );
 };

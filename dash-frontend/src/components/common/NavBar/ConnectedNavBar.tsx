@@ -16,9 +16,12 @@ export const ConnectedNavBar: FC = () => {
                     <VscAccount className={styles.accountIcon} />
                 </Link>
             </div>
-            <div className={styles.logout}>
+            <div className={styles.right}>
+                <Link className={styles.navLink} href="/">
+                    Learn More
+                </Link>
                 <Link href="/">
-                    <IoLogOutOutline />
+                    <IoLogOutOutline className={styles.icon} />
                 </Link>
             </div>
         </div>
