@@ -50,7 +50,7 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                             />
                             {expandedWidgetId === config.id && (
                                 <WidgetRenderer
-                                    key={config.id}
+                                    key={`${config.id}-expanded`}
                                     config={config}
                                     isExpanded={true}
                                     onExpand={() => handleExpand(config.id)}

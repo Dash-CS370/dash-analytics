@@ -8,23 +8,45 @@ import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig, WidgetConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Dashboards() {
-    const searchParams = useSearchParams();
+    const searchParams = new URLSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
     const [pageLoaded, setPageLoaded] = useState<boolean>(false);
-
     const [newProject, setNewProject] = useState<boolean>(true);
 
     // TODO: load initial projects from backend API
     const [projects, setProjects] = useState<ProjectConfig[]>(exampleProjects);
-    const [activeProject, setActiveProject] = useState<ProjectConfig>({
+    const [activeProject, setActiveProjectConfig] = useState<ProjectConfig>({
         title: '',
         id: '',
         widgets: [],
     });
+    const setActiveProject = (project: ProjectConfig) => {
+        const searchParams = new URLSearchParams();
+        if (!searchParams.has('activeProjectId')) {
+            console.log('no activeProjectId');
+            // if null, append to URL
+            searchParams.append('activeProjectId', project.id);
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        const activeProjectId = searchParams.get('activeProjectId');
+        if (activeProjectId !== project.id) {
+            console.log('activeProjectId is not null');
+            // if different, update URL
+            searchParams.set('activeProjectId', project.id);
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+
+        setActiveProjectConfig(project);
+    };
 
     useEffect(() => {
         if (activeProjectId) {
@@ -39,7 +61,7 @@ export default function Dashboards() {
             }
         }
         setPageLoaded(true);
-    }, [activeProjectId, projects]);
+    });
 
     const togglePinned = (id: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
