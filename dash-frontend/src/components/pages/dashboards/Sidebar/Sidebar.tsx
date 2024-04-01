@@ -13,6 +13,7 @@ interface SidebarProps {
     editProjectName: (id: string, newName: string) => void;
     deleteProject: (id: string) => void;
     selectProject: (id: string) => void;
+    newProject: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -21,6 +22,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     editProjectName,
     deleteProject,
     selectProject,
+    newProject,
 }) => {
     const [isOpen, setIsOpen] = useState(true);
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -47,8 +49,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <PrimaryButton
                             width="215px"
                             height="60px"
-                            href="/dashboard"
                             className={styles.createProjectButton}
+                            onClick={newProject}
                         >
                             Create Project
                         </PrimaryButton>

@@ -123,6 +123,19 @@ export default function Dashboards() {
         setNewProject(false);
     };
 
+    const handleNewProject = () => {
+        setNewProject(true);
+        setActiveProjectConfig({
+            title: '',
+            id: '',
+            widgets: [],
+        });
+        const searchParams = new URLSearchParams();
+        searchParams.delete('activeProjectId');
+        const newUrl = `${window.location.pathname}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+    };
+
     if (!pageLoaded) {
         return <LoadingPage />;
     }
@@ -135,6 +148,7 @@ export default function Dashboards() {
                 editProjectName={editProjectName}
                 deleteProject={deleteProject}
                 selectProject={handleProjectSelection}
+                newProject={handleNewProject}
             />
             <NavBar connected={true} />
 
