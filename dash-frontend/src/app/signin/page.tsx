@@ -7,6 +7,7 @@ import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/Primary
 import { useState } from 'react';
 import Image from 'next/image';
 import { SigninButton } from '@/components/common/SigninButton/SigninButton';
+import { NavBar } from '@/components/common/NavBar';
 
 export default function Signin() {
     const [signinState, setSigninState] = useState(true); // true = signin; false = authenticate
@@ -36,6 +37,8 @@ export default function Signin() {
     if (signinState) {
         return (
             <main className={styles.main}>
+                <NavBar connected={false} />
+
                 <div className={styles.content}>
                     <BaseForm width="425px" height="530px">
                         <div className={styles.toggleButtonStyle}>
@@ -112,6 +115,8 @@ export default function Signin() {
     // authenticate
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <BaseForm width="425px" height="500px">
                     <div className={styles.toggleButtonStyle}>

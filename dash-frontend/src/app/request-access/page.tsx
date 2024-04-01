@@ -5,6 +5,7 @@ import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { useState } from 'react';
+import { NavBar } from '@/components/common/NavBar';
 
 export default function RequestAccess() {
     const [email, setEmail] = useState('');
@@ -39,6 +40,8 @@ export default function RequestAccess() {
 
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <BaseForm title="Request Access" width="350px" height="450px">
                     {/* <form className={styles.form} id="request-form"> */}

@@ -3,6 +3,7 @@
 import styles from '@/app/new-account/page.module.css';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
+import { NavBar } from '@/components/common/NavBar';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { useState } from 'react';
 
@@ -53,6 +54,8 @@ export default function NewAccount() {
 
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <BaseForm title="Create New Account" width="400px" height="560px">
                 <form id="createAccountForm" className={styles.content}>
                     <TextInput
