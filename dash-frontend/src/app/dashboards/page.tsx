@@ -92,7 +92,6 @@ export default function Dashboards() {
             />
             <NavBar connected={true} />
 
-            {/* TODO: useState that toggles between WidgetLayout and NewProject */}
             {newProject ? (
                 <NewProject />
             ) : (
