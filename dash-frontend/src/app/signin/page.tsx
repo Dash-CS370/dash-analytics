@@ -63,7 +63,7 @@ export default function Signin() {
                             className={styles.signinWithDash}
                             buttonText="Login with"
                             href="http://127.0.0.1:8080/oauth2/authorization/Dash"
-                            imgSrc="DashLogo.svg"
+                            imgSrc="assets/DashLogo.svg"
                             alt="Dash Logo"
                             imgWidth={30}
                             imgHeight={30}
@@ -79,7 +79,7 @@ export default function Signin() {
                             <SigninButton
                                 buttonText="Login with"
                                 href="http://127.0.0.1:8080/oauth2/authorization/google"
-                                imgSrc="google.svg"
+                                imgSrc="assets/google.svg"
                                 alt="Google Logo"
                                 imgWidth={35}
                                 imgHeight={35}
@@ -88,16 +88,16 @@ export default function Signin() {
                             <SigninButton
                                 buttonText="Login with"
                                 href="http://127.0.0.1:8080/oauth2/authorization/Microsoft"
-                                imgSrc="microsoft.svg"
+                                imgSrc="assets/microsoft.svg"
                                 alt="Microsoft Logo"
-                                imgWidth={25}
-                                imgHeight={25}
+                                imgWidth={22.5}
+                                imgHeight={22.5}
                             />
 
                             <SigninButton
                                 buttonText="Login with"
                                 href="http://127.0.0.1:8080/oauth2/authorization/github"
-                                imgSrc="github.svg"
+                                imgSrc="assets/github.svg"
                                 alt="Github Logo"
                                 imgWidth={25}
                                 imgHeight={25}

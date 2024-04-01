@@ -37,11 +37,10 @@
 .buttonFormat {
     width: 250px;
     height: 60px;
-    padding: 8px 20px;
     border-radius: 12px;
-    background-color: var(--primary);
-    border: 1px solid var(--primary);
-    color: var(--on-background);
+    background-color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+    color: var(--on-background) !important;
     align-self: center;
 }
 

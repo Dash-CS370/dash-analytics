@@ -33,7 +33,7 @@ export default function CreateAccount() {
                             <div className={styles.createAccountOptsFormat}>
                                 Create Account With
                                 <Image
-                                    src="google.svg"
+                                    src="assets/google.svg"
                                     alt="Google Logo"
                                     width="30"
                                     height="30"
@@ -48,7 +48,7 @@ export default function CreateAccount() {
                             <div className={styles.createAccountOptsFormat}>
                                 Create Account With
                                 <Image
-                                    src="microsoft.svg"
+                                    src="assets/microsoft.svg"
                                     alt="Microsoft Logo"
                                     width="20"
                                     height="20"
