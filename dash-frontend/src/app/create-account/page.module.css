@@ -19,7 +19,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 7px;
+    margin: 7px 0;
     color: black;
     width: 100%;
     gap: 0.25rem;
@@ -34,7 +34,7 @@
 .signinOpts {
     display: flex;
     flex-direction: column;
-    margin-top: auto;
+    margin: auto 0;
     gap: 0.75rem;
 }
 
@@ -42,12 +42,19 @@
     background-color: var(--primary) !important;
     color: var(--on-background) !important;
     margin: 0.75rem;
-    font-size: 17px;
+    font-size: 0.9em;
+}
+
+.buttonFormatOne:hover {
+    background-color: transparent !important;
+    color: var(--primary) !important;
+    border: var(--primary) 1px solid !important;
+    transition: all 0.3s ease;
 }
 
 .buttonFormatTwo {
-    background-color: #f0f0f0 !important;
-    color: var(--primary) !important;
+    border: var(--background) 1px solid !important;
+    color: var(--background) !important;
 }
 
 .createAccountOptsFormat {

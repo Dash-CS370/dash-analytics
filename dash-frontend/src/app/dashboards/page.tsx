@@ -2,23 +2,65 @@
 
 import styles from '@/app/dashboards/page.module.css';
 import { NavBar } from '@/components/common/NavBar';
+import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig, WidgetConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Dashboards() {
+    const [pageLoaded, setPageLoaded] = useState<boolean>(false);
     const [newProject, setNewProject] = useState<boolean>(true);
 
     // TODO: load initial projects from backend API
     const [projects, setProjects] = useState<ProjectConfig[]>(exampleProjects);
-    const [activeProject, setActiveProject] = useState<ProjectConfig>({
+    const [activeProject, setActiveProjectConfig] = useState<ProjectConfig>({
         title: '',
         id: '',
         widgets: [],
     });
+
+    const searchParams = useSearchParams();
+    const activeProjectId = searchParams.get('activeProjectId');
+    useEffect(() => {
+        if (activeProjectId) {
+            const project = projects.find(
+                (projectConfig) => projectConfig.id === activeProjectId,
+            );
+            if (project) {
+                setActiveProjectConfig(project);
+                setNewProject(false);
+            }
+        }
+        setPageLoaded(true);
+    }, [activeProjectId, projects]);
+
+    const setActiveProject = (project: ProjectConfig) => {
+        const searchParams = new URLSearchParams();
+        if (!searchParams.has('activeProjectId')) {
+            // if null, append to URL
+            searchParams.append('activeProjectId', project.id);
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            setActiveProjectConfig(project);
+            return;
+        }
+        const activeProjectId = searchParams.get('activeProjectId');
+        if (activeProjectId !== project.id) {
+            // if different, update URL
+            searchParams.set('activeProjectId', project.id);
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        setActiveProjectConfig(project);
+    };
 
     const togglePinned = (id: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
@@ -81,6 +123,10 @@ export default function Dashboards() {
         setNewProject(false);
     };
 
+    if (!pageLoaded) {
+        return <LoadingPage />;
+    }
+
     return (
         <main className={styles.main}>
             <Sidebar
@@ -92,7 +138,6 @@ export default function Dashboards() {
             />
             <NavBar connected={true} />
 
-            {/* TODO: useState that toggles between WidgetLayout and NewProject */}
             {newProject ? (
                 <NewProject />
             ) : (

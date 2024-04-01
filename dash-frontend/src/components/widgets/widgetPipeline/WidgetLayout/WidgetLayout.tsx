@@ -39,18 +39,23 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
             <h1 className={styles.dashboardTitle}>{projectConfig.title}</h1>
             <div className={styles.widgetGrid}>
                 {pinnedConfigs.map((config: WidgetConfig) => {
-                    const isExpanded = expandedWidgetId === config.id;
                     return (
                         <>
                             <WidgetRenderer
                                 key={config.id}
                                 config={config}
-                                isExpanded={isExpanded}
+                                isExpanded={false}
                                 onExpand={() => handleExpand(config.id)}
                                 onTogglePin={() => togglePinned(config.id)}
                             />
-                            {isExpanded && (
-                                <div className={styles.placeholder} />
+                            {expandedWidgetId === config.id && (
+                                <WidgetRenderer
+                                    key={`${config.id}-expanded`}
+                                    config={config}
+                                    isExpanded={true}
+                                    onExpand={() => handleExpand(config.id)}
+                                    onTogglePin={() => togglePinned(config.id)}
+                                />
                             )}
                         </>
                     );
