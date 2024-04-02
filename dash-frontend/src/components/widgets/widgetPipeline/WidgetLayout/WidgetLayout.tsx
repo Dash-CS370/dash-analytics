@@ -9,12 +9,14 @@ import { UnpinnedWidgets } from '../UnpinnedWidgets/UnpinnedWidgets';
 interface WidgetLayoutProps {
     projectConfig: ProjectConfig;
     togglePinned: (id: string) => void;
+    editWidgetTitle: (id: string, newTitle: string) => void;
     fetchMoreWidgets: () => void;
 }
 
 export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
     projectConfig,
     togglePinned,
+    editWidgetTitle,
     fetchMoreWidgets,
 }) => {
     const [expandedWidgetId, setExpandedWidgetId] = useState('');
@@ -47,6 +49,7 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                                 isExpanded={false}
                                 onExpand={() => handleExpand(config.id)}
                                 onTogglePin={() => togglePinned(config.id)}
+                                onEditTitle={editWidgetTitle}
                             />
                             {expandedWidgetId === config.id && (
                                 <WidgetRenderer
@@ -55,6 +58,7 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                                     isExpanded={true}
                                     onExpand={() => handleExpand(config.id)}
                                     onTogglePin={() => togglePinned(config.id)}
+                                    onEditTitle={editWidgetTitle}
                                 />
                             )}
                         </>

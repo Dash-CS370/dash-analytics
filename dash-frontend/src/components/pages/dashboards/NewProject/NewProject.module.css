@@ -72,6 +72,12 @@
     height: 25px;
 }
 
+.check {
+    width: 35px;
+    height: 35px;
+    color: green;
+}
+
 .form {
     display: flex;
     flex-direction: column;

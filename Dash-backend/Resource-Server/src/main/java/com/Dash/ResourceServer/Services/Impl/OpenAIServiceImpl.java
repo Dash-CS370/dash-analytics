@@ -9,6 +9,7 @@ import com.Dash.ResourceServer.Models.Widget;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 // FIXME -> SERVICE LAYER NOT API GATEWAY
 @Slf4j
 //@Service
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/gpt")
 public class OpenAIServiceImpl { //implements OpenAIService {
@@ -42,7 +44,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
     @PostMapping()
     public List<Widget> foo(@RequestBody RequestDTO dataDTO) {
         // DTO -> dataset | desc | csv
-
+        log.warn("HIT");
         String projectDescription;
 
         if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
@@ -81,11 +83,10 @@ public class OpenAIServiceImpl { //implements OpenAIService {
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
                 " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
-                " data. Similarly, 'PIE_CHART' works best with at least one CATEGORICAL and one NUMERICAL column to show category proportions. For 'SCATTER_PLOT'," +
-                " use two NUMERICAL columns to analyze variable relationships. 'BAR_GRAPH' requires 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. " +
-                "'GAUGE_CHART', 'HISTOGRAM', and 'BOX_PLOT' need one NUMERICAL column each for effective visualization. Lastly, avoid nonsensical widgets by " +
-                " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data or creating a 'HISTOGRAM' of identifiers like 'patient_id'." +
-                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
+                " data. 'BAR_GRAPH' requires 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. " +
+                "Lastly, avoid nonsensical widgets by " +
+                " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
+//                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
 
         chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));

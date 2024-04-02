@@ -11,7 +11,26 @@ export interface ColumnInfo {
     description: string;
 }
 
-export const NewProject: React.FC = () => {
+export interface NewProjectProps {
+    setActiveProject: (project: ProjectConfig) => void;
+    projects: ProjectConfig[];
+    setProjects: (projects: ProjectConfig[]) => void;
+    setNewProject: (newProject: boolean) => void;
+    gptCall: (
+        projectName: string,
+        projectDescription: string,
+        csvFile: File,
+        columns: ColumnInfo[],
+    ) => Promise<ProjectConfig>;
+}
+
+export const NewProject: React.FC<NewProjectProps> = ({
+    gptCall,
+    setActiveProject,
+    projects,
+    setProjects,
+    setNewProject,
+}) => {
     const [descriptionLoaded, setDescriptionLoaded] = useState<boolean>(false); // handles transition from project description to column description
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
     const [file, setFile] = useState<File | null>(null); // csv file
@@ -105,8 +124,11 @@ export const NewProject: React.FC = () => {
         }
 
         gptCall(projectName, description, file as File, columns)
-            .then(() => {
-                console.log('Project created');
+            .then((projectConfig) => {
+                console.log(projectConfig);
+                setActiveProject(projectConfig);
+                setProjects([...projects, projectConfig]);
+                setNewProject(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -139,40 +161,3 @@ export const NewProject: React.FC = () => {
         />
     );
 };
-
-// TODO: move to next step, after columns have been described
-async function gptCall(
-    projectName: string,
-    projectDescription: string,
-    csvFile: File,
-    columns: ColumnInfo[],
-): Promise<ProjectConfig> {
-    const columnDesctiptions = columns.map(
-        (column) => `${column.colName}: ${column.description}`,
-    );
-
-    console.log(projectName);
-    console.log(projectDescription);
-    console.log(csvFile.name);
-    console.log(columns);
-
-    // const response = await fetch(
-    //     `http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`,
-    // );
-    // const result = await response.json();
-    // console.log(result);
-
-    // fetch(`http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`).then((response) => {
-    //  const result = await response.json();
-    //  console.log(response);
-    // })
-    // .catch((error) => {
-    //  console.error(error);
-    // });
-
-    return {
-        title: projectName,
-        id: '',
-        widgets: [],
-    };
-}
