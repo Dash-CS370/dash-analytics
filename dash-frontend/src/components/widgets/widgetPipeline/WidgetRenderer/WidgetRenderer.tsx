@@ -10,22 +10,24 @@ const renderWidget = (
     onTogglePin: () => void,
 ) => {
     switch (config.graphType) {
-        case 'bar_chart':
+        case 'BAR_GRAPH':
             return (
                 <BarChartWidget
                     config={config}
                     isExpanded={isExpanded}
                     onExpand={onExpand}
                     onTogglePin={onTogglePin}
+                    onEditTitle={() => {}}
                 />
             );
-        case 'line_graph':
+        case 'LINE_GRAPH':
             return (
                 <LineGraphWidget
                     config={config}
                     isExpanded={isExpanded}
                     onExpand={onExpand}
                     onTogglePin={onTogglePin}
+                    onEditTitle={() => {}}
                 />
             );
         default:

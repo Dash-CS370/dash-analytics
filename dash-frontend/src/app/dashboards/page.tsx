@@ -153,7 +153,12 @@ export default function Dashboards() {
             <NavBar connected={true} />
 
             {newProject ? (
-                <NewProject />
+                <NewProject
+                    setActiveProject={setActiveProject}
+                    projects={projects}
+                    setProjects={setProjects}
+                    setNewProject={setNewProject}
+                />
             ) : (
                 <WidgetLayout
                     projectConfig={activeProject}

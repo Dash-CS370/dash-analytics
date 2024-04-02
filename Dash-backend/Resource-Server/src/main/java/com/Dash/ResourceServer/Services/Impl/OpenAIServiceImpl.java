@@ -75,7 +75,8 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
         // Add context via system message
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
-                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."));
+                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."
+                + "ONLY RETURN JSON OBJECTS/STRINGS. DO NOT ADD COMMENTS OR ANNOTATIONS."));
 
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
 

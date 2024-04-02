@@ -12,7 +12,19 @@ export interface ColumnInfo {
     description: string;
 }
 
-export const NewProject: React.FC = () => {
+export interface NewProjectProps {
+    setActiveProject: (project: ProjectConfig) => void;
+    projects: ProjectConfig[];
+    setProjects: (projects: ProjectConfig[]) => void;
+    setNewProject: (newProject: boolean) => void;
+}
+
+export const NewProject: React.FC<NewProjectProps> = ({
+    setActiveProject,
+    projects,
+    setProjects,
+    setNewProject,
+}) => {
     const [descriptionLoaded, setDescriptionLoaded] = useState<boolean>(false); // handles transition from project description to column description
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
     const [file, setFile] = useState<File | null>(null); // csv file
@@ -106,8 +118,10 @@ export const NewProject: React.FC = () => {
         }
 
         fetchWidgetConfigs(projectName, description, file as File, columns)
-            .then(() => {
-                console.log('Project created');
+            .then((projectConfig) => {
+                setActiveProject(projectConfig);
+                setProjects([...projects, projectConfig]);
+                setNewProject(false);
             })
             .catch((error) => {
                 console.error(error);
