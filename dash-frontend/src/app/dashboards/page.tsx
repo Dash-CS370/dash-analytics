@@ -187,13 +187,6 @@ export default function Dashboards() {
 
             {newProject ? (
                 <NewProject
-                    gptCall={fetchWidgetConfigs}
-                    setActiveProject={setActiveProject}
-                    projects={projects}
-                    setProjects={setProjects}
-                    setNewProject={setNewProject}
-                />
-                <NewProject
                     setActiveProject={setActiveProject}
                     projects={projects}
                     setProjects={setProjects}

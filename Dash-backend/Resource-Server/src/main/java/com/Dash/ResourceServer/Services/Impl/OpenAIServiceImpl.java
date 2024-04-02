@@ -2,7 +2,9 @@ package com.Dash.ResourceServer.Services.Impl;
 
 import com.Dash.ResourceServer.Models.RequestDTO;
 import com.azure.ai.openai.OpenAIClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.*;
+import com.azure.core.credential.KeyCredential;
 import lombok.extern.slf4j.Slf4j;
 
 import com.Dash.ResourceServer.Models.Widget;
@@ -25,20 +27,15 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 //@Service
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/api/gpt")
 public class OpenAIServiceImpl { //implements OpenAIService {
 
 
+    @Value("${openai.credentials.secret-key}")
+    private String secretKey;
+
     @Value("${openai.model.version}")
     private String MODEL;
-
-    private final OpenAIClient openAIClient;
-
-    @Autowired
-    OpenAIServiceImpl(OpenAIClient openAIClient) {
-        this.openAIClient = openAIClient;
-    }
 
 
     // TODO TEMP
@@ -72,6 +69,9 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
 
     public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) { // TODO
+        OpenAIClient openAIClient = new OpenAIClientBuilder()
+                .credential(new KeyCredential(secretKey))
+                .buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
         chatCompletionsOptions.setTools(List.of(toolDefinition));
 
         // Instantiate the Chat Completion object with the model for gpt and the chat completions options
-        ChatCompletions chatCompletions = this.openAIClient.getChatCompletions(MODEL, chatCompletionsOptions);
+        ChatCompletions chatCompletions = openAIClient.getChatCompletions(MODEL, chatCompletionsOptions);
 
         ChatChoice choice = chatCompletions.getChoices().get(0);
 
@@ -127,7 +127,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
             }
 
             ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
-            ChatCompletions followUpChatCompletions = this.openAIClient.getChatCompletions("gpt-4", followUpChatCompletionsOptions);
+            ChatCompletions followUpChatCompletions = openAIClient.getChatCompletions("gpt-4", followUpChatCompletionsOptions);
 
             if (followUpChatCompletions.getChoices().isEmpty()) {
                 throw new RuntimeException("Request for follow up Chat failed...");
