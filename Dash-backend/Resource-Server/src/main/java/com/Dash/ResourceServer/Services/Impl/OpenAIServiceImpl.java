@@ -23,6 +23,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 @Slf4j
 //@Service
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/api/gpt")
 public class OpenAIServiceImpl { //implements OpenAIService {
 

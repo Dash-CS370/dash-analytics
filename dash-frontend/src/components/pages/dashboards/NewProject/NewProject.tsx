@@ -4,6 +4,7 @@ import { FileUpload } from './FileUpload';
 import { ColumnForm } from './ColumnForm';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 import { resolve } from 'path';
+import { fetchWidgetConfigs } from '../backendInteractions';
 
 export interface ColumnInfo {
     colName: string;
@@ -104,7 +105,7 @@ export const NewProject: React.FC = () => {
             columns[i].description = description;
         }
 
-        gptCall(projectName, description, file as File, columns)
+        fetchWidgetConfigs(projectName, description, file as File, columns)
             .then(() => {
                 console.log('Project created');
             })
@@ -139,40 +140,3 @@ export const NewProject: React.FC = () => {
         />
     );
 };
-
-// TODO: move to next step, after columns have been described
-async function gptCall(
-    projectName: string,
-    projectDescription: string,
-    csvFile: File,
-    columns: ColumnInfo[],
-): Promise<ProjectConfig> {
-    const columnDesctiptions = columns.map(
-        (column) => `${column.colName}: ${column.description}`,
-    );
-
-    console.log(projectName);
-    console.log(projectDescription);
-    console.log(csvFile.name);
-    console.log(columns);
-
-    // const response = await fetch(
-    //     `http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`,
-    // );
-    // const result = await response.json();
-    // console.log(result);
-
-    // fetch(`http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`).then((response) => {
-    //  const result = await response.json();
-    //  console.log(response);
-    // })
-    // .catch((error) => {
-    //  console.error(error);
-    // });
-
-    return {
-        title: projectName,
-        id: '',
-        widgets: [],
-    };
-}

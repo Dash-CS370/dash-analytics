@@ -112,7 +112,7 @@ public class OpenAIUtils {
         try {
             final List<Widget> potentialWidgets;
 
-            if (response.contains("widgets")) {
+            if (!response.contains("widgets")) {
                 String alt = response.substring(response.indexOf("["), response.lastIndexOf("]") + 1).strip();
                 potentialWidgets = objectMapper.readValue(alt, widgetListTypeReference);
             } else {
@@ -123,6 +123,7 @@ public class OpenAIUtils {
 
             // Filter widgets
             filteredWidgets = filterWidgetList(potentialWidgets);
+
 
             return Optional.of(filteredWidgets);
 
