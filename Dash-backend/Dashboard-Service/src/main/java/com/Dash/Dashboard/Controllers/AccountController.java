@@ -6,13 +6,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/vera/api")
+@RequestMapping("/api/v1/user")
 public class AccountController {
 
     private final AccountService accountService;
@@ -25,14 +32,16 @@ public class AccountController {
 
     /**
      * @param id
+     * @return
      */
-    @DeleteMapping("/delete-user")
-    public ResponseEntity<String> deleteUser(@RequestParam String id) {
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<User> getUserProfile(@PathVariable String id) {
         try {
-            Optional<String> deletionConfirmation = accountService.deleteUserById(id);
 
-            return deletionConfirmation.map(projects -> ResponseEntity.ok().body("Successfully deleted"))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+            final Optional<User> user = accountService.findUserById(id);
+
+            return user.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
+                    .body(projects)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -66,26 +75,56 @@ public class AccountController {
 
 
 
-    // TODO -> WORKS
     /**
-     *
      * @param id
-     * @return
      */
-    @GetMapping("/user-profile/{id}")
-   public ResponseEntity<User> getUserProfile(@PathVariable String id) {
+    @DeleteMapping("/account")
+    public ResponseEntity<String> deleteUserAccount(@RequestParam String id) {
         try {
+            Optional<String> deletionConfirmation = accountService.deleteUserById(id);
 
-            final Optional<User> user = accountService.findUserById(id);
-
-            return user.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
-                    .body(projects)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
-
+            return deletionConfirmation.map(projects -> ResponseEntity.ok().body("Successfully deleted"))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    
+
+
+
+    @GetMapping("/logout")
+    public void testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            session.invalidate();
+
+            final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            if (auth != null) {
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+                auth.setAuthenticated(false);
+                SecurityContextHolder.clearContext();
+                for (Cookie cookie : request.getCookies()) {
+                    String cookieName = cookie.getName();
+                    Cookie cookieToDelete = new Cookie(cookieName, null);
+                    log.info("cookie name = {}", cookieName);
+                    cookieToDelete.setPath(request.getContextPath() + "/");
+                    cookieToDelete.setMaxAge(0);
+                    response.addCookie(cookieToDelete);
+                }
+                SecurityContextHolder.getContext().setAuthentication(null);
+            }
+
+            response.sendRedirect("http://auth-server:9000/user/logout");
+
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+    }
+
+
+
 }
+

@@ -18,6 +18,7 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
     isExpanded = false,
     onExpand = () => {},
     onTogglePin = () => {},
+    onEditTitle = () => {},
 }) => {
     const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
     const xDataKey = keys.length > 0 ? keys[0] : '';
@@ -40,6 +41,7 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
             expanded={isExpanded}
             onExpand={onExpand}
             onTogglePin={onTogglePin}
+            onEditTitle={onEditTitle}
         >
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={config.data} width={500} height={300}>

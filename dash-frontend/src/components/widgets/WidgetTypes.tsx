@@ -21,6 +21,7 @@ export interface BaseGraphProps {
     isExpanded?: boolean;
     onExpand: () => void;
     onTogglePin: () => void;
+    onEditTitle: (id: string, newTitle: string) => void;
 }
 
 export interface BaseThumbnailProps {

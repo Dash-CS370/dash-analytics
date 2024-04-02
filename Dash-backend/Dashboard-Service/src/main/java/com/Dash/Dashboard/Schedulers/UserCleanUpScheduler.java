@@ -3,6 +3,7 @@ package com.Dash.Dashboard.Schedulers;
 import com.Dash.Dashboard.Entites.User;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -19,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 @EnableScheduling
 public class UserCleanUpScheduler {
 
+    @Autowired
     private final MongoTemplate userDAO;
 
     public UserCleanUpScheduler(@Qualifier("userMongoTemplate") MongoTemplate userDAO) {

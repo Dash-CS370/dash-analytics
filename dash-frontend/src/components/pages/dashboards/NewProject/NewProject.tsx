@@ -52,6 +52,10 @@ export const NewProject: React.FC = () => {
                     ', ',
                 )}`,
             );
+
+            // save fields to avoid lost inputs
+            if (name) setProjectName(name);
+            if (description) setDescription(description);
             return;
         }
         setErrorMessage(''); // clears previous messages
@@ -129,6 +133,8 @@ export const NewProject: React.FC = () => {
             handleFileSelect={handleFileSelect}
             handleNext={handleNext}
             file={file}
+            projectName={projectName}
+            projectDescription={description}
             errorMessage={errorMessage}
         />
     );
@@ -142,7 +148,8 @@ async function gptCall(
     columns: ColumnInfo[],
 ): Promise<ProjectConfig> {
     const columnDesctiptions = columns.map(
-        (column) => `${column.colName}: ${column.description}`,
+        (column) =>
+            `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.dataType}`,
     );
 
     console.log(projectName);
@@ -156,13 +163,29 @@ async function gptCall(
     // const result = await response.json();
     // console.log(result);
 
-    // fetch(`http://127.0.0.1/api/gpt/title=${projectName}&description=${projectDescription}&columns=${columns}`).then((response) => {
-    //  const result = await response.json();
-    //  console.log(response);
-    // })
-    // .catch((error) => {
-    //  console.error(error);
-    // });
+    fetch(`http://127.0.0.1/api/gpt/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            dataset_description: projectDescription,
+            column_data: columnDesctiptions,
+        }),
+    })
+        .then((response) => {
+            response
+                .json()
+                .then((data) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     return {
         title: projectName,

@@ -1,9 +1,12 @@
 import styles from '@/components/pages/dashboards/NewProject/NewProject.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { FiUpload } from 'react-icons/fi';
+import { CiCircleCheck } from 'react-icons/ci';
 
 interface FileUploadProps {
     file: File | null;
+    projectName: string;
+    projectDescription: string;
     errorMessage: string;
     handleFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleNext: (e: React.FormEvent) => void;
@@ -13,13 +16,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     handleFileSelect,
     handleNext,
     file,
+    projectName,
+    projectDescription,
     errorMessage,
 }) => {
     return (
         <div className={`${styles.content} ${styles.newDashboard}`}>
             <div className={styles.newProjectContainer}>
                 <h1>New Dashboard</h1>
-                <div className={styles.horizontalLine} />
+                <div className={styles.horizontalLine}></div>
 
                 <h2 className={styles.header}>Upload a CSV</h2>
 
@@ -38,7 +43,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                             onChange={handleFileSelect}
                             required
                         />
-                        <FiUpload className={styles.icon} />
+                        {file == null ? (
+                            <FiUpload className={styles.icon} />
+                        ) : (
+                            <CiCircleCheck className={styles.check} />
+                        )}
                     </div>
                     <p className={styles.fileType}>
                         {file != null
@@ -54,6 +63,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         type="text"
                         id="projectName"
                         name="projectName"
+                        defaultValue={projectName}
                         required
                     />
                     <label
@@ -66,6 +76,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                         className={styles.formDescription}
                         id="projectDescription"
                         name="projectDescription"
+                        defaultValue={projectDescription}
                         required
                     />
                     {errorMessage !== '' && (

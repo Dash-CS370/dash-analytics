@@ -4,14 +4,48 @@ import styles from '@/app/signin/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { SigninButton } from '@/components/common/SigninButton/SigninButton';
+import { NavBar } from '@/components/common/NavBar';
+import { useSearchParams } from 'next/navigation';
+import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 
 export default function Signin() {
-    const [signinState, setSigninState] = useState(true); // true = signin; false = authenticate
+    const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+    const [signinState, toggleSigninState] = useState(true); // true = signin; false = authenticate
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
     const [activationKey, setActivationKey] = useState<string>(''); // activation key input
+
+    const setSigninState = (state: boolean) => {
+        const searchParams = new URL(window.location.href).searchParams;
+        if (!state) {
+            searchParams.set('activate', 'true');
+            const newUrl = `${
+                window.location.pathname
+            }?${searchParams.toString()}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            toggleSigninState(state);
+            return;
+        }
+        // if state is true (indicates signin) and activate is true, delete activate from URL
+        const activate = searchParams.get('activate');
+        if (state && activate === 'true') {
+            const newUrl = `${window.location.pathname}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        toggleSigninState(state);
+    };
+
+    const searchParams = useSearchParams();
+    const activate = searchParams.get('activate');
+    useEffect(() => {
+        if (activate && activate === 'true') {
+            toggleSigninState(false);
+        } else {
+            toggleSigninState(true);
+        }
+        setPageLoaded(true);
+    }, [activate]);
 
     // Toggle between sign-in and activation views
     const handleToggle = () => {
@@ -32,10 +66,16 @@ export default function Signin() {
         window.location.href = '/create-account'; // redirect to create account page (include activation key as arg if needed)
     };
 
+    if (!pageLoaded) {
+        return <LoadingPage />;
+    }
+
     // signin
     if (signinState) {
         return (
             <main className={styles.main}>
+                <NavBar connected={false} />
+
                 <div className={styles.content}>
                     <BaseForm width="425px" height="530px">
                         <div className={styles.toggleButtonStyle}>
@@ -112,6 +152,8 @@ export default function Signin() {
     // authenticate
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <BaseForm width="425px" height="500px">
                     <div className={styles.toggleButtonStyle}>

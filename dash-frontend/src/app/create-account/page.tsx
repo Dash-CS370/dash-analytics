@@ -1,5 +1,6 @@
 import styles from '@/app/create-account/page.module.css';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
+import { NavBar } from '@/components/common/NavBar';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { SecondaryButton } from '@/components/common/buttons/SecondaryButton/SecondaryButton';
 import Image from 'next/image';
@@ -7,6 +8,8 @@ import Image from 'next/image';
 export default function CreateAccount() {
     return (
         <main className={styles.main}>
+            <NavBar connected={false} />
+
             <div className={styles.content}>
                 <BaseForm
                     title="Create Your Account"

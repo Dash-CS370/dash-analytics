@@ -3,6 +3,7 @@ package com.Dash.Dashboard.Controllers;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
+import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.DashboardService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +25,8 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/my-dashboard")
+@RequestMapping("/api/v1/dashboards")
 public class DashboardController {
-
-    @GetMapping("/foo")
-    public String foo() {
-        return "INSIDE PROTECTED ENDPOINT";
-    }
 
 
     private final DashboardService dashboardService;
@@ -55,7 +51,8 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            log.warn(authorizedClient.getClientRegistration().getClientId());
+            log.warn(oauth2User.getAttributes().toString());
+            log.warn(((CustomAuthUser)oauth2User).getAttributes().toString());
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
@@ -85,7 +82,7 @@ public class DashboardController {
      * @param csvFile An optional CSV file containing project data.
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
-    @PostMapping(value = "/create-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectTitle,
                                                  @RequestPart("project-description") String datasetDescription,
                                                  @RequestPart("column-descriptions") String columnDescriptions,
@@ -120,14 +117,13 @@ public class DashboardController {
 
     /**
      *
-     * @param projects
-     * @return
+     * @param projects List of projects that have been altered
+     * @return ResponseEntity containing confirmation of request success
      */
-    @PutMapping(value = "/update-projects", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/projects", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Object> updateProjects(@RequestBody List<Project> projects,
                                                  @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                 OAuth2AuthorizedClient authorizedClient,
-                                                 @AuthenticationPrincipal OAuth2User oauth2User) { // TODO - UNCOMMENT
+                                                 OAuth2AuthorizedClient authorizedClient) {
         try {
 
             final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
@@ -147,17 +143,17 @@ public class DashboardController {
 
     /**
      *
-     * @param projectId
-     * @return
+     * @param projectId Project identifier used to query and remove Object from S3
+     * @return Object confirming deletion
      */
-    @DeleteMapping(value = "/delete-project")
+    @DeleteMapping(value = "/project")
     public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId,
                                                 @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                OAuth2AuthorizedClient authorizedClient) {
-                                                //@AuthenticationPrincipal OAuth2User oauth2User) {
+                                                OAuth2AuthorizedClient authorizedClient,
+                                                @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(null, null, projectId);
+            Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
 
             if (projectDeletionConfirmation.isPresent() && projectDeletionConfirmation.get().endsWith("/")) {
                 return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
@@ -169,6 +165,12 @@ public class DashboardController {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @GetMapping("/test")
+    public String foo() {
+        return "INSIDE PROTECTED ENDPOINT";
     }
 
 

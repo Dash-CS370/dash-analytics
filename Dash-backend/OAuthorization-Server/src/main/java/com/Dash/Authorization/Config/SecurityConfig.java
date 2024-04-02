@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,9 +30,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeRequests(authorizeRequests -> authorizeRequests
-                    .antMatchers("/logout/user").permitAll()
-                    .anyRequest().authenticated())
-            .csrf().disable()
+                    .antMatchers("/user/logout").permitAll()
+                    .anyRequest().authenticated()
+            )
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://auth-server:9000"));
@@ -40,15 +41,8 @@ public class SecurityConfig {
                 configuration.setAllowCredentials(true);
                 return configuration;
             }))
-            .logout(logout -> logout
-                    .invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("http://127.0.0.1:3000/start")
-            )
             .formLogin(login -> login
-                    .loginPage("/login")
-                    .permitAll()
+                    .loginPage("/login").permitAll()
             );
 
         return http.build();
@@ -61,7 +55,6 @@ public class SecurityConfig {
                 .ignoring()
                 .mvcMatchers("/webjars/**", "/images/**", "/css/**", "/public/**", "/favicon.ico");
     }
-
 
     @Autowired
     public void bindAuthenticationProvider(AuthenticationManagerBuilder authenticationManagerBuilder) {

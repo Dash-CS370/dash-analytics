@@ -68,7 +68,6 @@ public class PasswordServiceImpl implements PasswordService {
                 passwordResetTokenDAO.findOne(new Query(Criteria.where("user").is(user.get())), PasswordResetToken.class)
         );
 
-
         final String resetPasswordKey;
 
         // Update the password reset token
@@ -180,6 +179,7 @@ public class PasswordServiceImpl implements PasswordService {
         try {
             final String url = "www.dash.com/reset-password?token=" + passwordResetKey;
 
+            // TODO
             taskExecutor.execute(() -> {
                 // Send email with link
                 log.warn("ASYNC");

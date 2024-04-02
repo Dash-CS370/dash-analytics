@@ -1,7 +1,5 @@
 package com.Dash.ResourceServer.Controllers;
 
-import com.Dash.ResourceServer.Models.DataOperations;
-import com.Dash.ResourceServer.Models.GraphType;
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
 import com.Dash.ResourceServer.Services.Impl.OpenAIServiceImpl;
@@ -13,13 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 @Slf4j
 @RestController
-@RequestMapping("/resources/api")
+@RequestMapping("/api/v1/resources")
 public class ResourceController {
 
     private final ResourceService resourceService;
@@ -39,11 +36,10 @@ public class ResourceController {
      * @param userAccount
      * @return
      */
-    @GetMapping(value = "/all-projects/{userAccount}")
+    @GetMapping(value = "/projects/{userAccount}")
     public List<Project> getUserProjects(@PathVariable String userAccount) {
         try {
-            log.warn("heelo");
-
+            log.warn("hello");
             return resourceService.getProjectsBelongingTo(userAccount);
 
         } catch (Exception e) {
@@ -61,53 +57,26 @@ public class ResourceController {
      * @param csvFile
      * @return
      */
-    @PostMapping(value = "/generate-project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Optional<Project> addProject(@RequestPart("template-project") Project project,
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
 
             // Create Config with GPT API
-            // final Optional<Project> generatedProjectConfig = openAPIService.generateProjectConfig(templateProject.getProjectDescription(), templateProject.getColumnDescriptions());
-            // final Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs();
+            Optional<List<Widget>> widgets = Optional.empty();
+            //Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
 
-            //if (widgets.isEmpty()) {
-            if (false) {
-                log.error("GPT API COULD NOT GENERATE CONFIGS");
-                return Optional.empty();
+            // Try one more time
+            if (widgets.isEmpty()) {
+                //widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
             }
 
-            //project.setWidgets(widgets.get());
-            project.setWidgets(
-                    List.of(
-                            new Widget("Graph 1",
-                                    GraphType.BAR_GRAPH,
-                                    "Trends between x values and y values over time",
-                                    Map.of(
-                                            "Column 1", List.of(DataOperations.STANDARDIZE, DataOperations.CALCULATE_DELTA),
-                                            "Column 2", List.of(DataOperations.ROLLING_AVERAGE, DataOperations.STANDARDIZE)
-                                          )
-                            ),
-                            new Widget("Graph 2",
-                                    GraphType.LINE_GRAPH,
-                                    "Trends between col 4 values and col 5 values over a month",
-                                    Map.of(
-                                            "Column 4", List.of(DataOperations.ADD_COLUMN_SUM)
-                                    )
-                            ),
-                            new Widget("Graph 3",
-                                    GraphType.BOX_PLOT,
-                                    "Trends between col 5 values and col 1 values over a month",
-                                    Map.of(
-                                            "Column 4", List.of(DataOperations.DISCRETIZE_COLUMN)
-                                    )
-                            )
-                    )
-            );
-
-            // FIXME -> ASYNC
-            resourceService.uploadProjectFiles(project, csvFile);
-
-            return Optional.of(project);
+            // TODO
+            return widgets.map(widgetList -> {
+                project.setWidgets(widgetList);
+                resourceService.uploadProjectFiles(project, csvFile);
+                return project;
+            });
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -120,7 +89,7 @@ public class ResourceController {
     /**
      * @return
      */
-    @PutMapping(value = "/update-projects")
+    @PutMapping(value = "/projects")
     public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
 
@@ -139,7 +108,7 @@ public class ResourceController {
      * @param projectId
      * @return
      */
-    @DeleteMapping(value = "/delete-project")
+    @DeleteMapping(value = "/project")
     public Optional<String> deleteProject(@RequestParam("user-id") String userId,
                                           @RequestParam("project-id") String projectId) {
         try {
@@ -157,7 +126,7 @@ public class ResourceController {
     /**
      * Delete the user ids directory Or everything inside the project (csv files and json config files)
      */
-    @DeleteMapping("/delete-user")
+    @DeleteMapping("/user")
     public Optional<String> deleteAllUserResources(@RequestParam String userId) {
         try {
 

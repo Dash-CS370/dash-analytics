@@ -91,7 +91,6 @@ public class AuthenticationController {
 
                 final String errorList = bindingResult.getAllErrors().toString();
 
-                // TODO -> FRONTEND DISPLAY OF SPECIFIC INCORRECT FIELDS
                 if (errorList.contains("password") || errorList.contains("email")) {
                     return new ResponseEntity<>("Password or Email fields are invalid ...", HttpStatus.BAD_REQUEST);
                 }

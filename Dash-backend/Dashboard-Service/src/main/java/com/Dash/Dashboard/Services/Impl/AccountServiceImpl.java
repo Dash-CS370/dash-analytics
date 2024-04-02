@@ -47,12 +47,12 @@ public class AccountServiceImpl implements AccountService {
     public Optional<String> deleteUserById(String id) {
         try {
             // TODO -> 2 steps -> remove from mongo AND delete resources from S3
-            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("email").is(id)), User.class);
+            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("id").is(id)), User.class);
 
             // MAKE HTTP request to Resource Server
             // call resource-server/delete-user/{userId} where userId is the email
             final String deleteUserUrl = UriComponentsBuilder // FIXME
-                    .fromUriString("http://127.0.0.1:8081/resources/api/delete-user")
+                    .fromUriString("http://127.0.0.1:8081/api/v1/resources/user")
                     .queryParam("userId", id)
                     .buildAndExpand().toUriString();
 
@@ -75,7 +75,6 @@ public class AccountServiceImpl implements AccountService {
 
 
 
-    // TODO - Works
     public boolean updateUserPassword(String id, String oldPassword, String newPassword) {
         try {
             Optional<User> queriedUser = Optional.ofNullable(userDAO.findById(id, User.class));
@@ -101,26 +100,6 @@ public class AccountServiceImpl implements AccountService {
             log.error("Error updating password for user with ID " + id, e);
             return false;
         }
-    }
-
-
-
-    // METHOD TO ADD USERS TO MONGO FOR TESTING
-    @PostConstruct
-    public void connectToMongo() {
-        if (true) return;
-
-        User user = User.builder().
-                firstName("First name").
-                lastName("last name").
-                email("email").
-                password("passwrd").
-                phoneNumber("+13525755579").
-                enabled(false).
-                creationDate(new Date()).
-                build();
-
-        userDAO.insert(user);
     }
 
 

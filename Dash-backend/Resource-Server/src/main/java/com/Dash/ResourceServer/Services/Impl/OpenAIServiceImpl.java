@@ -1,6 +1,6 @@
 package com.Dash.ResourceServer.Services.Impl;
 
-import com.Dash.ResourceServer.Services.OpenAIService;
+import com.Dash.ResourceServer.Models.RequestDTO;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +9,10 @@ import com.Dash.ResourceServer.Models.Widget;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +24,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 //@Service
 @RestController
 @RequestMapping("/api/gpt")
-public class OpenAIServiceImpl implements OpenAIService {
+public class OpenAIServiceImpl { //implements OpenAIService {
 
 
     @Value("${openai.model.version}")
@@ -41,26 +39,36 @@ public class OpenAIServiceImpl implements OpenAIService {
 
 
     // TODO TEMP
-    @GetMapping("/{desc}")
-    public List<Widget> foo(@PathVariable String desc) {
-        String projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
-        // FIXME frontend must populate these strings for me this format
-        List<String> columnDescriptions = List.of(
-                        "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken",
-                        "column-name: temperature, column-datatype: double, description: temperature readings of environment",
-                        "column-name: pm10, column-datatype: double, description: concentration of particulate matter of size 10 mm or smaller",
-                        "column-name: pm25, column-datatype: double, description: concentration of particulate matter of size 2.5 mm or smaller",
-                        "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors"
-                );
+    @PostMapping()
+    public List<Widget> foo(@RequestBody RequestDTO dataDTO) throws Exception {
+        // DTO -> dataset | desc | csv
 
-        log.warn(desc);
-        return generateWidgetConfigs(projectDescription, columnDescriptions).get();
+        String projectDescription;
+
+        if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
+            projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
+        else
+            projectDescription = dataDTO.getDatasetDescription();
+
+        if (dataDTO.getColumnData() == null || dataDTO.getColumnData().isEmpty()) {
+            // FIXME frontend must populate these strings for me this format
+            List<String> cols = List.of(
+                    "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken, category: TEMPORAL",
+                    "column-name: temperature, column-datatype: double, description: temperature readings of environment, category: NUMERICAL",
+                    "column-name: pm10, column-datatype: double, description: concentration of particulate matter of size 10 mm or smaller, category: NUMERICAL",
+                    "column-name: pm25, column-datatype: double, description: concentration of particulate matter of size 2.5 mm or smaller, category: NUMERICAL",
+                    "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors, category: NUMERICAL"
+            );
+
+            dataDTO.setColumnData(cols);
+        }
+
+        return generateWidgetConfigs(dataDTO).get();
     }
 
 
 
-    //@PreAuthorize("permitAll()")
-    public Optional<List<Widget>> generateWidgetConfigs(String projectDescription, List<String> columnDescriptions) throws RuntimeException { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) throws Exception { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -68,18 +76,23 @@ public class OpenAIServiceImpl implements OpenAIService {
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
                 " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."));
 
-        chatMessages.add(new ChatRequestSystemMessage("Using the GenerateWidgetList function, generate 15 DIFFERENT configuration options for graph " +
-                            "widgets based SOLELY on the User's dataset description and column descriptions"));
-
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
 
-        chatMessages.add(new ChatRequestUserMessage(generatePrompt(projectDescription, columnDescriptions)));
+        chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
+                " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
+                " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
+                " data. Similarly, 'PIE_CHART' works best with at least one CATEGORICAL and one NUMERICAL column to show category proportions. For 'SCATTER_PLOT'," +
+                " use two NUMERICAL columns to analyze variable relationships. 'BAR_GRAPH' requires 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. " +
+                "'GAUGE_CHART', 'HISTOGRAM', and 'BOX_PLOT' need one NUMERICAL column each for effective visualization. Lastly, avoid nonsensical widgets by " +
+                " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data or creating a 'HISTOGRAM' of identifiers like 'patient_id'." +
+                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
+                " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
+
+        chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
 
 
         // Tool/FunctionCall definition with function alias
-        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                new FunctionDefinition("GenerateWidgetList"));
-
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(new FunctionDefinition("GenerateWidgetList"));
 
         // As part of the chat completion/response, set the tools attribute
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
@@ -107,7 +120,7 @@ public class OpenAIServiceImpl implements OpenAIService {
             }
 
             ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
-            ChatCompletions followUpChatCompletions = this.openAIClient.getChatCompletions(MODEL, followUpChatCompletionsOptions);
+            ChatCompletions followUpChatCompletions = this.openAIClient.getChatCompletions("gpt-4", followUpChatCompletionsOptions);
 
             if (followUpChatCompletions.getChoices().isEmpty()) {
                 throw new RuntimeException("Request for follow up Chat failed...");
@@ -125,7 +138,5 @@ public class OpenAIServiceImpl implements OpenAIService {
 
         return Optional.empty();
     }
-
-
 
 }
