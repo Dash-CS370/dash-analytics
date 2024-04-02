@@ -1,5 +1,5 @@
 // Based on the Col's the User 'Throws Away' when Labeling Features & any Feature Renaming
-// Drop and then Save Final --> Upload to S3
+// Drop, Rename, and then Save Final --> Upload to S3
 
 // Takes in DF
 
@@ -24,3 +24,5 @@ export async function userClean(
         return finalClean;
     }
 }
+
+// Add Rename Functionality Here....
