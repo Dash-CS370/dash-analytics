@@ -40,7 +40,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
     // TODO TEMP
     @PostMapping()
-    public List<Widget> foo(@RequestBody RequestDTO dataDTO) throws Exception {
+    public List<Widget> foo(@RequestBody RequestDTO dataDTO) {
         // DTO -> dataset | desc | csv
 
         String projectDescription;
@@ -68,7 +68,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
 
 
-    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) throws Exception { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -78,6 +78,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
 
+        /*
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
                 " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
@@ -87,6 +88,9 @@ public class OpenAIServiceImpl { //implements OpenAIService {
                 " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data or creating a 'HISTOGRAM' of identifiers like 'patient_id'." +
                 " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
+        */
+
+        chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, focus on selecting graph types that match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', it's essential to have at least one TEMPORAL and one NUMERICAL column to effectively depict time-based changes or relationships. Ensure you have TEMPORAL data when using 'LINE_GRAPH'. 'BAR_GRAPH' benefits from having at least 1 CATEGORICAL column for labels and a NUMERICAL column for values, suitable for comparing different categories. Always align your data carefully with the chosen graph type for the most insightful visualizations."));
 
         chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
 

@@ -52,17 +52,27 @@ public class OpenAIUtils {
     public static String additionalSystemContext() {
         String additionalContext;
 
+        /*
         // General context and list of graph types to choose from
         additionalContext =
                 "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'column_data_operations'. " +
                 "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
                 "The 'column_data_operations' maps required columns to their data operations, detailing how each column is processed to generate the graph." +
                 "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
+        */
+
+        additionalContext =
+                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'columns'. " +
+                        "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
+                        "The 'columns' is a list of the required columns needed to generate a widget of the given graph type." +
+                        "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
 
         for (GraphType graphType : GraphType.values()) {
             additionalContext = additionalContext.concat(graphType.getValue() + ": " + graphType.getDescription() + ", ");
         }
 
+
+        /*
         // List data operations to choose from
         additionalContext += ". The data operations should be a list of strings that represent operations to perform on a column(s). " +
                 "These operations will manipulate the data to calculate more useful metrics to be graphed. " +
@@ -71,6 +81,7 @@ public class OpenAIUtils {
         for (DataOperations dataOperation : DataOperations.values()) {
             additionalContext = additionalContext.concat(dataOperation.getValue() + ": " + dataOperation.getDescription() + ", ");
         }
+        */
 
         additionalContext += ". The column descriptions should include a list of strings that represent the category of represented data they fall under, given below"
         + ". Use these descriptions and categories to better choose Widget graphs and columns";
@@ -130,17 +141,49 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
-                .filter(widget -> widget.getColumnDataOperations() != null)
-                .filter(widget -> {
-                    boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
-                    boolean isSingleColumnGraph = List.of(GraphType.BOX_PLOT, GraphType.GAUGE_CHART, GraphType.HISTOGRAM).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 1;
-                    return isMultiColumnGraph || isSingleColumnGraph;
-                })
+                //.filter(widget -> widget.getColumnDataOperations() != null)
+                .filter(widget -> widget.getColumns() != null)
+                //.filter(widget -> {
+                    //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
+                    //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
+                    //return isMultiColumnGraph || isSingleColumnGraph;
+                //})
                 .collect(Collectors.toList());
     }
 
 
+
     public static String widgetSchema() {
+        return "{"
+                + "\"type\": \"array\","
+                + "\"items\": {"
+                + "  \"type\": \"object\","
+                + "  \"properties\": {"
+                + "    \"title\": {"
+                + "      \"type\": \"string\""
+                + "    },"
+                + "    \"graph_type\": {"
+                + "      \"type\": \"string\""
+                + "    },"
+                + "    \"widget_description\": {"
+                + "      \"type\": \"string\""
+                + "    },"
+                + "    \"columns\": {"
+                + "      \"type\": \"array\","
+                + "      \"items\": {"
+                + "        \"type\": \"string\""
+                + "      }"
+                + "    }"
+                + "  },"
+                + "  \"required\": [\"title\", \"graph_type\", \"widget_description\", \"columns\"]"
+                + "}"
+                + "},"
+                + "\"required\": [\"widgets\"]"
+                + "}";
+    }
+
+
+    public static String realWidgetSchema() {
         return "{"
                 + "   \"type\": \"array\","
                 + "   \"items\": {"
