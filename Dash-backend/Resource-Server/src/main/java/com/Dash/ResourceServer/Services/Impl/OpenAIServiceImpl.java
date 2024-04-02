@@ -40,7 +40,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
     // TODO TEMP
     @PostMapping()
-    public List<Widget> foo(@RequestBody RequestDTO dataDTO) throws Exception {
+    public List<Widget> foo(@RequestBody RequestDTO dataDTO) {
         // DTO -> dataset | desc | csv
 
         String projectDescription;
@@ -68,7 +68,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
 
 
-    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) throws Exception { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) { // TODO
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
