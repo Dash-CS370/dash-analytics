@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -101,7 +102,7 @@ public class OpenAIUtils {
         try {
             final List<Widget> potentialWidgets;
 
-            if (response.contains("widgets")) {
+            if (!response.contains("widgets")) {
                 String alt = response.substring(response.indexOf("["), response.lastIndexOf("]") + 1).strip();
                 potentialWidgets = objectMapper.readValue(alt, widgetListTypeReference);
             } else {
@@ -109,10 +110,12 @@ public class OpenAIUtils {
             }
 
             if (potentialWidgets == null) return Optional.empty();
-
+            log.warn("AFTER FILTER SIZE: " + potentialWidgets.size() + "");
             // Filter widgets
             filteredWidgets = filterWidgetList(potentialWidgets);
+            log.warn("AFTER FILTER SIZE: " + filteredWidgets.size() + "");
 
+            //return Optional.of(objectMapper.writeValueAsString(filteredWidgets));
             return Optional.of(filteredWidgets);
 
         } catch (JsonProcessingException e) {
@@ -131,11 +134,11 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
                 .filter(widget -> widget.getColumnDataOperations() != null)
-                .filter(widget -> {
-                    boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
-                    boolean isSingleColumnGraph = List.of(GraphType.BOX_PLOT, GraphType.GAUGE_CHART, GraphType.HISTOGRAM).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 1;
-                    return isMultiColumnGraph || isSingleColumnGraph;
-                })
+                //.filter(widget -> {
+                  //  boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
+                    //boolean isSingleColumnGraph = List.of().contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 1;
+                    //return isMultiColumnGraph;// || isSingleColumnGraph;
+                //})
                 .collect(Collectors.toList());
     }
 
