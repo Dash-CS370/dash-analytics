@@ -7,7 +7,6 @@ import {
 import { ColumnInfo } from './NewProject/NewProject';
 import * as dfd from 'danfojs';
 
-// TODO: move to next step, after columns have been described
 export async function fetchWidgetConfigs(
     projectName: string,
     projectDescription: string,
@@ -29,37 +28,34 @@ export async function fetchWidgetConfigs(
     console.log(gptResponse);
 
     if (Array.isArray(gptResponse) && gptResponse.length != 0) {
-        for (let i = 0; i < gptResponse.length; i++) {
-            console.log(gptResponse[i]);
-        }
-        // const widgets = gptResponse.map((response, index) => {
-        //     console.log(`response: ${response}`);
+        const widgets = gptResponse.map((response, index) => {
+            console.log(
+                `graph: ${response.graph_type}, title: ${response.title}, description: ${response.widget_description}`,
+            );
 
-        //     const keys = Object.keys(response.column_data_operations);
-        //     console.log(`column keys: ${keys}`);
+            const data_df = df.loc({ columns: response.columns });
+            const data_json = dfd.toJSON(data_df);
+            if (data_json === undefined) {
+                throw new Error('Failed to convert DataFrame to JSON');
+            }
 
-        //     const data_df = df.iloc({ columns: keys });
-        //     const data_json = dfd.toJSON(data_df);
-        //     if (data_json === undefined) {
-        //         throw new Error('Failed to convert DataFrame to JSON');
-        //     }
-        //     console.log(data_json);
+            const rechartsData = data_json;
 
-        //     return {
-        //         title: response.title,
-        //         id: index.toString(),
-        //         graphType: response.graph_type,
-        //         pinned: true,
-        //         data: data_json,
-        //         description: response.widget_description,
-        //     };
-        // });
-        // console.log(widgets);
+            return {
+                title: response.title,
+                id: index.toString(),
+                graphType: response.graph_type,
+                pinned: true,
+                data: rechartsData as DataItem[],
+                description: response.widget_description,
+            };
+        });
+        console.log(widgets);
 
         return {
             title: projectName,
             id: projectName,
-            widgets: [],
+            widgets: widgets,
         };
     } else {
         throw new Error('Failed to fetch GPT response');
@@ -84,7 +80,8 @@ const fetchGPTResponse = async (
     if (resp.status !== 200) {
         throw new Error('Failed to fetch GPT response');
     }
-    const gptResponse = await resp.json();
+
+    const gptResponse: GPTResponse[] = await resp.json();
 
     return Promise.resolve(gptResponse);
 };

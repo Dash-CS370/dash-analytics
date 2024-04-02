@@ -55,6 +55,7 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
                             type="monotone"
                             dataKey={key}
                             stroke={colors[i % colors.length]}
+                            dot={false}
                         />
                     ))}
                 </LineChart>

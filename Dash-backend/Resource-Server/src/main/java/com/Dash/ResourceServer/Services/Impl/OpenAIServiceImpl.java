@@ -25,6 +25,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 //@Service
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/api/gpt")
 public class OpenAIServiceImpl { //implements OpenAIService {
 
@@ -76,10 +77,12 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
         // Add context via system message
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
-                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."));
+                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."
+                + "ONLY RETURN JSON OBJECTS/STRINGS. DO NOT ADD COMMENTS OR ANNOTATIONS."));
 
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
 
+        /*
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
                 " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
@@ -88,6 +91,9 @@ public class OpenAIServiceImpl { //implements OpenAIService {
                 " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
 //                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
+        */
+
+        chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, focus on selecting graph types that match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', it's essential to have at least one TEMPORAL and one NUMERICAL column to effectively depict time-based changes or relationships. Ensure you have TEMPORAL data when using 'LINE_GRAPH'. 'BAR_GRAPH' benefits from having at least 1 CATEGORICAL column for labels and a NUMERICAL column for values, suitable for comparing different categories. Always align your data carefully with the chosen graph type for the most insightful visualizations."));
 
         chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
 

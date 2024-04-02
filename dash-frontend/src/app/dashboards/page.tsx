@@ -193,6 +193,12 @@ export default function Dashboards() {
                     setProjects={setProjects}
                     setNewProject={setNewProject}
                 />
+                <NewProject
+                    setActiveProject={setActiveProject}
+                    projects={projects}
+                    setProjects={setProjects}
+                    setNewProject={setNewProject}
+                />
             ) : (
                 <WidgetLayout
                     projectConfig={activeProject}

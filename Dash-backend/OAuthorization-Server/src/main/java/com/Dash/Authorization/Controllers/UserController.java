@@ -32,7 +32,8 @@ public class UserController {
 
         final Cookie cookieWithSlash = new Cookie("JSESSIONID", null);
         cookieWithSlash.setPath(request.getContextPath() + "/");
-        cookieWithSlash.setDomain("auth-server");
+        //cookieWithSlash.setDomain("auth-server");
+        cookieWithSlash.setDomain("127.0.0.1");
         cookieWithSlash.setMaxAge(0);
         response.addCookie(cookieWithSlash);
 

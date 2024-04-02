@@ -3,7 +3,7 @@ export interface DataItem {
 }
 
 export interface GPTResponse {
-    column_data_operations: Record<string, string[]>; // TODO: change to map of string to array of strings
+    columns: string[]; // TODO: change to map of string to array of strings
     graph_type: string;
     title: string;
     widget_description: string;

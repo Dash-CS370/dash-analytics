@@ -4,6 +4,7 @@ import { FileUpload } from './FileUpload';
 import { ColumnForm } from './ColumnForm';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 import { resolve } from 'path';
+import { fetchWidgetConfigs } from '../backendInteractions';
 
 export interface ColumnInfo {
     colName: string;
@@ -16,16 +17,9 @@ export interface NewProjectProps {
     projects: ProjectConfig[];
     setProjects: (projects: ProjectConfig[]) => void;
     setNewProject: (newProject: boolean) => void;
-    gptCall: (
-        projectName: string,
-        projectDescription: string,
-        csvFile: File,
-        columns: ColumnInfo[],
-    ) => Promise<ProjectConfig>;
 }
 
 export const NewProject: React.FC<NewProjectProps> = ({
-    gptCall,
     setActiveProject,
     projects,
     setProjects,
@@ -123,9 +117,8 @@ export const NewProject: React.FC<NewProjectProps> = ({
             columns[i].description = description;
         }
 
-        gptCall(projectName, description, file as File, columns)
+        fetchWidgetConfigs(projectName, description, file as File, columns)
             .then((projectConfig) => {
-                console.log(projectConfig);
                 setActiveProject(projectConfig);
                 setProjects([...projects, projectConfig]);
                 setNewProject(false);
