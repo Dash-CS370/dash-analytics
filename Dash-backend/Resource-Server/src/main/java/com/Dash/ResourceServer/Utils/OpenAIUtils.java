@@ -8,8 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,12 +21,12 @@ public class OpenAIUtils {
 
 
     // TODO
-    public static String generatePrompt(String projectDescription, List<String> columnDescriptions) {
+    public static String generatePrompt(String datasetDescription, List<String> columnDescriptions) {
 
         final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate 20 DISTINCT configuration options for graph " +
                                    "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
 
-        String prompt = BASE_PROMPT + projectDescription;
+        String prompt = BASE_PROMPT + datasetDescription;
 
         // Add column descriptions to prompt
         prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
@@ -181,6 +181,7 @@ public class OpenAIUtils {
     }
 
 
+    // FIXME
     public static String realWidgetSchema() {
         return "{"
                 + "   \"type\": \"array\","

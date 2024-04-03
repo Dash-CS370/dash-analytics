@@ -1,4 +1,4 @@
-package com.Dash.ResourceServer.Services.Impl;
+package com.Dash.ResourceServer.Services.Impl.TempDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

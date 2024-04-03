@@ -1,15 +1,19 @@
 package com.Dash.ResourceServer.Services.Impl;
 
+import com.Dash.ResourceServer.Services.Impl.TempDTO.RequestDTO;
+import com.Dash.ResourceServer.Services.OpenAIService;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.*;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.exception.HttpResponseException;
+import io.netty.handler.timeout.TimeoutException;
 import lombok.extern.slf4j.Slf4j;
 
 import com.Dash.ResourceServer.Models.Widget;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +22,9 @@ import java.util.Optional;
 import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 
 
-// FIXME -> SERVICE LAYER NOT API GATEWAY
 @Slf4j
-//@Service
-@CrossOrigin(origins = "http://127.0.0.1:3000", allowCredentials = "true")
-@RestController
-@RequestMapping("/api/gpt")
-public class OpenAIServiceImpl { //implements OpenAIService {
-
+@Service
+public class OpenAIServiceImpl implements OpenAIService {
 
     @Value("${openai.credentials.secret-key}")
     private String secretKey;
@@ -34,41 +33,15 @@ public class OpenAIServiceImpl { //implements OpenAIService {
     private String MODEL;
 
 
-    // TODO TEMP
-    @PostMapping()
-    public List<Widget> foo(@RequestBody RequestDTO dataDTO) {
-        // DTO -> "dataset description" | "column descriptions"
-
-        if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
-            dataDTO.setDatasetDescription("My dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.");
-
-        if (dataDTO.getColumnData() == null || dataDTO.getColumnData().isEmpty()) {
-            // FIXME frontend must populate these strings for me this format
-            List<String> cols = List.of(
-                    "column-name: date, column-datatype: datetime object, description: hourly timestamps of when particulate matter readings were taken, category: TEMPORAL",
-                    "column-name: temperature, column-datatype: double, description: temperature readings of environment, category: NUMERICAL",
-                    "column-name: pm10, column-datatype: double, description: concentration of particulate matter of size 10 mm or smaller, category: NUMERICAL",
-                    "column-name: pm25, column-datatype: double, description: concentration of particulate matter of size 2.5 mm or smaller, category: NUMERICAL",
-                    "column-name: humidity, column-datatype: double, description: moistness of environment, measured by precipitation and other factors, category: NUMERICAL"
-            );
-
-            dataDTO.setColumnData(cols);
-        }
-
-        return generateWidgetConfigs(dataDTO).get();
-    }
-
-
-
-    public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) { // TODO
+    public Optional<List<Widget>> generateWidgetConfigs(String datasetDescription, List<String> columnDescriptions) {// TODO
 
         final OpenAIClient openAIClient = new OpenAIClientBuilder().credential(new KeyCredential(secretKey)).buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
         // Add context via system message
-        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS." +
-                " This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that ONLY RETURNS JSON OBJECTS/STRINGS."
+                + "This is to ensure that the responses can be easily parsed and used in applications. Please format your responses accordingly."
                 + "ONLY RETURN JSON OBJECTS/STRINGS. DO NOT ADD COMMENTS OR ANNOTATIONS."));
 
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
@@ -80,7 +53,7 @@ public class OpenAIServiceImpl { //implements OpenAIService {
                 " Lastly, avoid nonsensical widgets by ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
 
-        chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
+        chatMessages.add(new ChatRequestUserMessage(generatePrompt(datasetDescription, columnDescriptions)));
 
 
         // Tool/FunctionCall definition with function alias
@@ -123,12 +96,32 @@ public class OpenAIServiceImpl { //implements OpenAIService {
             if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
                 log.warn("\n" + followUpChoice.getMessage().getContent().strip());
                 return extractWidgets(followUpChoice.getMessage().getContent().strip());
-            } else {
-                log.warn(followUpChoice.getFinishReason().toString());
             }
         }
 
         return Optional.empty();
     }
+
+
+
+    public Optional<List<Widget>> attemptWidgetGenerationWithRetry(String datasetDescription, List<String> columnDescriptions, int retryCount) {
+        try {
+            return generateWidgetConfigs(datasetDescription, columnDescriptions);
+        }
+        catch (TimeoutException | HttpResponseException e) {
+            log.warn("Connection Error : " + e.getMessage());
+            if (retryCount > 0) {
+                log.warn("Attempting to retry OpenAI Client...");
+                return attemptWidgetGenerationWithRetry(datasetDescription, columnDescriptions, retryCount - 1);
+            } else {
+                log.error("Retries exhausted. Failing operation.");
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            log.warn("General Error : " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
 
 }

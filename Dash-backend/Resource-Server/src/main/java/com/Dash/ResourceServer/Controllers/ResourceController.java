@@ -2,7 +2,7 @@ package com.Dash.ResourceServer.Controllers;
 
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
-import com.Dash.ResourceServer.Services.Impl.OpenAIServiceImpl;
+import com.Dash.ResourceServer.Services.OpenAIService;
 import com.Dash.ResourceServer.Services.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,14 @@ import java.util.Optional;
 @RequestMapping("/api/v1/resources")
 public class ResourceController {
 
+    private final Integer DEFAULT_RETRY_COUNT = 1;
+
     private final ResourceService resourceService;
 
-    private final OpenAIServiceImpl openAIService;
+    private final OpenAIService openAIService;
 
     @Autowired
-    ResourceController(ResourceService resourceService, OpenAIServiceImpl openAIService) {
+    ResourceController(ResourceService resourceService, OpenAIService openAIService) {
         this.resourceService = resourceService;
         this.openAIService = openAIService;
     }
@@ -63,18 +65,14 @@ public class ResourceController {
         try {
 
             // Create Config with GPT API
-            Optional<List<Widget>> widgets = Optional.empty();
-            //Optional<List<Widget>> widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
+            Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
+                                                                project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT
+                                                            );
 
-            // Try one more time
-            if (widgets.isEmpty()) {
-                //widgets = openAIService.generateWidgetConfigs(project.getProjectDescription(), project.getColumnDescriptions());
-            }
+            resourceService.uploadProjectFiles(project, csvFile);
 
-            // TODO
             return widgets.map(widgetList -> {
                 project.setWidgets(widgetList);
-                resourceService.uploadProjectFiles(project, csvFile);
                 return project;
             });
 
