@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +34,7 @@ public class SecurityConfig {
             )
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://auth-server:9000"));
+                configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000"));
                 configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
                 configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
                 configuration.setAllowCredentials(true);
@@ -51,10 +50,9 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(false)
-                .ignoring()
-                .mvcMatchers("/webjars/**", "/images/**", "/css/**", "/public/**", "/favicon.ico");
+        return (web) -> web.ignoring().antMatchers("/css/**");
     }
+
 
     @Autowired
     public void bindAuthenticationProvider(AuthenticationManagerBuilder authenticationManagerBuilder) {
