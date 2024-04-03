@@ -1,6 +1,6 @@
 package com.Dash.ResourceServer.Services.Impl;
 
-import com.Dash.ResourceServer.Services.Impl.TempDTO.RequestDTO;
+import com.Dash.ResourceServer.Models.Widget;
 import com.Dash.ResourceServer.Services.OpenAIService;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
@@ -9,9 +9,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import io.netty.handler.timeout.TimeoutException;
 import lombok.extern.slf4j.Slf4j;
-
-import com.Dash.ResourceServer.Models.Widget;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +98,7 @@ public class OpenAIServiceImpl implements OpenAIService {
 
         return Optional.empty();
     }
+
 
 
 
