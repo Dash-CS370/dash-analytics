@@ -19,13 +19,16 @@
         width: 0;
     }
     to {
-        width: 100%;
+        width: calc(100% - 40px);
     }
 }
 
-@keyframes blink-caret {
-    0% {
-        border-color: transparent;
+@keyframes running {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 40px;
     }
 }
 
@@ -38,4 +41,21 @@
     font-family: 'Colfax';
     font-size: 34px;
     font-weight: bold;
+}
+
+.dynamicContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.animationExpandingContainer {
+    display: flex;
+    justify-content: right;
+    animation: running 4s steps(60, end) infinite;
+}
+
+.animationContainer {
+    width: 40px;
+    height: 40px;
 }
