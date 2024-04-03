@@ -116,9 +116,10 @@ public class OpenAIUtils {
             }
 
             if (potentialWidgets == null) return Optional.empty();
-            log.warn("AFTER FILTER SIZE: " + potentialWidgets.size() + "");
+
+            log.warn("BEFORE FILTER SIZE: " + potentialWidgets.size());
             filteredWidgets = filterWidgetList(potentialWidgets);
-            log.warn("AFTER FILTER SIZE: " + filteredWidgets.size() + "");
+            log.warn("AFTER FILTER SIZE: " + filteredWidgets.size());
 
             return Optional.of(filteredWidgets);
 
@@ -138,6 +139,7 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
+                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
                 //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {
                     //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
