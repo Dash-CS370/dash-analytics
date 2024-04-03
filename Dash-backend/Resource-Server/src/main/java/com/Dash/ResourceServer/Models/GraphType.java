@@ -21,11 +21,6 @@ public enum GraphType {
             "the relationship between them. It's particularly useful for spotting outliers, and observing distribution trends in numerical data. " +
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE ONLY 2 NUMERICAL COLUMNS."),
 
-    GAUGE_CHART("GAUGE_CHART", "A chart that resembles a speedometer or a gauge and is used to represent single-value metrics " +
-            "of numerical data. It displays data in a semi-circular format with indications for progress or performance, often " +
-            "used for displaying the current value within a predetermined range. Best suited for numerical data that represents a part of a whole or a completion percentage. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE 1 NUMERICAL COLUMN."),
-
     HISTOGRAM("HISTOGRAM", "A type of bar chart that represents the distribution of numerical data by showing the number of data " +
             "points that fall within a range of values." +
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE 1 NUMERICAL COLUMN."),
@@ -34,14 +29,22 @@ public enum GraphType {
             "the median and outliers. Box plots summarize key aspects of numerical data distribution, such as central tendency, variability, and skewness, over a dataset or column. " +
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE 1 NUMERICAL COLUMN."),
 
+    AREA_CHART("AREA_CHART", "A line chart where the area between the line and the axis is filled with color or shading, representing " +
+            "the cumulative value of numerical data over time. It is used for visualizing how one or more numerical quantities grow or decline over time or another continuous interval. " +
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): SAME AS LINE GRAPH BUT INCLUDE AT LEAST 2 NUMERICAL COLUMNS IN ADDITION TO ONT TEMPORAL COLUMN"),
+
     STATISTICS_CARD("STATISTICS_CARD", "A compact display including essential statistics for numerical columns. " +
                     "For every numerical column, the following statistics MUST be included: Mean, Median, Mode, Percentiles. " +
                     "This ensures a comprehensive summary of the data's central tendency and dispersion, suitable for quick insights into the dataset's characteristics." +
-                    "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL COLUMN & NO DATA OPERATIONS WITH THE COLUMN, JUST THE COLUMN."),
+                    "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL COLUMN & NO DATA OPERATIONS WITH THE COLUMN, JUST THE COLUMN.");
 
-    AREA_CHART("AREA_CHART", "A line chart where the area between the line and the axis is filled with color or shading, representing " +
-            "the cumulative value of numerical data over time. It is used for visualizing how one or more numerical quantities grow or decline over time or another continuous interval. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): SAME AS LINE GRAPH BUT INCLUDE AT LEAST 2 NUMERICAL COLUMNS IN ADDITION TO ONT TEMPORAL COLUMN");
+
+    /*
+    GAUGE_CHART("GAUGE_CHART", "A chart that resembles a speedometer or a gauge and is used to represent single-value metrics " +
+            "of numerical data. It displays data in a semi-circular format with indications for progress or performance, often " +
+            "used for displaying the current value within a predetermined range. Best suited for numerical data that represents a part of a whole or a completion percentage. " +
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE 1 NUMERICAL COLUMN."),
+     */
 
 
 
