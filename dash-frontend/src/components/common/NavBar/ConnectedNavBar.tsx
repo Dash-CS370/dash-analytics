@@ -9,12 +9,20 @@ export const ConnectedNavBar: FC = () => {
     // -> clear context/cookies that say user is logged in
     // -> clear user's account data from context/cookies
 
-    const handleLogout = async () => {
+    const finishLogout = async () => {
         await fetch("http://127.0.0.1:8080/api/v1/user/logout", {
             method: 'GET',
             credentials : "include",
         });
     }
+
+    const handleLogout = async () => {
+        const logout_relocation = window.open("http://auth-server:9000/user/logout");
+        await finishLogout();
+        // @ts-ignore
+        logout_relocation.close();
+    }
+
 
     return (
         <div className={styles.main}>

@@ -30,8 +30,8 @@ public class Project {
     @JsonProperty("project_csv_link")
     private String projectCsvLink;
 
-    @JsonProperty("project_description")
-    private String projectDescription;
+    @JsonProperty("dataset_description")
+    private String datasetDescription;
 
     @JsonProperty("column_descriptions")
     private List<String> columnDescriptions;

@@ -1,6 +1,6 @@
 package com.Dash.ResourceServer.Utils;
 
-import com.Dash.ResourceServer.Models.ColumnCategory;
+import com.Dash.ResourceServer.Models.GraphType.ColumnCategory;
 import com.Dash.ResourceServer.Models.DataOperations;
 import com.Dash.ResourceServer.Models.GraphType;
 import com.Dash.ResourceServer.Models.Widget;
@@ -37,11 +37,6 @@ public class OpenAIUtils {
         }
 
         prompt += joinedDescriptions;
-
-        /*
-        prompt += "\n\nThe following are the first 5 rows of data from the CSV sheet. Be considerate of type of data that each row holds as well as the column names: \n";
-        prompt += columnDescriptions.get("csv");
-        */
 
         log.warn(prompt);
 
@@ -88,7 +83,7 @@ public class OpenAIUtils {
         + ". Use these descriptions and categories to better choose Widget graphs and columns";
 
         // Column categories
-        for (ColumnCategory columnCategory : ColumnCategory.values()) {
+        for (GraphType.ColumnCategory columnCategory : GraphType.ColumnCategory.values()) {
             additionalContext = additionalContext.concat(columnCategory.getValue() + ": " + columnCategory.getDescription() + ", ");
         }
 
@@ -122,11 +117,9 @@ public class OpenAIUtils {
 
             if (potentialWidgets == null) return Optional.empty();
             log.warn("AFTER FILTER SIZE: " + potentialWidgets.size() + "");
-            // Filter widgets
             filteredWidgets = filterWidgetList(potentialWidgets);
             log.warn("AFTER FILTER SIZE: " + filteredWidgets.size() + "");
 
-            //return Optional.of(objectMapper.writeValueAsString(filteredWidgets));
             return Optional.of(filteredWidgets);
 
         } catch (JsonProcessingException e) {
@@ -144,8 +137,8 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
-                //.filter(widget -> widget.getColumnDataOperations() != null)
                 .filter(widget -> widget.getColumns() != null)
+                //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {
                     //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
                     //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;

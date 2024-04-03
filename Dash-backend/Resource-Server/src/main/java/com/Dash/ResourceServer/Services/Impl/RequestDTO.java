@@ -1,4 +1,4 @@
-package com.Dash.ResourceServer.Models;
+package com.Dash.ResourceServer.Services.Impl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -70,13 +70,13 @@ public class DashboardServiceImpl implements DashboardService {
 
     /**
      * @param projectName
-     * @param projectDescription
+     * @param datasetDescription
      * @param csvFile
      * @return
      * @throws WebClientException
      */
     public Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectName,
-                                           String projectDescription, String columnDescriptions, MultipartFile csvFile) throws WebClientResponseException, JsonProcessingException {
+                                           String datasetDescription, String columnDescriptions, MultipartFile csvFile) throws WebClientResponseException, JsonProcessingException {
 
         final String userAccount = extractUserDetails(oauth2User);
 
@@ -89,7 +89,7 @@ public class DashboardServiceImpl implements DashboardService {
         final Project templateProject = Project.builder().projectId(projectId).projectName(projectName)
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
-                .projectDescription(projectDescription).widgets(new ArrayList<>())
+                .datasetDescription(datasetDescription).widgets(new ArrayList<>())
                 .columnDescriptions(Arrays.asList(columnDescriptions.split(">")))
                 .creationDate(getCurrentDate())
                 .build();

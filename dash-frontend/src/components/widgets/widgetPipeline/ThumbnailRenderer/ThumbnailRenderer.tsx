@@ -6,8 +6,7 @@ import { BarChartThumbnail } from '../../graphWidgets/BarChartWidget/BarChartThu
 import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraphThumbnail';
 
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
-    switch (config.graphType) {
-        case 'bar_chart':
+        if (config.graphType.toString() == 'BAR_GRAPH') {
             return (
                 <BarChartThumbnail
                     title={config.title}
@@ -16,7 +15,8 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-        case 'line_graph':
+        }
+        if (config.graphType.toString() == 'LINE_GRAPH') {
             return (
                 <LineGraphThumbnail
                     title={config.title}
@@ -25,9 +25,10 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-        default:
+        }
+        else {
             throw new Error(`${config.graphType} is not a valid graph type`);
-    }
+        }
 };
 
 interface ThumbnailRendererProps {

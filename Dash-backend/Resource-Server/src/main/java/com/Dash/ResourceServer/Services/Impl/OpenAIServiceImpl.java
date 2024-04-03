@@ -1,6 +1,5 @@
 package com.Dash.ResourceServer.Services.Impl;
 
-import com.Dash.ResourceServer.Models.RequestDTO;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.*;
@@ -9,13 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.Dash.ResourceServer.Models.Widget;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +21,7 @@ import static com.Dash.ResourceServer.Utils.OpenAIUtils.*;
 // FIXME -> SERVICE LAYER NOT API GATEWAY
 @Slf4j
 //@Service
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "http://127.0.0.1:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/gpt")
 public class OpenAIServiceImpl { //implements OpenAIService {
@@ -41,14 +37,10 @@ public class OpenAIServiceImpl { //implements OpenAIService {
     // TODO TEMP
     @PostMapping()
     public List<Widget> foo(@RequestBody RequestDTO dataDTO) {
-        // DTO -> dataset | desc | csv
-        log.warn("HIT");
-        String projectDescription;
+        // DTO -> "dataset description" | "column descriptions"
 
         if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
-            projectDescription = "\nMy dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.";
-        else
-            projectDescription = dataDTO.getDatasetDescription();
+            dataDTO.setDatasetDescription("My dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.");
 
         if (dataDTO.getColumnData() == null || dataDTO.getColumnData().isEmpty()) {
             // FIXME frontend must populate these strings for me this format
@@ -69,9 +61,8 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
 
     public Optional<List<Widget>> generateWidgetConfigs(RequestDTO requestDTO) { // TODO
-        OpenAIClient openAIClient = new OpenAIClientBuilder()
-                .credential(new KeyCredential(secretKey))
-                .buildClient();
+
+        final OpenAIClient openAIClient = new OpenAIClientBuilder().credential(new KeyCredential(secretKey)).buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
 
@@ -82,18 +73,12 @@ public class OpenAIServiceImpl { //implements OpenAIService {
 
         chatMessages.add(new ChatRequestSystemMessage(additionalSystemContext()));
 
-        /*
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
-                " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid 'LINE_GRAPH' without TEMPORAL" +
+                " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid using 'LINE_GRAPH' without TEMPORAL" +
                 " data. 'BAR_GRAPH' requires 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. " +
-                "Lastly, avoid nonsensical widgets by " +
-                " ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
-//                " You're provided with the actual data from the CSV, use this contextual data to inform your choice of the correct graph types." +
+                " Lastly, avoid nonsensical widgets by ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS"));
-        */
-
-        chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, focus on selecting graph types that match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', it's essential to have at least one TEMPORAL and one NUMERICAL column to effectively depict time-based changes or relationships. Ensure you have TEMPORAL data when using 'LINE_GRAPH'. 'BAR_GRAPH' benefits from having at least 1 CATEGORICAL column for labels and a NUMERICAL column for values, suitable for comparing different categories. Always align your data carefully with the chosen graph type for the most insightful visualizations."));
 
         chatMessages.add(new ChatRequestUserMessage(generatePrompt(requestDTO.getDatasetDescription(), requestDTO.getColumnData())));
 
