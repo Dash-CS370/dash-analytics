@@ -6,9 +6,11 @@ import { TiPin, TiPinOutline } from 'react-icons/ti';
 import { BsArrowsAngleContract, BsArrowsAngleExpand } from 'react-icons/bs';
 import { CiEdit } from 'react-icons/ci';
 import { FiCheck } from 'react-icons/fi';
+import { IoMdInformationCircleOutline } from 'react-icons/io';
 
 interface WidgetCardProps {
     title: string;
+    description: string;
     id: string;
     pinned?: boolean;
     expanded?: boolean;
@@ -20,6 +22,7 @@ interface WidgetCardProps {
 
 export const WidgetCard: React.FC<WidgetCardProps> = ({
     title,
+    description,
     id,
     pinned = true,
     expanded = false,
@@ -30,6 +33,12 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
 }) => {
     const [editingName, setEditingName] = React.useState(false);
     const [newName, setNewName] = React.useState(title);
+
+    const [info, setInfo] = React.useState(false);
+    const handleInfoClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setInfo(!info);
+    };
 
     const [isPinned, setIsPinned] = React.useState(pinned);
     const togglePinned = () => {
@@ -110,6 +119,10 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
                     </div>
                 )}
                 <div className={styles.widgetHeaderButtons}>
+                    <IoMdInformationCircleOutline
+                        className={styles.icon}
+                        onClick={handleInfoClick}
+                    />
                     {isPinned && !expanded && (
                         <TiPin onClick={togglePinned} className={styles.icon} />
                     )}
@@ -126,7 +139,14 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
                     )}
                 </div>
             </div>
-            <div className={styles.widgetCardContent}>{children}</div>
+
+            {info ? (
+                <div className={styles.widgetCardContent}>
+                    <p>{description}</p>
+                </div>
+            ) : (
+                <div className={styles.widgetCardContent}>{children}</div>
+            )}
         </div>
     );
 };

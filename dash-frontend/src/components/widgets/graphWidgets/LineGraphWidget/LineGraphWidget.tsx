@@ -37,6 +37,8 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
     return (
         <WidgetCard
             title={config.title}
+            description={config.description}
+            id={config.id}
             pinned={true}
             expanded={isExpanded}
             onExpand={onExpand}

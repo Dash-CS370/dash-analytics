@@ -45,6 +45,7 @@
     color: var(--on-background);
     border: none;
     margin: 0.75rem 0;
+    align-self: center;
 }
 
 .createProjectButton:hover {
