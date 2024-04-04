@@ -25,6 +25,9 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
+
+        default:
+            throw new Error(`${config.graphType} is not a valid graph type`);
     }
 };
 

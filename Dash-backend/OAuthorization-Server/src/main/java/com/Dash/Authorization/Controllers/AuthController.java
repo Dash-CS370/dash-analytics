@@ -8,15 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.*;
+import java.io.IOException;
 
 
 @Slf4j
 @Controller
-@CrossOrigin(origins = "http://127.0.0.1:3000", allowCredentials = "true")
-public class UserController {
+public class AuthController {
 
     @GetMapping("/user/logout")
-    public String doLogout(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+    public void doLogout(HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
 
         log.warn("USER SESSION TERMINATED");
 
@@ -37,7 +37,7 @@ public class UserController {
         cookieWithSlash.setMaxAge(0);
         response.addCookie(cookieWithSlash);
 
-        return "login";
+        response.sendRedirect("http://127.0.0.1:3000/signin");
     }
 
     @GetMapping("/login")
