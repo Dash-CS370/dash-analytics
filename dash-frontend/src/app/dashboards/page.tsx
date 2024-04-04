@@ -3,18 +3,10 @@
 import styles from '@/app/dashboards/page.module.css';
 import { NavBar } from '@/components/common/NavBar';
 import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
-import {
-    ColumnInfo,
-    NewProject,
-} from '@/components/pages/dashboards/NewProject/NewProject';
+import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
-import { fetchWidgetConfigs } from '@/components/pages/dashboards/backendInteractions';
 import { exampleProjects } from '@/components/widgets/TestData';
-import {
-    GPTResponse,
-    ProjectConfig,
-    WidgetConfig,
-} from '@/components/widgets/WidgetTypes';
+import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -110,7 +102,6 @@ export default function Dashboards() {
     };
 
     // TODO: Add API interaction to update widget title
-    // TODO: fix functionality
     const editWidgetTitle = (id: string, newTitle: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
             if (config.id === id) {

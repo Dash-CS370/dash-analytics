@@ -28,14 +28,8 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     onEditTitle,
     children,
 }) => {
-    const [isExpanded, setIsExpanded] = React.useState(expanded);
     const [editingName, setEditingName] = React.useState(false);
     const [newName, setNewName] = React.useState(title);
-
-    const toggleExpand = () => {
-        // setIsExpanded(!isExpanded);
-        onExpand();
-    };
 
     const [isPinned, setIsPinned] = React.useState(pinned);
     const togglePinned = () => {
@@ -45,9 +39,6 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
 
     const handleEditClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-
-        console.log(`handling edit click, isEditing: ${editingName}`);
-
         setEditingName(true);
     };
 
@@ -84,7 +75,7 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     };
 
     const cardClassName = `${styles.widgetCard} ${
-        isExpanded ? styles.expanded : styles.default
+        expanded ? styles.expanded : styles.default
     }`;
 
     return (
@@ -110,29 +101,26 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
                 ) : (
                     <div className={styles.widgetTitle}>
                         <h1>{newName}</h1>
-                        <CiEdit
-                            className={styles.icon}
-                            onClick={handleEditClick}
-                        />
+                        {!expanded && (
+                            <CiEdit
+                                className={styles.icon}
+                                onClick={handleEditClick}
+                            />
+                        )}
                     </div>
                 )}
                 <div className={styles.widgetHeaderButtons}>
-                    {isPinned ? (
+                    {isPinned && !expanded && (
                         <TiPin onClick={togglePinned} className={styles.icon} />
-                    ) : (
-                        <TiPinOutline
-                            onClick={togglePinned}
-                            className={styles.icon}
-                        />
                     )}
-                    {isExpanded ? (
+                    {expanded ? (
                         <BsArrowsAngleContract
-                            onClick={toggleExpand}
+                            onClick={onExpand}
                             className={styles.icon}
                         />
                     ) : (
                         <BsArrowsAngleExpand
-                            onClick={toggleExpand}
+                            onClick={onExpand}
                             className={styles.icon}
                         />
                     )}
