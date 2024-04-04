@@ -12,27 +12,26 @@ export async function fetchWidgetConfigs(
     projectDescription: string,
     csvFile: File,
     columns: ColumnInfo[],
+    setStatus: (status: string) => void,
 ): Promise<ProjectConfig> {
     const columnDescriptions = columns.map(
         (column) =>
             `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.dataType}`,
     );
 
+    setStatus('Parsing CSV...');
     const df = await dfd.readCSV(csvFile);
 
+    setStatus('Fetching graph congigurations...');
     const gptResponse = await fetchGPTResponse(
         columnDescriptions,
         projectDescription,
         df,
     );
-    console.log(gptResponse);
 
     if (Array.isArray(gptResponse) && gptResponse.length != 0) {
+        setStatus(`Preparing data for graphs...`);
         const widgets = gptResponse.map((response, index) => {
-            console.log(
-                `graph: ${response.graph_type}, title: ${response.title}, description: ${response.widget_description}`,
-            );
-
             const data_df = df.loc({ columns: response.columns });
             const data_json = dfd.toJSON(data_df);
             if (data_json === undefined) {
@@ -50,15 +49,15 @@ export async function fetchWidgetConfigs(
                 description: response.widget_description,
             };
         });
-        console.log(widgets);
 
+        setStatus(''); // clear status
         return {
             title: projectName,
             id: projectName,
             widgets: widgets,
         };
     } else {
-        throw new Error('Failed to fetch GPT response');
+        throw new Error('Failed to fetch GPT response. Try again.');
     }
 }
 
@@ -78,7 +77,7 @@ const fetchGPTResponse = async (
         }),
     });
     if (resp.status !== 200) {
-        throw new Error('Failed to fetch GPT response');
+        throw new Error('Failed to fetch GPT response. Try again.');
     }
 
     const gptResponse: GPTResponse[] = await resp.json();
