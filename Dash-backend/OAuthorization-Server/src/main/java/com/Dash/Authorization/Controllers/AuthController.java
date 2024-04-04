@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Slf4j
 @Controller
-public class UserController {
+public class AuthController {
 
     @GetMapping("/user/logout")
     public void doLogout(HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
