@@ -1,7 +1,5 @@
 import React from 'react';
-import { LineGraphWidget } from '../../graphWidgets/LineGraphWidget/LineGraphWidget';
-import { BaseGraphProps, WidgetConfig } from '../../WidgetTypes';
-import { BarChartWidget } from '../../graphWidgets/BarChartWidget/BarChartWidget';
+import { WidgetConfig } from '../../WidgetTypes';
 import { BarChartThumbnail } from '../../graphWidgets/BarChartWidget/BarChartThumbnail';
 import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraphThumbnail';
 

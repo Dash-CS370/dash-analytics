@@ -28,15 +28,15 @@
 .projectsContainer {
     display: flex;
     flex-direction: column;
-    width: 230px;
+    width: 225px;
     height: 100%;
 }
 
 .projectList {
-    /* background-color: var(--border-darker); */
+    background-color: var(--project-background);
     border-radius: 12px;
     flex: 1;
-    margin: 0.5rem 0;
+    padding: 0.2rem;
     overflow-y: scroll;
 }
 
