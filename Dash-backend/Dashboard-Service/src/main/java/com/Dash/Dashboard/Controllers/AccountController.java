@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +33,14 @@ public class AccountController {
 
 
     /**
-     * @param id
+     * @param accountEmail
      * @return
      */
-    @GetMapping("/profile/{id}")
-    public ResponseEntity<User> getUserProfile(@PathVariable String id) {
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(@AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            final Optional<User> user = accountService.findUserById(id);
+            final Optional<User> user = accountService.pullUserProfile(oauth2User);
 
             return user.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
                     .body(projects)).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

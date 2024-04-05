@@ -59,7 +59,7 @@ public class OpenAIUtils {
 
         additionalContext =
                 "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'columns'. " +
-                        "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
+                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
                         "The 'columns' is a list of the required columns needed to generate a widget of the given graph type." +
                         "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
 
@@ -118,7 +118,9 @@ public class OpenAIUtils {
             if (potentialWidgets == null) return Optional.empty();
 
             log.warn("BEFORE FILTER SIZE: " + potentialWidgets.size());
+
             filteredWidgets = filterWidgetList(potentialWidgets);
+
             log.warn("AFTER FILTER SIZE: " + filteredWidgets.size());
 
             return Optional.of(filteredWidgets);

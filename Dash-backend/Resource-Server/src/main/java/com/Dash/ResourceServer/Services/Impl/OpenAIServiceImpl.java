@@ -30,7 +30,7 @@ public class OpenAIServiceImpl implements OpenAIService {
     private String MODEL;
 
 
-    public Optional<List<Widget>> generateWidgetConfigs(String datasetDescription, List<String> columnDescriptions) {// TODO
+    public Optional<List<Widget>> generateWidgetConfigs(String datasetDescription, List<String> columnDescriptions) {
 
         final OpenAIClient openAIClient = new OpenAIClientBuilder().credential(new KeyCredential(secretKey)).buildClient();
 
@@ -109,10 +109,10 @@ public class OpenAIServiceImpl implements OpenAIService {
         catch (TimeoutException | HttpResponseException e) {
             log.warn("Connection Error : " + e.getMessage());
             if (retryCount > 0) {
-                log.warn("Attempting to retry OpenAI Client...");
+                log.warn("Attempting to re-establish connection with OpenAI Client...");
                 return attemptWidgetGenerationWithRetry(datasetDescription, columnDescriptions, retryCount - 1);
             } else {
-                log.error("Retries exhausted. Failing operation.");
+                log.error("Retries exhausted. Failing operation...");
                 return Optional.empty();
             }
         } catch (Exception e) {

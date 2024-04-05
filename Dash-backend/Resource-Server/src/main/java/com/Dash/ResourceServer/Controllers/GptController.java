@@ -19,7 +19,6 @@ import java.util.Optional;
 @RequestMapping("/api/gpt")
 public class GptController {
 
-
     private final Integer DEFAULT_RETRY_COUNT = 1;
 
     private final OpenAIService openAIService;
