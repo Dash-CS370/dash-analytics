@@ -24,10 +24,10 @@ LABEL authors="arbul"
 WORKDIR /app
 
 # Copy the built JAR from the previous stage (FROM -> TO)
-COPY --from=build /build/target/OAuthorization-Server-1.0-SNAPSHOT.jar /app/OAuthorization-Server.jar
+COPY --from=build /build/target/Dashboard-Service-1.0-SNAPSHOT.jar /app/Dashboard-Service.jar
 
 # Expose the port the app runs on internally (documentation)
-EXPOSE 9000
+EXPOSE 8080
 
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "OAuthorization-Server.jar"]
+ENTRYPOINT ["java", "-jar", "Dashboard-Service.jar"]

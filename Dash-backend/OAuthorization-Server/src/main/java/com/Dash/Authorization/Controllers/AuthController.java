@@ -32,8 +32,9 @@ public class AuthController {
         }
 
         final Cookie cookieWithSlash = new Cookie("JSESSIONID", null);
-        cookieWithSlash.setPath(request.getContextPath() + "/");
-        cookieWithSlash.setDomain("auth-server");
+        //cookieWithSlash.setPath(request.getContextPath() + "/");
+        cookieWithSlash.setPath("/");
+        cookieWithSlash.setDomain("");
         cookieWithSlash.setMaxAge(0);
         response.addCookie(cookieWithSlash);
 

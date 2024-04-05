@@ -16,7 +16,7 @@ export const ConnectedNavBar: FC = () => {
                 <Link className={styles.navLink} href="/">
                     Learn More
                 </Link>
-                <Link href="http://127.0.0.1:8080/api/v1/user/logout">
+                <Link href="http://3.138.112.56:8080/api/v1/user/logout">
                     <IoLogOutOutline className={styles.icon} />
                 </Link>
             </div>
