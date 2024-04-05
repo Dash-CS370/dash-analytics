@@ -26,7 +26,7 @@ spring:
             client-id: ${DASH_CLIENT_ID}
             client-secret: ${DASH_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://3.138.112.56:8080/login/oauth2/code/{registrationId}"
             scope: openid
             client-name: Dash
 
@@ -35,7 +35,7 @@ spring:
             client-id: ${RESOURCE_CLIENT_ID}
             client-secret: ${RESOURCE_CLIENT_SECRET}
             authorization-grant-type: client_credentials
-            redirect-uri: "http://127.0.0.1:8080/authorized"
+            redirect-uri: "http://3.138.112.56:8080/authorized"
             scope: api.read
             client-name: resource-access-client
 
@@ -48,12 +48,12 @@ spring:
             client-secret: ${AZURE_CLIENT_SECRET}
             provider: azure
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
+            redirect-uri: "http://3.138.112.56:8080/login/oauth2/code/azure"
             scope: openid
 
         provider:
           spring:
-            issuer-uri: http://auth-server:9000
+            issuer-uri: http://3.138.112.56:9000
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
 

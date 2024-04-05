@@ -117,7 +117,7 @@ public class AccountController {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
 
-            response.sendRedirect("http://auth-server:9000/user/logout");
+            response.sendRedirect("http://3.128.112.56:9000/user/logout"); //FIXME
 
         } catch (Exception e) {
             log.warn(e.getMessage());
