@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1/resources")
 public class ResourceController {
 
@@ -135,6 +136,18 @@ public class ResourceController {
             return Optional.empty();
         }
     }
+
+
+    @GetMapping("/pull")
+    public String demoEndpoint() {
+        try {
+            return "HITT THE RESOURCES CONTROLLER";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return "SMTH WENT WRONG";
+        }
+    }
+
 
 
 }

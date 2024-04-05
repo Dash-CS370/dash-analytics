@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -52,7 +53,6 @@ public class DashboardController {
         try {
 
             log.warn(oauth2User.getAttributes().toString());
-            log.warn(((CustomAuthUser)oauth2User).getAttributes().toString());
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
@@ -169,8 +169,14 @@ public class DashboardController {
 
 
     @GetMapping("/test")
-    public String foo() {
-        return "INSIDE PROTECTED ENDPOINT";
+    public String foo(@AuthenticationPrincipal OAuth2User oauth2User) {
+        return "INSIDE PROTECTED ENDPOINT, WELCOME " + (new CustomAuthUser(oauth2User)).getEmail();
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/resource")
+    public String boo() {
+        return dashboardService.hitResourceController();
     }
 
 

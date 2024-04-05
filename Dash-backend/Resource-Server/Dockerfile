@@ -24,10 +24,10 @@ LABEL authors="arbul"
 WORKDIR /app
 
 # Copy the built JAR from the previous stage (FROM -> TO)
-COPY --from=build /build/target/Eureka-Server-1.0-SNAPSHOT.jar /app/Eureka-Server.jar
+COPY --from=build /build/target/Resource-Server-1.0-SNAPSHOT.jar /app/Resource-Server.jar
 
 # Expose the port the app runs on internally (documentation)
-EXPOSE 8761
+EXPOSE 8081
 
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "Eureka-Server.jar"]
+ENTRYPOINT ["java", "-jar", "Resource-Server.jar"]

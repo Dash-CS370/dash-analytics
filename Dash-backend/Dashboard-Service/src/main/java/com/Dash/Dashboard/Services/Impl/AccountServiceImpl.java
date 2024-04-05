@@ -1,6 +1,7 @@
 package com.Dash.Dashboard.Services.Impl;
 
 import com.Dash.Dashboard.Entites.User;
+import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.AccountService;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +12,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.PostConstruct;
-import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -38,8 +38,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    public Optional<User> findUserById(String id) {
-        return Optional.ofNullable(userDAO.findById(id, User.class));
+    public Optional<User> pullUserProfile(OAuth2User oauth2User) {
+        final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
+        return Optional.ofNullable(userDAO.findOne(Query.query(Criteria.where("email").is(userEmail)), User.class));
     }
 
 
