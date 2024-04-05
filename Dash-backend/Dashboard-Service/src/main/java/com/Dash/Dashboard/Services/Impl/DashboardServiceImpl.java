@@ -52,12 +52,13 @@ public class DashboardServiceImpl implements DashboardService {
         final String userAccount = extractUserDetails(oauth2User);
 
         // Encode url with username
-        final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/api/v1/resources/projects/{userAccount}")
-                    .buildAndExpand(userAccount).toUriString();
+        final String resourceUrl = UriComponentsBuilder.fromUriString(
+                "http://3.138.112.56:8081/api/v1/resources/projects/{userAccount}")
+                .buildAndExpand(userAccount).toUriString();
 
         // Hit Resource Server
         final List<Project> userProjects = this.webClient.get().uri(resourceUrl)
-                                        .attributes(oauth2AuthorizedClient(client))
+                                        //.attributes(oauth2AuthorizedClient(client))
                                         .retrieve()
                                         .bodyToMono(new ParameterizedTypeReference<List<Project>>() {})
                                         .block();
@@ -108,7 +109,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(csvBuilder.build())
                 .with("template-project", templateProject))
-                .attributes(oauth2AuthorizedClient(client))
+                //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Project>>() {})
                 .block();
@@ -127,11 +128,11 @@ public class DashboardServiceImpl implements DashboardService {
     public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1:8081/api/v1/resources/projects").toUriString();
+                .fromUriString("http://3.138.112.56:8081/api/v1/resources/projects").toUriString();
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
-                .attributes(oauth2AuthorizedClient(client))
+                //.attributes(oauth2AuthorizedClient(client))
                 .body(BodyInserters.fromValue(projects))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {})
@@ -151,23 +152,35 @@ public class DashboardServiceImpl implements DashboardService {
     public Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException {
 
         // TODO OAuth2 User email -> extract for userId inside service
-        String userAccount = "user345@email.com"; // = extractUserDetails(oauth2User);
+        String userAccount = extractUserDetails(oauth2User);
 
         final String deleteProjectUrl = UriComponentsBuilder
-                .fromUriString("http://127.0.0.1:8081/api/v1/resources/project")
+                .fromUriString("http://3.138.112.56:8081/api/v1/resources/project")
                 .queryParam("user-id", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();
 
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
-                .attributes(oauth2AuthorizedClient(client))
+                //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
                 .block();
     }
 
 
+
+
+    public String hitResourceController() {
+        final String resourceUrl = UriComponentsBuilder.fromUriString("http://3.138.112.56:8081/api/v1/resources/pull").toUriString();
+
+        // Hit Resource Server
+        return this.webClient.get().uri(resourceUrl)
+                //.attributes(oauth2AuthorizedClient(client))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
 
 
     /**

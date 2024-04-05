@@ -33,7 +33,7 @@ public class AccountController {
 
 
     /**
-     * @param accountEmail
+     * @param oauth2User
      * @return
      */
     @GetMapping("/profile")
