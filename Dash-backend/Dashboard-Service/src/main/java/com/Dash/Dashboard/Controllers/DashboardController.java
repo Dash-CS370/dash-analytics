@@ -169,8 +169,8 @@ public class DashboardController {
 
 
     @GetMapping("/test")
-    public String foo() {
-        return "INSIDE PROTECTED ENDPOINT";
+    public String foo(@AuthenticationPrincipal OAuth2User oauth2User) {
+        return "INSIDE PROTECTED ENDPOINT, WELCOME " + (new CustomAuthUser(oauth2User)).getEmail();
     }
 
 
