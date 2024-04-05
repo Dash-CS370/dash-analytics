@@ -109,7 +109,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://3.138.112.56:9000").build();
+        return ProviderSettings.builder().issuer("http://dash.aperturetoolkit.com:9000").build();
     }
 
 
