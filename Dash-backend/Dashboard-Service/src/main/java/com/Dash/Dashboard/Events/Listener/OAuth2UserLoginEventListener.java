@@ -53,7 +53,7 @@ public class OAuth2UserLoginEventListener implements ApplicationListener<OAuth2U
             userDAO.insert(
                 User.builder()
                     .email(user.getEmail()).enabled(true)
-                    .firstName(user.getName())
+                    .name(user.getName())
                     .credits(DEFAULT_STARTING_CREDIT_AMOUNT)
                     .userType(UserType.THIRD_PARTY)
                     .creationDate(new Date(calendar.getTime().getTime()))

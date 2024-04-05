@@ -49,7 +49,7 @@ public class DashboardServiceImpl implements DashboardService {
      */
     public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, OAuth2User oauth2User) throws WebClientResponseException {
 
-        final String userAccount = "user345@email.com"; //extractUserDetails(oauth2User);
+        final String userAccount = extractUserDetails(oauth2User);
 
         // Encode url with username
         final String resourceUrl = UriComponentsBuilder.fromUriString(

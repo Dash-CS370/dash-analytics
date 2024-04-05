@@ -77,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Otherwise this is a completely new User (email has not been used)
         final User tempUser = User.builder().
                 email(email).
-                enabled(false).
+                enabled(true). // FIXME
                 creationDate(getCurrentDate()).
                 build();
 
@@ -146,17 +146,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> user = Optional.ofNullable(userDAO.findOne(unactivatedUser, User.class));
 
         if (user.isPresent() && !user.get().isEnabled()) {
-            return new ResponseEntity<>("An account associated with this email has not been activated yet", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("An account associated with this email has not been activated yet", HttpStatus.BAD_REQUEST);
         } else if (user.isEmpty()) {
-            return new ResponseEntity<>("The provided email is not associated with an account", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("The provided email is not associated with an account", HttpStatus.BAD_REQUEST);
+        } else if (user.get().isEnabled()) {
+            return new ResponseEntity<>("The provided email is already associated with an account", HttpStatus.BAD_REQUEST);
         }
 
         // Build verified customer
         final Update registeredUser = new Update()
-                    .set("firstName", registrationRequest.getFirstName())
-                    .set("lastName", registrationRequest.getLastName())
+                    .set("name", registrationRequest.getName())
                     .set("password", passwordEncoder.encode(registrationRequest.getPassword()))
-                    .set("phoneNumber", registrationRequest.getPhoneNumber())
                     .set("credits", DEFAULT_STARTING_CREDIT_AMOUNT)
                     .set("role", Role.USER)
                     .set("userType", UserType.DASH);
