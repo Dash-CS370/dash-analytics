@@ -2,6 +2,7 @@ import styles from '@/components/pages/dashboards/NewProject/NewProject.module.c
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { FiUpload } from 'react-icons/fi';
 import { CiCircleCheck } from 'react-icons/ci';
+import Link from 'next/link';
 
 interface FileUploadProps {
     file: File | null;
@@ -94,7 +95,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
             </div>
             <p className={styles.disclaimer}>
                 **Data visualizations are limited by the quality of the dataset.
-                By continuing, you are agreeing to our terms of use.
+                By continuing, you are agreeing to our{' '}
+                <Link href="/terms-of-service">terms of use.</Link>
             </p>
         </div>
     );
