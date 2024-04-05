@@ -3,6 +3,7 @@ import { ColumnInfo } from '@/components/pages/dashboards/NewProject/NewProject'
 import { ColumnDescription } from '@/components/pages/dashboards/NewProject/ColumnDescription';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { IoIosArrowRoundBack } from 'react-icons/io';
+import Link from 'next/link';
 
 interface ColumnFormProps {
     columns: ColumnInfo[];
@@ -67,7 +68,8 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({
             </form>
             <p className={styles.disclaimer}>
                 **Data visualizations are limited by the quality of the dataset.
-                By continuing, you are agreeing to our terms of use.
+                By continuing, you are agreeing to our{' '}
+                <Link href="/terms-of-service">terms of use.</Link>
             </p>
         </div>
     );

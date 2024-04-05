@@ -40,6 +40,12 @@
     margin-bottom: 1rem;
 }
 
+.disclaimer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    text-decoration-color: var(--primary);
+}
+
 .errorMessage {
     color: red;
     margin: 0.5rem 0;
@@ -144,6 +150,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
 }
 
 .spinner {

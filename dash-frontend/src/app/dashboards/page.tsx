@@ -4,6 +4,7 @@ import styles from '@/app/dashboards/page.module.css';
 import { NavBar } from '@/components/common/NavBar';
 import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
+import { RestrictedAccess } from '@/components/pages/dashboards/RestrictedAccess/RestrictedAccess';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
@@ -30,7 +31,14 @@ export default function Dashboards() {
 
     const searchParams = useSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
+    const [isMobile, setIsMobile] = useState(false);
     useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 770); // breakpoint for mobile devices
+        };
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+
         if (activeProjectId) {
             const project = projects.find(
                 (projectConfig) => projectConfig.id === activeProjectId,
@@ -41,7 +49,15 @@ export default function Dashboards() {
             }
         }
         setPageLoaded(true);
+
+        return () => {
+            window.removeEventListener('resize', checkScreenSize);
+        };
     }, [activeProjectId, projects]);
+
+    if (isMobile) {
+        return <RestrictedAccess />;
+    }
 
     const setActiveProject = (project: ProjectConfig) => {
         const searchParams = new URLSearchParams();
