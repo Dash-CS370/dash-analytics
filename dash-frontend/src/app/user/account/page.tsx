@@ -1,4 +1,4 @@
-import styles from '@/app/account/page.module.css';
+import styles from '@/app/user/account/page.module.css';
 import { NavBar } from '@/components/common/NavBar';
 
 export default function Account() {

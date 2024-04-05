@@ -24,7 +24,7 @@ spring:
             client-id: ${DASH_CLIENT_ID}
             client-secret: ${DASH_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "http://3.138.112.56:8080/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
             client-name: Dash
 
@@ -33,7 +33,7 @@ spring:
             client-id: ${RESOURCE_CLIENT_ID}
             client-secret: ${RESOURCE_CLIENT_SECRET}
             authorization-grant-type: client_credentials
-            redirect-uri: "http://3.138.112.56:8080/authorized"
+            redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: api.read
             client-name: resource-access-client
 
@@ -46,21 +46,22 @@ spring:
             client-secret: ${AZURE_CLIENT_SECRET}
             provider: azure
             authorization-grant-type: authorization_code
-            redirect-uri: "http://3.138.112.56:8080/login/oauth2/code/azure"
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/azure"
             scope: openid
 
         provider:
           spring:
-            issuer-uri: http://dash.aperturetoolkit.com:9000
+            issuer-uri: http://localhost:8081
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://172.31.33.187:8761/eureka
-    fetch-registry: true
-    register-with-eureka: true
 
-  instance:
-    hostname: 172.31.33.187
+#eureka:
+ # client:
+  #  service-url:
+   #   defaultZone: http://172.31.33.187:8761/eureka
+    #fetch-registry: true
+    #register-with-eureka: true
+
+  #instance:
+   # hostname: 172.31.33.187

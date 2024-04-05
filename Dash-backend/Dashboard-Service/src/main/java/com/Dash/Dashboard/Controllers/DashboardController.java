@@ -51,8 +51,9 @@ public class DashboardController {
                                                        OAuth2AuthorizedClient authorizedClient,
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
+            log.warn("ADSFas");
 
-            log.warn(oauth2User.getAttributes().toString());
+            //log.warn(oauth2User.getAttributes().toString());
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 

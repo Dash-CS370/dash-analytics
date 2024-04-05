@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -47,6 +49,8 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
+        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
+
         http.
             exceptionHandling((exceptions) -> exceptions
                 .defaultAuthenticationEntryPointFor(
@@ -69,8 +73,8 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://3.138.112.56:8080/login/oauth2/code/Dash")
-                .redirectUri("http://3.138.112.56:8080/authorized")
+                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/Dash")
+                .redirectUri("http://127.0.0.1:8080/authorized")
                 .scope(OidcScopes.OPENID)
                 .scope("api.read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -109,7 +113,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://dash.aperturetoolkit.com:9000").build();
+        return ProviderSettings.builder().issuer("http://localhost:8081").build();
     }
 
 

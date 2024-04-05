@@ -10,7 +10,7 @@ import { fetchProjects } from '@/components/pages/dashboards/backendInteractions
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Dashboards() {
@@ -33,6 +33,7 @@ export default function Dashboards() {
     const searchParams = useSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
     const [isMobile, setIsMobile] = useState(false);
+    const router = useRouter();
     useEffect(() => {
         // listen for breakpoint for mobile devices
         const checkScreenSize = () => {
@@ -46,10 +47,10 @@ export default function Dashboards() {
         // pull projects from backend
         fetchProjects()
             .then((projects) => {
-                console.log('projects:', projects);
+                console.log(projects);
             })
             .catch((error) => {
-                console.error(error);
+                router.push('/start');
             });
 
         // set active project from URL
@@ -67,7 +68,7 @@ export default function Dashboards() {
         return () => {
             window.removeEventListener('resize', checkScreenSize);
         };
-    }, [activeProjectId, projects]);
+    }, [activeProjectId, projects, router]);
 
     if (isMobile) {
         return <RestrictedAccess />;

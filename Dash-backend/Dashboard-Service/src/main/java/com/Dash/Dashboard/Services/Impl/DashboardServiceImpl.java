@@ -49,11 +49,11 @@ public class DashboardServiceImpl implements DashboardService {
      */
     public Optional<List<Project>> loadAllProjects(OAuth2AuthorizedClient client, OAuth2User oauth2User) throws WebClientResponseException {
 
-        final String userAccount = extractUserDetails(oauth2User);
+        final String userAccount = "user345@email.com"; //extractUserDetails(oauth2User);
 
         // Encode url with username
         final String resourceUrl = UriComponentsBuilder.fromUriString(
-                "http://3.138.112.56:8081/api/v1/resources/projects/{userAccount}")
+                "http://127.0.0.1:8082/api/v1/resources/projects/{userAccount}")
                 .buildAndExpand(userAccount).toUriString();
 
         // Hit Resource Server
@@ -96,7 +96,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .build();
 
 
-        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8081/api/v1/resources/project")
+        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8082/api/v1/resources/project")
                 .toUriString();
 
         MultipartBodyBuilder csvBuilder = new MultipartBodyBuilder();
@@ -128,7 +128,7 @@ public class DashboardServiceImpl implements DashboardService {
     public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
-                .fromUriString("http://3.138.112.56:8081/api/v1/resources/projects").toUriString();
+                .fromUriString("http://127.0.0.1:8082/api/v1/resources/projects").toUriString();
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
@@ -155,7 +155,7 @@ public class DashboardServiceImpl implements DashboardService {
         String userAccount = extractUserDetails(oauth2User);
 
         final String deleteProjectUrl = UriComponentsBuilder
-                .fromUriString("http://3.138.112.56:8081/api/v1/resources/project")
+                .fromUriString("http://127.0.0.1:8082/api/v1/resources/project")
                 .queryParam("user-id", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();
@@ -172,7 +172,7 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     public String hitResourceController() {
-        final String resourceUrl = UriComponentsBuilder.fromUriString("http://3.138.112.56:8081/api/v1/resources/pull").toUriString();
+        final String resourceUrl = UriComponentsBuilder.fromUriString("http://127.0.0.1:8082/api/v1/resources/pull").toUriString();
 
         // Hit Resource Server
         return this.webClient.get().uri(resourceUrl)

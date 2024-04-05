@@ -87,15 +87,14 @@ const fetchGPTResponse = async (
 
 // export const fetchProjects = async (): Promise<ProjectConfig[]> => {
 export const fetchProjects = async () => {
-    const resp = await fetch('http://3.138.112.56:8080/api/v1/dashboards', {
+    const resp = await fetch('http://127.0.0.1:8080/api/v1/dashboards', {
         method: 'GET',
         credentials: 'include',
-        // mode: 'no-cors',
     });
     if (resp.status !== 200) {
         throw new Error('Failed to fetch projects. Try again.');
     }
     console.log('resp:', resp);
-    // const projects: ProjectConfig[] = await resp.json();
-    // return Promise.resolve(projects);
+    const projects: ProjectConfig[] = await resp.json();
+    return Promise.resolve(projects);
 };
