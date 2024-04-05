@@ -6,6 +6,7 @@ import { LoadingPage } from '@/components/pages/LoadingPage/LoadingPage';
 import { NewProject } from '@/components/pages/dashboards/NewProject/NewProject';
 import { RestrictedAccess } from '@/components/pages/dashboards/RestrictedAccess/RestrictedAccess';
 import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
+import { fetchProjects } from '@/components/pages/dashboards/backendInteractions';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
 import { WidgetLayout } from '@/components/widgets/widgetPipeline/WidgetLayout/WidgetLayout';
@@ -33,12 +34,25 @@ export default function Dashboards() {
     const activeProjectId = searchParams.get('activeProjectId');
     const [isMobile, setIsMobile] = useState(false);
     useEffect(() => {
+        // listen for breakpoint for mobile devices
         const checkScreenSize = () => {
-            setIsMobile(window.innerWidth < 770); // breakpoint for mobile devices
+            if (window.innerWidth < 700 || window.innerHeight < 700) {
+                setIsMobile(true);
+            }
         };
         checkScreenSize();
         window.addEventListener('resize', checkScreenSize);
 
+        // pull projects from backend
+        fetchProjects()
+            .then((projects) => {
+                console.log('projects:', projects);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        // set active project from URL
         if (activeProjectId) {
             const project = projects.find(
                 (projectConfig) => projectConfig.id === activeProjectId,
