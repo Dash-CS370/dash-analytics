@@ -5,10 +5,6 @@ import { IoLogOutOutline } from 'react-icons/io5';
 import { VscAccount } from 'react-icons/vsc';
 
 export const ConnectedNavBar: FC = () => {
-    // TODO: Implement logout functionality:
-    // -> clear context/cookies that say user is logged in
-    // -> clear user's account data from context/cookies
-
     return (
         <div className={styles.main}>
             <div className={styles.account}>

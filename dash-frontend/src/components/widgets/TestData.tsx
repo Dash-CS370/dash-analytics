@@ -1,6 +1,7 @@
+import { get } from 'http';
 import { ProjectConfig, WidgetConfig } from './WidgetTypes';
 
-export const exampleLineData = [
+const exampleLineData = [
     {
         name: 'Page A',
         uv: 4000,
@@ -45,9 +46,9 @@ export const exampleLineData = [
     },
 ];
 
-export const exampleConfigs: WidgetConfig[] = [
+const exampleConfigs: WidgetConfig[] = [
     {
-        title: 'Test 1',
+        title: 'Example 1',
         id: '1',
         graphType: 'LINE_GRAPH',
         pinned: true,
@@ -55,15 +56,15 @@ export const exampleConfigs: WidgetConfig[] = [
         description: 'This is a test description',
     },
     {
-        title: 'Test 2',
+        title: 'Example 2',
         id: '2',
         graphType: 'BAR_GRAPH',
-        pinned: false,
+        pinned: true,
         data: exampleLineData,
         description: 'This is a test description',
     },
     {
-        title: 'Test 3',
+        title: 'Example 3',
         id: '3',
         graphType: 'LINE_GRAPH',
         pinned: true,
@@ -71,7 +72,7 @@ export const exampleConfigs: WidgetConfig[] = [
         description: 'This is a test description',
     },
     {
-        title: 'Test 4',
+        title: 'Example 4',
         id: '4',
         graphType: 'BAR_GRAPH',
         pinned: true,
@@ -79,7 +80,7 @@ export const exampleConfigs: WidgetConfig[] = [
         description: 'This is a test description',
     },
     {
-        title: 'Test 5',
+        title: 'Example 5',
         id: '5',
         graphType: 'LINE_GRAPH',
         pinned: false,
@@ -87,72 +88,8 @@ export const exampleConfigs: WidgetConfig[] = [
         description: 'This is a test description',
     },
     {
-        title: 'Test 6',
+        title: 'Example 6',
         id: '6',
-        graphType: 'BAR_GRAPH',
-        pinned: true,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 7',
-        id: '7',
-        graphType: 'LINE_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 8',
-        id: '8',
-        graphType: 'BAR_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 9',
-        id: '9',
-        graphType: 'LINE_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 10',
-        id: '10',
-        graphType: 'BAR_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 11',
-        id: '11',
-        graphType: 'LINE_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 12',
-        id: '12',
-        graphType: 'BAR_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 13',
-        id: '13',
-        graphType: 'LINE_GRAPH',
-        pinned: false,
-        data: exampleLineData,
-        description: 'This is a test description',
-    },
-    {
-        title: 'Test 14',
-        id: '14',
         graphType: 'BAR_GRAPH',
         pinned: false,
         data: exampleLineData,
@@ -162,43 +99,8 @@ export const exampleConfigs: WidgetConfig[] = [
 
 export const exampleProjects: ProjectConfig[] = [
     {
-        title: 'Test Project 1',
-        id: '1',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 2',
-        id: '2',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 3',
-        id: '3',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 4',
-        id: '4',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 5',
-        id: '5',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 6',
-        id: '6',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 7',
-        id: '7',
-        widgets: exampleConfigs,
-    },
-    {
-        title: 'Test Project 8',
-        id: '8',
+        title: 'Example Project',
+        id: 'ex1',
         widgets: exampleConfigs,
     },
 ];

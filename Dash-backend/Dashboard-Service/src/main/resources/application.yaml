@@ -1,9 +1,7 @@
 server:
   port: 8080
 
-
 spring:
-
   application:
     name: Dashboard-Service
     default-start-credits: 100
@@ -56,8 +54,6 @@ spring:
             issuer-uri: http://3.138.112.56:9000
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
-
-
 
 eureka:
   client:

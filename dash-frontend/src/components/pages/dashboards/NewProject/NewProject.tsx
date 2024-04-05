@@ -1,10 +1,13 @@
+'use client';
+
 import { useState } from 'react';
 import { getColumnInfo } from '@/components/dataPipeline/dataOperations/getColumnInfo';
 import { FileUpload } from './FileUpload';
 import { ColumnForm } from './ColumnForm';
 import { ProjectConfig } from '@/components/widgets/WidgetTypes';
-import { resolve } from 'path';
 import { fetchWidgetConfigs } from '../backendInteractions';
+import { CgSpinner } from 'react-icons/cg';
+import styles from '@/components/pages/dashboards/NewProject/NewProject.module.css';
 
 export interface ColumnInfo {
     colName: string;
@@ -31,6 +34,8 @@ export const NewProject: React.FC<NewProjectProps> = ({
     const [columns, setColumns] = useState<ColumnInfo[]>([]); // column info from csv
     const [description, setDescription] = useState<string>(''); // project description
     const [projectName, setProjectName] = useState<string>(''); // project name
+    const [projectCreationStatus, setProjectCreationStatus] =
+        useState<string>('');
 
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -41,6 +46,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
         setFile(f);
     };
 
+    // handles transition from file upload to column description
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -117,17 +123,25 @@ export const NewProject: React.FC<NewProjectProps> = ({
             columns[i].description = description;
         }
 
-        fetchWidgetConfigs(projectName, description, file as File, columns)
+        setDescriptionLoaded(false); // clear status
+        fetchWidgetConfigs(
+            projectName,
+            description,
+            file as File,
+            columns,
+            setProjectCreationStatus,
+        )
             .then((projectConfig) => {
                 setActiveProject(projectConfig);
                 setProjects([...projects, projectConfig]);
-                setNewProject(false);
+                setProjectCreationStatus(''); // clear status
+                setNewProject(false); // return to dashboard
             })
             .catch((error) => {
                 console.error(error);
-                setErrorMessage(
-                    'Error creating project. Check your inputs and try again.',
-                );
+                setProjectCreationStatus(''); // clear status
+                setErrorMessage(error);
+                setDescriptionLoaded(true); // go back to description form
             });
     };
 
@@ -140,6 +154,15 @@ export const NewProject: React.FC<NewProjectProps> = ({
                 handleCreateDashboard={handleCreateDashboard}
                 handleBackButton={handleBackButton}
             />
+        );
+    }
+
+    if (projectCreationStatus) {
+        return (
+            <div className={styles.loadingContainer}>
+                <CgSpinner className={styles.spinner} />
+                <p>{projectCreationStatus}</p>
+            </div>
         );
     }
 

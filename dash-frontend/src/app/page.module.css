@@ -1,10 +1,9 @@
 .main {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     background-color: var(--background);
 }
 
@@ -15,6 +14,7 @@
     align-items: center;
     gap: 50px;
     margin: 2rem;
+    z-index: 1;
 }
 
 .titleContainer {
@@ -36,12 +36,13 @@
 .heroVideo {
     position: absolute;
     object-fit: cover;
-    height: 28vw;
-    width: 110vh;
-    transform: rotate(-90deg) translateY(280px);
-    position: fixed;
+    height: 65vh;
+    width: 130vh;
+    transform: rotate(-90deg) translateX(25%) translateY(50%);
+    /* transform: rotate(-90deg) translateX(28%) translateY(25vh); */
     right: 0;
-    bottom: 20;
+    bottom: 0;
+    z-index: 0;
 }
 
 /* BUTTONS: SIGN UP & ABOUT */
