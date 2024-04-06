@@ -15,12 +15,7 @@ import javax.validation.constraints.Pattern;
 public class UserRegistrationRequest {
 
         @NotNull
-        @Pattern(regexp = "[A-Za-z]{2,20}")
-        private String firstName;
-
-        @NotNull
-        @Pattern(regexp = "[A-Za-z]{2,20}")
-        private String lastName;
+        private String name;
 
         @NotNull
         @Pattern(regexp = "[A-Za-z0-9]{2,20}@[A-Za-z0-9]{2,20}\\.[A-Za-z]{3,10}")
@@ -29,9 +24,5 @@ public class UserRegistrationRequest {
         @NotNull
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,16}$")
         private String password;
-
-        @NotNull
-        @Pattern(regexp = "^\\+1\\d{10}$") // TODO FIGURE OUT PATTERN
-        private String phoneNumber;
 
 }

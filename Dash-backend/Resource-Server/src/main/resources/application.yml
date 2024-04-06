@@ -43,9 +43,10 @@ openai:
 eureka:
   client:
     service-url:
-      defaultZone: http://172.31.33.187:8761/eureka
+      defaultZone: http://172.31.27.223:8761/eureka
     fetch-registry: true
     register-with-eureka: true
 
   instance:
-    hostname: 172.31.33.187
+    hostname: 172.31.27.223
+

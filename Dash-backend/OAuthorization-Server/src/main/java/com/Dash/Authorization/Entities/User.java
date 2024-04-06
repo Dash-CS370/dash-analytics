@@ -25,13 +25,11 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    private String Id;
+    private String id;
 
     @NotNull
     @NotEmpty
-    private String firstName;
-
-    private String lastName;
+    private String name;
 
     @NotNull
     @NotEmpty
@@ -52,7 +50,7 @@ public class User implements UserDetails {
     @NotNull
     private Date creationDate;
 
-    public String getId() { return Id; }
+    public String getId() { return id; }
 
     /** UserDetails interface methods concretely implemented here */
     private Role role;

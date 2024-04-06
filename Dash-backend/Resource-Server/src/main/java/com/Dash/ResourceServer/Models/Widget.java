@@ -14,14 +14,20 @@ import java.util.Map;
 @NoArgsConstructor
 public class Widget {
 
-    @JsonProperty("title")
+    @JsonProperty("widget_id")
+    private String id;
+
+    @JsonProperty("widget_title")
     private String title;
 
     @JsonProperty("graph_type")
     private GraphType graphType;
 
     @JsonProperty("widget_description")
-    private String widgetDescription;
+    private String description;
+
+    @JsonProperty("pinned")
+    private boolean pinned;
 
     //@JsonProperty("column_data_operations")
     //private Map<String, List<DataOperations>> columnDataOperations;

@@ -19,8 +19,6 @@ import java.io.IOException;
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    //private final static String DEFAULT_SUCCESS_URL = "/api/v1/dashboards/foo";
-
     private final static String DEFAULT_SUCCESS_URL = "http://127.0.0.1:3000/dashboards";
 
     private final OAuth2UserLoginEventListener thirdPartyLoginEventListener;

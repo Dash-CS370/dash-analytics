@@ -30,9 +30,7 @@ public class User implements UserDetails {
 
     @NotNull
     @NotEmpty
-    private String firstName;
-
-    private String lastName;
+    private String name;
 
     @NotNull
     @NotEmpty

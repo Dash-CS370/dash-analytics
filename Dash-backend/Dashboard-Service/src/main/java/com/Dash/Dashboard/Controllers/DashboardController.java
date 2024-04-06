@@ -84,7 +84,7 @@ public class DashboardController {
      */
     @PostMapping(value = "/project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectTitle,
-                                                 @RequestPart("project-description") String datasetDescription,
+                                                 @RequestPart("dataset-description") String datasetDescription,
                                                  @RequestPart("column-descriptions") String columnDescriptions,
                                                  @RequestPart("csv-file") MultipartFile csvFile,
                                                  @RegisteredOAuth2AuthorizedClient("resource-access-client")

@@ -10,5 +10,5 @@ eureka:
     fetch-registry: false
     register-with-eureka: false
   instance:
-    hostname: 172.31.33.187
+    hostname: 172.31.27.223
     preferIpAddress: true

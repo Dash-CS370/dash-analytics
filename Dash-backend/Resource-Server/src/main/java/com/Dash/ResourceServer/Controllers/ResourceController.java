@@ -138,6 +138,8 @@ public class ResourceController {
     }
 
 
+
+    /*** DUMMY ***/
     @GetMapping("/pull")
     public String demoEndpoint() {
         try {

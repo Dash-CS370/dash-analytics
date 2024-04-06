@@ -139,7 +139,7 @@ public class OpenAIUtils {
         return widgets.stream()
                 .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
-                .filter(widget -> widget.getWidgetDescription() != null && !widget.getWidgetDescription().isEmpty())
+                .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
                 .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
                 //.filter(widget -> widget.getColumnDataOperations() != null)

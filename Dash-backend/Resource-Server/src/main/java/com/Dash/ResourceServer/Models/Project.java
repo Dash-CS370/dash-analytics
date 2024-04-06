@@ -34,7 +34,7 @@ public class Project {
     @JsonProperty("column_descriptions")
     private List<String> columnDescriptions;
 
-    @JsonProperty("created_date")
+    @JsonProperty("creation_date")
     private Date creationDate;
 
     @JsonProperty("last_modified")
