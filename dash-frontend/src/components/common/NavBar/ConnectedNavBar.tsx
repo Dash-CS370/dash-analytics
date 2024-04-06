@@ -10,11 +10,11 @@ export const ConnectedNavBar: FC = () => {
     // -> clear user's account data from context/cookies
 
     const handleLogout = async () => {
-        await fetch("http://127.0.0.1:8080/api/v1/user/logout", {
+        await fetch('http://127.0.0.1:8080/api/v1/user/logout', {
             method: 'GET',
-            credentials : "include",
+            credentials: 'include',
         });
-    }
+    };
 
     return (
         <div className={styles.main}>
@@ -27,8 +27,11 @@ export const ConnectedNavBar: FC = () => {
                 <Link className={styles.navLink} href="/">
                     Learn More
                 </Link>
-                <Link href="/">
-                    <IoLogOutOutline className={styles.icon} onClick={handleLogout}/>
+                <Link href="http://3.138.112.56:8080/api/v1/user/logout">
+                    <IoLogOutOutline
+                        className={styles.icon}
+                        onClick={handleLogout}
+                    />
                 </Link>
             </div>
         </div>

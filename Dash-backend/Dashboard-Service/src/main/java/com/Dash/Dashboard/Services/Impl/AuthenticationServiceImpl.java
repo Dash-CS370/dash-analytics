@@ -6,6 +6,9 @@ import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import com.Dash.Dashboard.Services.AuthenticationService;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,13 +20,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+
 
 
 @Slf4j
@@ -38,17 +47,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MongoTemplate verificationTokenDAO;
     private final PasswordEncoder passwordEncoder;
     private final TaskExecutor taskExecutor;
+    private final JavaMailSender mailSender;
+    private final Configuration freemarkerConfig;
 
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
-                              TaskExecutor taskExecutor) {
+                              TaskExecutor taskExecutor,
+                              JavaMailSender mailSender,
+                              Configuration freemarkerConfig) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
+        this.mailSender = mailSender;
+        this.freemarkerConfig = freemarkerConfig;
     }
 
 
@@ -209,18 +224,40 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     // TODO !!! ASYNC
-    private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
+    public ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
-            final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
+            final String verificationUrl = "www.your-email.com/verifyRegistration?token=" + activationToken;
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("activationToken", activationToken);
+            model.put("verificationUrl", verificationUrl);
 
             taskExecutor.execute(() -> {
-                // Send email with activation token/key
-                log.warn("ASYNC");
+                try {
+                    MimeMessage message = mailSender.createMimeMessage();
+                    MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+                    // Set values from the model
+                    String path = "/Users/wenyuanhuizi/Desktop/dash/Dash-backend/Dashboard-Service/src/main/resources/templates/";
+
+                    freemarkerConfig.setDirectoryForTemplateLoading(new File(path));
+                    Template t = freemarkerConfig.getTemplate("email_template.ftl");
+                    String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+
+                    helper.setTo(email); // recipient
+                    helper.setText(html, true);
+                    helper.setSubject("Email Verification");
+                    helper.setFrom("noreply@dashAnalytics.com");
+
+                    mailSender.send(message);
+                    log.info("Activation email sent asynchronously to: " + email);
+                } catch (MessagingException | IOException | TemplateException e) {
+                    log.error("Error sending activation email to: " + email, e);
+                }
             });
-
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
-
         } catch (Exception e) {
+            log.error("Failed to send activation key to " + email, e);
             return new ResponseEntity<>("Activation key could not be sent at the moment", HttpStatus.BAD_REQUEST);
         }
     }

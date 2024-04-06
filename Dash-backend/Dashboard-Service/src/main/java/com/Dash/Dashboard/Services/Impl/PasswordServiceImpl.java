@@ -181,7 +181,7 @@ public class PasswordServiceImpl implements PasswordService {
 
             // TODO
             taskExecutor.execute(() -> {
-                // Send email with link
+                // Send email with activation token/key // TODO ***************** VERA IMPL EMAIL SERVICE
                 log.warn("ASYNC");
             });
 

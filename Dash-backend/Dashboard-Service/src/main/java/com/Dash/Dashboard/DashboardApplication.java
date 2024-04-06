@@ -10,12 +10,14 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 public class DashboardApplication {
 
     public static void main(String[] args) {
+        /*
         Dotenv dotenv = Dotenv.load();
 
         dotenv.entries().forEach(entry -> {
             System.setProperty(entry.getKey(), entry.getValue());
         });
 
+        */
         SpringApplication.run(DashboardApplication.class, args);
     }
 }

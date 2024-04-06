@@ -12,6 +12,7 @@ import { DataFrame } from "danfojs";
 // rolling_median
 // discretize_column
 
+// TODO slice: select every n rows (>10K rows). ReLU
 export async function standardize(df: DataFrame): Promise<DataFrame> {
     let scaler = new dfd.StandardScaler()
     scaler.fit(df)
@@ -194,28 +195,3 @@ export async function discretizeColumn(df: DataFrame, numBins: number): Promise<
     df.addColumn("Binned Data", binnedData, { inplace: true });
     return df;
 }
-
-// testing functions
-function testFunction() {
-  // Sample data for testing
-  const testData = {
-    "column1": [1, 2, 3, 4, 5],
-    "column2": [5, 4, 3, 2, 1]
-  };
-
-  // Create a DataFrame from the test data
-  const df = new DataFrame(testData);
-
-  console.log("Original DataFrame:");
-  df.print();
-
-  // Call the standardize function and print the results
-  normalize(df).then(standardizedDf => {
-    console.log("Standardized DataFrame:");
-    standardizedDf.print();
-  }).catch(error => {
-    console.error("An error occurred during standardization:", error);
-  });
-}
-
-testFunction();
