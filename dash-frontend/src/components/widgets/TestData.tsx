@@ -99,8 +99,14 @@ const exampleConfigs: WidgetConfig[] = [
 
 export const exampleProjects: ProjectConfig[] = [
     {
-        title: 'Example Project',
-        id: 'ex1',
+        project_name: 'Example Project',
+        project_id: 'ex1',
+        project_config_link: 'http://example.com',
+        project_csv_link: 'http://example.com',
+        dataset_description: 'This is a test description',
+        column_descriptions: ['Column 1', 'Column 2', 'Column 3'],
+        created_date: '2021-10-01',
+        last_modified: '2021-10-01',
         widgets: exampleConfigs,
     },
 ];
