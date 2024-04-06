@@ -42,7 +42,7 @@ public class ResourceController {
     @GetMapping(value = "/projects/{userAccount}")
     public List<Project> getUserProjects(@PathVariable String userAccount) {
         try {
-            log.warn("hello");
+            log.warn("S3 pinged for user projects...");
             return resourceService.getProjectsBelongingTo(userAccount);
 
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class ResourceController {
     public Optional<Project> addProject(@RequestPart("template-project") Project project,
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
-
+            log.warn("UPLOADING");
             // Create Config with GPT API
             Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
                                                                 project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT

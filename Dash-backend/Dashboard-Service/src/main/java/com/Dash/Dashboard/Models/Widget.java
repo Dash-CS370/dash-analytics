@@ -23,8 +23,11 @@ public class Widget {
     @JsonProperty("widget_description")
     private String widgetDescription;
 
-    @JsonProperty("column_operations")
-    private Map<String, List<DataOperations>> columnOperations;
+//    @JsonProperty("column_operations")
+//    private Map<String, List<DataOperations>> columnOperations;
+
+    @JsonProperty("columns")
+    private List<String> columns;
 
 }
 

@@ -84,32 +84,35 @@ public class DashboardController {
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
     @PostMapping(value = "/project", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Project> createProject(@RequestPart("project-name") String projectTitle,
-                                                 @RequestPart("project-description") String datasetDescription,
+    public Project createProject(@RequestPart("project-name") String projectTitle,
+                                                 @RequestPart("dataset-description") String datasetDescription,
                                                  @RequestPart("column-descriptions") String columnDescriptions,
                                                  @RequestPart("csv-file") MultipartFile csvFile,
                                                  @RegisteredOAuth2AuthorizedClient("resource-access-client")
                                                  OAuth2AuthorizedClient authorizedClient,
                                                  @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-
+            log.warn("FORM DATA UPLOADED");
             // Ensure request can be made by user
             final Optional<Project> generatedProject = dashboardService.createProject(authorizedClient, oauth2User, projectTitle,
                                                                                       datasetDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
-                return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);
+                return generatedProject.get();
             }
 
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new Project();
 
         } catch (NotEnoughCreditsException e) {
             log.warn("You do not sufficient credits to create a new project ... ");
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            //return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new Project();
         } catch (WebClientResponseException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+           // return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+            return new Project();
         } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new Project();
         }
     }
 
