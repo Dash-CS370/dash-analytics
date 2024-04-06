@@ -1,5 +1,6 @@
 import {
     DataItem,
+    GPTProjConfig,
     GPTResponse,
     ProjectConfig,
     WidgetConfig,
@@ -24,14 +25,17 @@ export async function fetchWidgetConfigs(
 
     setStatus('Fetching graph congigurations...');
     const gptResponse = await fetchGPTResponse(
-        columnDescriptions,
+        projectName,
         projectDescription,
-        df,
+        columnDescriptions,
+        csvFile,
     );
 
-    if (Array.isArray(gptResponse) && gptResponse.length != 0) {
+    console.log(gptResponse);
+
+    if (Array.isArray(gptResponse.widgets) && gptResponse.widgets.length != 0) {
         setStatus(`Preparing data for graphs...`);
-        const widgets = gptResponse.map((response, index) => {
+        const widgets = gptResponse.widgets.map((response, index) => {
             const data_df = df.loc({ columns: response.columns });
             const data_json = dfd.toJSON(data_df);
             if (data_json === undefined) {
@@ -42,9 +46,10 @@ export async function fetchWidgetConfigs(
 
             return {
                 title: response.title,
-                id: index.toString(),
+                id: `${gptResponse.project_id}-${index.toString()}`,
                 graphType: response.graph_type,
                 pinned: true,
+                columns: response.columns,
                 data: rechartsData as DataItem[],
                 description: response.widget_description,
             };
@@ -52,8 +57,14 @@ export async function fetchWidgetConfigs(
 
         setStatus(''); // clear status
         return {
-            title: projectName,
-            id: projectName,
+            project_name: gptResponse.project_name,
+            project_id: gptResponse.project_id,
+            project_config_link: gptResponse.project_config_link,
+            project_csv_link: gptResponse.project_csv_link,
+            dataset_description: gptResponse.dataset_description,
+            column_descriptions: gptResponse.column_descriptions,
+            created_date: gptResponse.created_date,
+            last_modified: gptResponse.last_modified,
             widgets: widgets,
         };
     } else {
@@ -62,31 +73,34 @@ export async function fetchWidgetConfigs(
 }
 
 const fetchGPTResponse = async (
-    columnDescriptions: string[],
+    projectName: string,
     projectDescription: string,
-    data: dfd.DataFrame,
-): Promise<GPTResponse[]> => {
-    const resp = await fetch(`http://127.0.0.1:8081/api/gpt`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    columnDescriptions: string[],
+    csv: File,
+): Promise<GPTProjConfig> => {
+    const formData = new FormData();
+    formData.append('project-name', projectName);
+    formData.append('dataset-description', projectDescription);
+    formData.append('column-descriptions', JSON.stringify(columnDescriptions));
+    formData.append('csv-file', csv);
+
+    const resp = await fetch(
+        `http://127.0.0.1:8080/api/v1/dashboards/project`,
+        {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
         },
-        body: JSON.stringify({
-            dataset_description: projectDescription,
-            column_data: columnDescriptions,
-        }),
-    });
+    );
     if (resp.status !== 200) {
         throw new Error('Failed to fetch GPT response. Try again.');
     }
 
-    const gptResponse: GPTResponse[] = await resp.json();
-
+    const gptResponse: GPTProjConfig = await resp.json();
     return Promise.resolve(gptResponse);
 };
 
-// export const fetchProjects = async (): Promise<ProjectConfig[]> => {
-export const fetchProjects = async () => {
+export const fetchProjects = async (): Promise<GPTProjConfig[]> => {
     const resp = await fetch('http://127.0.0.1:8080/api/v1/dashboards', {
         method: 'GET',
         credentials: 'include',
@@ -94,7 +108,23 @@ export const fetchProjects = async () => {
     if (resp.status !== 200) {
         throw new Error('Failed to fetch projects. Try again.');
     }
-    console.log('resp:', resp);
-    const projects: ProjectConfig[] = await resp.json();
+    const projects: GPTProjConfig[] = await resp.json();
     return Promise.resolve(projects);
+};
+
+export const formatGraphData = (
+    data: DataItem[],
+    columns: string[],
+): DataItem[] => {
+    if (!Array.isArray(data)) {
+        throw new Error('Invalid data received');
+    }
+    const df = new dfd.DataFrame(data);
+
+    const data_df = df.loc({ columns: columns });
+    const data_json = dfd.toJSON(data_df);
+    if (data_json === undefined) {
+        throw new Error('Failed to convert graph format');
+    }
+    return data_json as DataItem[];
 };
