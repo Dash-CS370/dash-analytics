@@ -94,7 +94,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                 </form>
             </div>
             <p className={styles.disclaimer}>
-                **Data visualizations are limited by the quality of the dataset.
+                Data visualizations are limited by the quality of the dataset.
                 By continuing, you are agreeing to our{' '}
                 <Link href="/terms-of-service">terms of use.</Link>
             </p>
