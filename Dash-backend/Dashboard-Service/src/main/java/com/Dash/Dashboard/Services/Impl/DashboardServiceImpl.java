@@ -125,18 +125,17 @@ public class DashboardServiceImpl implements DashboardService {
      * @return
      * @throws WebClientResponseException
      */
-    public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
+    public void updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
                 .fromUriString("http://127.0.0.1:8082/api/v1/resources/projects").toUriString();
 
-        return this.webClient.put()
+        this.webClient.put()
                 .uri(updateProjectUrl)
                 //.attributes(oauth2AuthorizedClient(client))
                 .body(BodyInserters.fromValue(projects))
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {})
-                .block();
+                .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {}).block();
     }
 
 
@@ -149,7 +148,7 @@ public class DashboardServiceImpl implements DashboardService {
      * @return
      * @throws WebClientResponseException
      */
-    public Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException {
+    public void deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException {
 
         // TODO OAuth2 User email -> extract for userId inside service
         String userAccount = extractUserDetails(oauth2User);
@@ -160,12 +159,13 @@ public class DashboardServiceImpl implements DashboardService {
                 .queryParam("project-id", projectId)
                 .toUriString();
 
-        return this.webClient.delete()
+        log.warn(deleteProjectUrl);
+
+        this.webClient.delete()
                 .uri(deleteProjectUrl)
                 //.attributes(oauth2AuthorizedClient(client))
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
-                .block();
+                .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {}).block();
     }
 
 

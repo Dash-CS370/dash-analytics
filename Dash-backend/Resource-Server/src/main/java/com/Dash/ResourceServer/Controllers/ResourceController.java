@@ -91,7 +91,7 @@ public class ResourceController {
     @PutMapping(value = "/projects")
     public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
-
+            log.warn("updated");
             return resourceService.updateProjects(projects);
 
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class ResourceController {
     public Optional<String> deleteProject(@RequestParam("user-id") String userId,
                                           @RequestParam("project-id") String projectId) {
         try {
-
+            log.warn("finished deletion");
             return resourceService.deleteProject(userId, projectId);
 
         } catch (Exception e) {

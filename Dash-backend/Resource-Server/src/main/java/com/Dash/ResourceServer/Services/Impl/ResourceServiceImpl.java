@@ -77,7 +77,6 @@ public class ResourceServiceImpl implements ResourceService {
      * @param projectConfig
      * @param csvFile
      */
-    @Async
     public void uploadProjectFiles(Project projectConfig, MultipartFile csvFile) {
 
         final String jsonString;

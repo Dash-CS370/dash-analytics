@@ -31,8 +31,6 @@ export async function fetchWidgetConfigs(
         csvFile,
     );
 
-    console.log(gptResponse);
-
     if (Array.isArray(gptResponse.widgets) && gptResponse.widgets.length != 0) {
         setStatus(`Preparing data for graphs...`);
         const widgets = gptResponse.widgets.map((response, index) => {
@@ -55,6 +53,9 @@ export async function fetchWidgetConfigs(
             };
         });
 
+        // sleep for 2 seconds to allow file to upload to s3
+        await sleep(2000);
+
         setStatus(''); // clear status
         return {
             project_name: gptResponse.project_name,
@@ -70,6 +71,10 @@ export async function fetchWidgetConfigs(
     } else {
         throw new Error('Failed to fetch GPT response. Try again.');
     }
+}
+
+function sleep(milliseconds: number) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 const fetchGPTResponse = async (
@@ -127,4 +132,43 @@ export const formatGraphData = (
         throw new Error('Failed to convert graph format');
     }
     return data_json as DataItem[];
+};
+
+export const updateRemoteProjects = async (
+    projects: ProjectConfig[],
+): Promise<Response> => {
+    let updatedProjects = projects.map((project) => {
+        const widgets = project.widgets.map((widget) => {
+            return {
+                title: widget.title,
+                graph_type: widget.graphType,
+                widget_description: widget.description,
+                columns: widget.columns,
+            };
+        });
+        return {
+            project_id: project.project_id,
+            project_name: project.project_name,
+            project_config_link: project.project_config_link,
+            project_csv_link: project.project_csv_link,
+            dataset_description: project.dataset_description,
+            column_descriptions: project.column_descriptions,
+            created_date: project.created_date,
+            last_modified: project.last_modified,
+            widgets: widgets,
+        };
+    });
+
+    const resp = await fetch(
+        'http://127.0.0.1:8080/api/v1/dashboards/projects',
+        {
+            method: 'PUT',
+            body: JSON.stringify(updatedProjects),
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        },
+    );
+    return resp;
 };

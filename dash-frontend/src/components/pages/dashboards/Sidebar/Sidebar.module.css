@@ -37,7 +37,7 @@
     border-radius: 12px;
     flex: 1;
     padding: 0.2rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .createProjectButton {

@@ -26,6 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1/dashboards")
 public class DashboardController {
 
@@ -51,7 +52,6 @@ public class DashboardController {
                                                        OAuth2AuthorizedClient authorizedClient,
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            log.warn("ADSFas");
 
             //log.warn(oauth2User.getAttributes().toString());
 
@@ -125,18 +125,14 @@ public class DashboardController {
      * @return ResponseEntity containing confirmation of request success
      */
     @PutMapping(value = "/projects", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object> updateProjects(@RequestBody List<Project> projects,
+    public ResponseEntity<?> updateProjects(@RequestBody List<Project> projects,
                                                  @RegisteredOAuth2AuthorizedClient("resource-access-client")
                                                  OAuth2AuthorizedClient authorizedClient) {
         try {
 
-            final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
+            dashboardService.updateProjects(authorizedClient, projects);
 
-            if (updatedProjectsConfirmation.isPresent()) {
-                return new ResponseEntity<>(HttpStatus.ACCEPTED);
-            }
-
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
 
         } catch (WebClientResponseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
@@ -151,19 +147,15 @@ public class DashboardController {
      * @return Object confirming deletion
      */
     @DeleteMapping(value = "/project")
-    public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId,
-                                                @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                OAuth2AuthorizedClient authorizedClient,
-                                                @AuthenticationPrincipal OAuth2User oauth2User) {
+    public ResponseEntity<?> deleteProject(@RequestParam("project-id") String projectId,
+                                           @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                           OAuth2AuthorizedClient authorizedClient,
+                                           @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
+            log.warn("Deletion started...");
+            dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
 
-            Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
-
-            if (projectDeletionConfirmation.isPresent() && projectDeletionConfirmation.get().endsWith("/")) {
-                return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
-            }
-
-            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (WebClientResponseException e) {
             log.error(e.getMessage());

@@ -9,6 +9,7 @@ import { Sidebar } from '@/components/pages/dashboards/Sidebar/Sidebar';
 import {
     fetchProjects,
     formatGraphData,
+    updateRemoteProjects,
 } from '@/components/pages/dashboards/backendInteractions';
 import { exampleProjects } from '@/components/widgets/TestData';
 import { DataItem, ProjectConfig } from '@/components/widgets/WidgetTypes';
@@ -81,6 +82,22 @@ export default function Dashboards() {
             window.removeEventListener('resize', checkScreenSize);
         };
     }, [router]);
+
+    // listen for page close to update remote projects
+    useEffect(() => {
+        const handleUnload = () => {
+            updateRemoteProjects(projects)
+                .then((response) => {})
+                .catch((error) => {
+                    console.error(error);
+                });
+        };
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    });
 
     const searchParams = useSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
@@ -179,14 +196,10 @@ export default function Dashboards() {
         setProjects(updatedProjects);
     };
 
-    // TODO: Add API interaction to update project name
     const editProjectName = (id: string, newTitle: string) => {
-        // TODO: API request to change project name in database
-        // TODO: don't update if API request fails
-
         const updatedProjects = projects.map((projectConfig) =>
             projectConfig.project_id === id
-                ? { ...projectConfig, title: newTitle }
+                ? { ...projectConfig, project_name: newTitle }
                 : projectConfig,
         );
         setProjects(updatedProjects);
@@ -195,7 +208,6 @@ export default function Dashboards() {
         }
     };
 
-    // TODO: Add API interaction to update widget title
     const editWidgetTitle = (id: string, newTitle: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
             if (config.id === id) {
@@ -214,19 +226,46 @@ export default function Dashboards() {
         setProjects(updatedProjects);
     };
 
-    // TODO: Add API interaction to delete project
     const deleteProject = (id: string) => {
-        // TODO: API request to delete project from database
-        // TODO: don't update if API request fails
+        fetch(
+            `http://127.0.0.1:8080/api/v1/dashboards/project?project-id=${id}`,
+            {
+                method: 'DELETE',
+                credentials: 'include',
+            },
+        )
+            .then((response) => {
+                if (response.status !== 200) {
+                    console.error('Failed to delete project');
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
 
         const updatedProjects = projects.filter(
             (projectConfig) => projectConfig.project_id !== id,
         );
         setProjects(updatedProjects);
 
-        if (activeProject.project_id === id) {
+        if (activeProject.project_id === id && updatedProjects.length > 0) {
             setActiveProject(updatedProjects[0]);
-            // TODO: change so that if active project is deleted, it defaults to new project view
+        } else if (
+            updatedProjects.length === 0 ||
+            activeProject.project_id === id
+        ) {
+            setActiveProject({
+                project_name: '',
+                project_id: '',
+                project_config_link: '',
+                project_csv_link: '',
+                dataset_description: '',
+                column_descriptions: [],
+                created_date: '',
+                last_modified: '',
+                widgets: [],
+            });
+            setNewProject(true);
         }
     };
 

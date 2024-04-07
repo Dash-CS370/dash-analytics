@@ -18,9 +18,9 @@ public interface DashboardService {
     Optional<Project> createProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectName,
                                     String projectDescription, String columnDescriptions, MultipartFile csvFile) throws WebClientResponseException, JsonProcessingException;
 
-    Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException;
+    void updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException;
 
-    Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException;
+    void deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException;
 
     String hitResourceController();
 
