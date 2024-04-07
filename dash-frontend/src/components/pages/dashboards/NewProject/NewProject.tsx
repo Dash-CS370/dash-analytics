@@ -106,6 +106,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
 
     const handleCreateDashboard = (e: React.FormEvent) => {
         e.preventDefault();
+
         const form = document.getElementById(
             'nameAndDescription',
         ) as HTMLFormElement;
@@ -132,6 +133,8 @@ export const NewProject: React.FC<NewProjectProps> = ({
             setProjectCreationStatus,
         )
             .then((projectConfig) => {
+                console.log('response received');
+
                 setActiveProject(projectConfig);
                 setProjects([...projects, projectConfig]);
                 setProjectCreationStatus(''); // clear status
@@ -157,7 +160,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
         );
     }
 
-    if (projectCreationStatus) {
+    if (projectCreationStatus !== '') {
         return (
             <div className={styles.loadingContainer}>
                 <CgSpinner className={styles.spinner} />

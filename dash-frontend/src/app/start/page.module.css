@@ -33,20 +33,17 @@
 .titleContainer {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
+    gap: 1rem;
+    font-size: 8vw;
 }
 
 .dash {
-    font-family: 'Colfax';
-    font-size: 100px;
     color: var(--on-background);
 }
 
 .analytics {
-    font-family: 'Colfax';
-    font-size: 105px;
     color: var(--primary);
 }
 

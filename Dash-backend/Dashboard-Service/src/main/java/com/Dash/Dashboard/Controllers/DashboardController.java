@@ -27,6 +27,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/v1/dashboards")
 public class DashboardController {
 
@@ -53,7 +54,7 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
-            log.warn(oauth2User.getAttributes().toString());
+            //log.warn(oauth2User.getAttributes().toString());
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
@@ -106,9 +107,12 @@ public class DashboardController {
         } catch (NotEnoughCreditsException e) {
             log.warn("You do not sufficient credits to create a new project ... ");
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+
         } catch (WebClientResponseException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+           return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+
         } catch (JsonProcessingException e) {
+           // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -127,13 +131,13 @@ public class DashboardController {
                                                  OAuth2AuthorizedClient authorizedClient) {
         try {
 
-            final Optional<Object> updatedProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
+            final Optional<Object> updateProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
 
-            if (updatedProjectsConfirmation.isPresent()) {
+            if (updateProjectsConfirmation.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.ACCEPTED);
-            }
 
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         } catch (WebClientResponseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
@@ -155,9 +159,7 @@ public class DashboardController {
                                            OAuth2AuthorizedClient authorizedClient,
                                            @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-
             Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
-
             if (projectDeletionConfirmation.isPresent()) {
                 return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
             }

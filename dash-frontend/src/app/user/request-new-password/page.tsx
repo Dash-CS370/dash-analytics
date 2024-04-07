@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '@/app/request-new-password/page.module.css';
+import styles from '@/app/user/request-new-password/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
@@ -48,7 +48,7 @@ export default function RequestNewPassword() {
                     {/* <form className={styles.form} id="request-form"> */}
                     <p className={styles.subtext_top}>
                         Enter the email address linked with your account and
-                        we'll send you a link to reset your password.
+                        we&apos;ll send you a link to reset your password.
                     </p>
                     <TextInput
                         className={styles.textInput}

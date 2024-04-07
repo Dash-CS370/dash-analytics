@@ -36,10 +36,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <div className={styles.projectList}>
                             {projects.map((project) => (
                                 <ProjectListItem
-                                    key={project.id}
-                                    id={project.id}
-                                    name={project.title}
-                                    isActive={project.id === activeProject.id}
+                                    key={project.project_id}
+                                    id={project.project_id}
+                                    name={project.project_name}
+                                    isActive={
+                                        project.project_id ===
+                                        activeProject.project_id
+                                    }
                                     onNameChange={editProjectName}
                                     deleteProject={deleteProject}
                                     selectProject={selectProject}

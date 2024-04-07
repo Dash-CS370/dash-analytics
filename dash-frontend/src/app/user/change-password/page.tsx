@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '@/app/change-password/page.module.css';
+import styles from '@/app/user/change-password/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';

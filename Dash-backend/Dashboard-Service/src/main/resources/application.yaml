@@ -51,10 +51,9 @@ spring:
 
         provider:
           spring:
-            issuer-uri: http://dash.aperturetoolkit.com:9000
+            issuer-uri: http://localhost:8081
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
-
 
 eureka:
   client:

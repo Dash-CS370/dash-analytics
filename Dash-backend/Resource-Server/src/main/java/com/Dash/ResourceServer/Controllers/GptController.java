@@ -33,6 +33,7 @@ public class GptController {
     @PostMapping()
     public List<Widget> demoWidgetGenerator(@RequestBody RequestDTO dataDTO) {
         // DTO -> "dataset description" | "column descriptions"
+        log.warn("WIDGETS ENPINT");
 
         if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
             dataDTO.setDatasetDescription("My dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.");

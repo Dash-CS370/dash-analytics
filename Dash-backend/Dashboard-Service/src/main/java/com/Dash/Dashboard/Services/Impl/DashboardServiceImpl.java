@@ -160,6 +160,8 @@ public class DashboardServiceImpl implements DashboardService {
                 .queryParam("project-id", projectId)
                 .toUriString();
 
+        log.warn(deleteProjectUrl);
+
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
                 //.attributes(oauth2AuthorizedClient(client))

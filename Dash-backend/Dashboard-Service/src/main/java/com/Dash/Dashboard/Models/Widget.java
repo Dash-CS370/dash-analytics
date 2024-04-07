@@ -14,8 +14,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class Widget {
 
-    @JsonProperty("widget_id")
-    private String id;
+    // @JsonProperty("widget_id")
+    // private String id;
 
     @JsonProperty("widget_title")
     private String title;
@@ -26,11 +26,11 @@ public class Widget {
     @JsonProperty("widget_description")
     private String description;
 
-    @JsonProperty("pinned")
-    private boolean pinned;
+    // @JsonProperty("pinned")
+    // private boolean pinned;
 
-    //@JsonProperty("column_data_operations")
-    //private Map<String, List<DataOperations>> columnDataOperations;
+//    @JsonProperty("column_operations")
+//    private Map<String, List<DataOperations>> columnOperations;
 
     @JsonProperty("columns")
     private List<String> columns;

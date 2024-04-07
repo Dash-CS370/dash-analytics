@@ -37,10 +37,17 @@ export default function RequestAccess() {
         }
         setErrorMessage('');
 
-        // TODO: send email to backend, set error message if failed and return
-        console.log(email);
-
-        setAccessRequested(true);
+        fetch(`http://127.0.0.1:8080/auth/request-access?email=${email}`, {
+            method: 'GET',
+        })
+            .then((response) => {
+                // setAccessRequested(true);
+                window.location.href = '/new-account?email=' + email;
+            })
+            .catch((error) => {
+                console.error(error);
+                setErrorMessage('Error requesting access');
+            });
     };
 
     if (accessRequested) {
@@ -61,6 +68,9 @@ export default function RequestAccess() {
                                 an email with an activation key upon approval.
                             </p>
                         </div>
+                        <PrimaryButton href="/signin" width="150px">
+                            Login
+                        </PrimaryButton>
                     </BaseForm>
                 </div>
             </main>
@@ -92,7 +102,7 @@ export default function RequestAccess() {
                     >
                         Request Access
                     </PrimaryButton>
-                    {/* </form> */}
+
                     <p className={styles.subtext}>
                         An activation key will be sent upon approval
                     </p>

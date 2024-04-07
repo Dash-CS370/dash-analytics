@@ -5,11 +5,16 @@ import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { NavBar } from '@/components/common/NavBar';
 import { TextInput } from '@/components/common/TextInput/TextInput';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function NewAccount() {
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
 
+    const searchParams = useSearchParams();
+    const emailParam = searchParams.get('email');
+
+    const router = useRouter();
     const handleCreateAccount = (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -18,9 +23,8 @@ export default function NewAccount() {
         ) as HTMLFormElement;
         const email = (form.elements.namedItem('email') as HTMLInputElement)
             .value;
-        const username = (
-            form.elements.namedItem('username') as HTMLInputElement
-        ).value;
+        const name = (form.elements.namedItem('name') as HTMLInputElement)
+            .value;
         const password = (
             form.elements.namedItem('password') as HTMLInputElement
         ).value;
@@ -29,10 +33,10 @@ export default function NewAccount() {
         ).value;
 
         setErrorMessage('');
-        if (!email || !username || !password || !confirmPassword) {
+        if (!email || !name || !password || !confirmPassword) {
             let missingFields = [];
             if (!email) missingFields.push('Email');
-            if (!username) missingFields.push('Username');
+            if (!name) missingFields.push('name');
             if (!password) missingFields.push('Password');
             if (!confirmPassword) missingFields.push('Confirm Password');
 
@@ -44,12 +48,39 @@ export default function NewAccount() {
             return;
         }
 
-        // TODO: send request to create account
-        // --> set error message if unsuccessful and return before redirecting
-        console.log(email, username, password);
+        // TODO: validate email format
+        // TODO: validate password format & confirm password match
 
-        // redirect to signin options page
-        window.location.href = '/signin';
+        // --> set error message if unsuccessful and return before redirecting
+        fetch('http://127.0.0.1:8080/auth/register-account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                name,
+                password,
+            }),
+        })
+            .then((response) => {
+                // redirect to signin options page
+                if (response.status == 201) {
+                    router.push('/signin');
+                } else if (response.status == 400) {
+                    response.text().then((text) => {
+                        setErrorMessage(text);
+                    });
+                } else if (response.status == 500) {
+                    setErrorMessage('Error creating account, try again.');
+                } else {
+                    setErrorMessage('Error creating account, try again.');
+                }
+            })
+            .catch((error) => {
+                setErrorMessage('Error communicating with server, try again.');
+                console.error(error);
+            });
     };
 
     return (
@@ -58,16 +89,26 @@ export default function NewAccount() {
 
             <BaseForm title="Create New Account" width="400px" height="560px">
                 <form id="createAccountForm" className={styles.content}>
+                    {emailParam ? (
+                        <TextInput
+                            id="email"
+                            className={styles.textInput}
+                            // defText="Email"
+                            width="325px"
+                            value={emailParam}
+                        />
+                    ) : (
+                        <TextInput
+                            id="email"
+                            className={styles.textInput}
+                            defText="Email"
+                            width="325px"
+                        />
+                    )}
                     <TextInput
-                        id="email"
+                        id="name"
                         className={styles.textInput}
-                        defText="Email"
-                        width="325px"
-                    />
-                    <TextInput
-                        id="username"
-                        className={styles.textInput}
-                        defText="Username"
+                        defText="name"
                         width="325px"
                     />
                     <TextInput

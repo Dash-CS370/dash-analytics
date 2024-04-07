@@ -1,12 +1,24 @@
 export interface DataItem {
-    [key: string]: number | string;
+    [key: string]: any;
+}
+
+export interface GPTProjConfig {
+    project_id: string;
+    project_name: string;
+    project_config_link: string;
+    project_csv_link: string;
+    dataset_description: string;
+    column_descriptions: string[];
+    created_date: string;
+    last_modified: string;
+    widgets: GPTResponse[];
 }
 
 export interface GPTResponse {
-    columns: string[]; // TODO: change to map of string to array of strings
-    graph_type: string;
     title: string;
+    graph_type: string;
     widget_description: string;
+    columns: string[];
 }
 
 export interface WidgetConfig {
@@ -14,13 +26,20 @@ export interface WidgetConfig {
     id: string;
     graphType: string;
     pinned: boolean;
+    columns: string[];
     data: DataItem[];
     description: string;
 }
 
 export interface ProjectConfig {
-    title: string;
-    id: string;
+    project_id: string;
+    project_name: string;
+    project_config_link: string;
+    project_csv_link: string;
+    dataset_description: string;
+    column_descriptions: string[];
+    created_date: string;
+    last_modified: string;
     widgets: WidgetConfig[];
 }
 

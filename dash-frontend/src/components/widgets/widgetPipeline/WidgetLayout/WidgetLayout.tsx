@@ -38,7 +38,9 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
                     expandedWidgetId === '' ? '' : styles.active
                 }`}
             ></div>
-            <h1 className={styles.dashboardTitle}>{projectConfig.title}</h1>
+            <h1 className={styles.dashboardTitle}>
+                {projectConfig.project_name}
+            </h1>
             <div className={styles.widgetGrid}>
                 {pinnedConfigs.map((config: WidgetConfig) => {
                     return (
