@@ -42,10 +42,11 @@ export default function RequestAccess() {
         })
             .then((response) => {
                 // setAccessRequested(true);
-                window.location.href = '/new-account';
+                window.location.href = '/new-account?email=' + email;
             })
             .catch((error) => {
                 console.error(error);
+                setErrorMessage('Error requesting access');
             });
     };
 

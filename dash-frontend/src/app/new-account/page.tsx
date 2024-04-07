@@ -5,11 +5,14 @@ import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { NavBar } from '@/components/common/NavBar';
 import { TextInput } from '@/components/common/TextInput/TextInput';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function NewAccount() {
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
+
+    const searchParams = useSearchParams();
+    const emailParam = searchParams.get('email');
 
     const router = useRouter();
     const handleCreateAccount = (event: React.FormEvent) => {
@@ -86,12 +89,22 @@ export default function NewAccount() {
 
             <BaseForm title="Create New Account" width="400px" height="560px">
                 <form id="createAccountForm" className={styles.content}>
-                    <TextInput
-                        id="email"
-                        className={styles.textInput}
-                        defText="Email"
-                        width="325px"
-                    />
+                    {emailParam ? (
+                        <TextInput
+                            id="email"
+                            className={styles.textInput}
+                            // defText="Email"
+                            width="325px"
+                            value={emailParam}
+                        />
+                    ) : (
+                        <TextInput
+                            id="email"
+                            className={styles.textInput}
+                            defText="Email"
+                            width="325px"
+                        />
+                    )}
                     <TextInput
                         id="name"
                         className={styles.textInput}

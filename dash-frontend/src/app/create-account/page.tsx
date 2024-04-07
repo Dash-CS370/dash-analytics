@@ -4,8 +4,13 @@ import { NavBar } from '@/components/common/NavBar';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import { SecondaryButton } from '@/components/common/buttons/SecondaryButton/SecondaryButton';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function CreateAccount() {
+    const searchParams = useSearchParams();
+    const email = searchParams.get('email');
+
     return (
         <main className={styles.main}>
             <NavBar connected={false} />
@@ -18,7 +23,7 @@ export default function CreateAccount() {
                 >
                     <PrimaryButton
                         className={styles.buttonFormatOne}
-                        href="/new-account"
+                        href={`/new-account?email=${email}`}
                     >
                         Create Account
                     </PrimaryButton>
