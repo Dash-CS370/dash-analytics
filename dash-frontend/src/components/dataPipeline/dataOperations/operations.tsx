@@ -196,26 +196,97 @@ export async function discretizeColumn(df: DataFrame, numBins: number): Promise<
 }
 
 // testing functions
-function testFunction() {
+async function testFunction() {
   // Sample data for testing
   const testData = {
     "column1": [1, 2, 3, 4, 5],
     "column2": [5, 4, 3, 2, 1]
   };
 
+  // const testData2 = await dfd.readCSV("./fake_weather_data.csv")
+
   // Create a DataFrame from the test data
   const df = new DataFrame(testData);
 
   console.log("Original DataFrame:");
   df.print();
-
-  // Call the standardize function and print the results
-  normalize(df).then(standardizedDf => {
+  standardize(df).then(standardizedDf => {
     console.log("Standardized DataFrame:");
     standardizedDf.print();
   }).catch(error => {
     console.error("An error occurred during standardization:", error);
   });
+  normalize(df).then(normalizedDF => {
+    console.log("Normalized DataFrame:");
+    normalizedDF.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  calculateDelta(df).then(deltaDF => {
+    console.log("Delta DataFrame:");
+    deltaDF.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  calculatePercentageChange(df).then(pctChange => {
+    console.log("Percent Change DataFrame:");
+    pctChange.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  percentOfTotal(df).then(pctofTotal => {
+    console.log("Percent Total DataFrame:");
+    pctofTotal.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  logarithmicScaling(df).then(scaledDF => {
+    console.log("Scaled DataFrame:");
+    scaledDF.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  squareRootTransform(df).then(rootTransform => {
+    console.log("Square Root Transformation:");
+    rootTransform.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  rollingAverage(df, 2).then(rollingAvg => {
+    console.log("Rolling Avg DataFrame:");
+    rollingAvg.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+  rollingMedian(df, 2).then(rollingMedian => {
+    console.log("Rolling Median DataFrame:");
+    rollingMedian.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
+
+  const testData2 = {
+      "column": [1, 2, 3, 4, 5]
+  }
+  const df2 = new DataFrame(testData2)
+  discretizeColumn(df2, 2).then(discretizedDF => {
+    console.log("Discretized DataFrame:");
+    discretizedDF.print();
+  }).catch(error => {
+    console.error("An error occurred during standardization:", error);
+  });
 }
+
+// async function testFunctionsFromCSV(filePath: string) {
+//     const df = await dfd.readCSV(filePath);
+//     console.log("Original DataFrame:");
+//     df.print();
+//     const normalizedDf = await normalize(df);
+//     console.log("Normalized DataFrame:");
+//     normalizedDf.print();
+// }
+//
+// testFunctionsFromCSV("./fake_weather_data.csv").catch(console.error);
+
 
 testFunction();
