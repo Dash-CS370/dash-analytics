@@ -7,7 +7,7 @@ export default function Home() {
         <main className={styles.main}>
             <div className={styles.content}>
                 <div className={styles.titleContainer}>
-                    <span className={styles.dash}>Dash </span>
+                    <span className={styles.dash}>Dash</span>
                     <span className={styles.analytics}>Analytics</span>
                 </div>
 
