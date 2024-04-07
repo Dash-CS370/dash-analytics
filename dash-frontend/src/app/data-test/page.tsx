@@ -3,7 +3,19 @@
 import styles from '@/app/data-test/page.module.css';
 import { useState } from 'react';
 import * as dfd from 'danfojs';
-import { normalize } from '@/components/dataPipeline/dataOperations/operations';
+import {
+    normalize,
+    standardize,
+    calculateDelta,
+    calculatePercentageChange,
+    percentOfTotal,
+    logarithmicScaling,
+    squareRootTransform,
+    rollingAverage,
+    rollingMedian,
+    discretizeColumn,
+    processAndSliceDF,
+} from '@/components/dataPipeline/dataOperations/operations';
 
 export default function DataTest() {
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,12 +26,60 @@ export default function DataTest() {
         }
 
         dfd.readCSV(f).then((df) => {
-            // test functions
+            standardize(df).then((standerdizedDF) => {
+                console.log('StanderdizedDF df:');
+                standerdizedDF.print();
+            });
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
             normalize(df).then((normalizedDF) => {
                 console.log('Normalized df:');
                 normalizedDF.print();
             });
-            // print using console.log()
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
+            calculateDelta(df).then((calculatedDeltaDF) => {
+                console.log('CalculatedDelta df:');
+                calculatedDeltaDF.print();
+            });
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
+            calculatePercentageChange(df).then(
+                (calculatePercentageChangeDF) => {
+                    console.log('calculatePercentageChange df:');
+                    calculatePercentageChangeDF.print();
+                },
+            );
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
+            percentOfTotal(df).then((percentOfTotalDF) => {
+                console.log('percentOfTotal df:');
+                percentOfTotalDF.print();
+            });
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
+            logarithmicScaling(df).then((logarithmicScalingDF) => {
+                console.log('logarithmicScaling df:');
+                logarithmicScalingDF.print();
+            });
+            console.log(df);
+        });
+
+        dfd.readCSV(f).then((df) => {
+            squareRootTransform(df).then((squareRootTransformDF) => {
+                console.log('squareRootTransform df:');
+                squareRootTransformDF.print();
+            });
             console.log(df);
         });
     };

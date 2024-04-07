@@ -19,4 +19,5 @@ public interface PasswordService {
 
     public ResponseEntity<String> resetUserPassword(String resetPasswordKey, String newPassword);
 
+    public String sendPasswordResetEmail(String email, String passwordResetKey);
 }

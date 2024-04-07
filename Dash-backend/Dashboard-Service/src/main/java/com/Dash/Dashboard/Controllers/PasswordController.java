@@ -99,4 +99,11 @@ public class PasswordController {
         }
     }
 
+    @PostMapping("/send-password-reset-email")
+    public String sendPasswordResetEmail(@RequestParam String email, @RequestParam String passwordResetKey){
+        return passwordService.sendPasswordResetEmail(email, passwordResetKey);
+    }
+
+
+
 }

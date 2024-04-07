@@ -6,9 +6,8 @@ import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import com.Dash.Dashboard.Services.AuthenticationService;
+import com.Dash.Dashboard.Services.EmailService;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,16 +20,9 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -47,23 +39,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final MongoTemplate verificationTokenDAO;
     private final PasswordEncoder passwordEncoder;
     private final TaskExecutor taskExecutor;
-    private final JavaMailSender mailSender;
-    private final Configuration freemarkerConfig;
 
+    private final EmailService emailService;
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
                               TaskExecutor taskExecutor,
-                              JavaMailSender mailSender,
-                              Configuration freemarkerConfig) {
+                              EmailService emailService) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
-        this.mailSender = mailSender;
-        this.freemarkerConfig = freemarkerConfig;
+        this.emailService = emailService;
     }
 
 
@@ -232,29 +221,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             model.put("activationToken", activationToken);
             model.put("verificationUrl", verificationUrl);
 
+            // Executes the block of code async
             taskExecutor.execute(() -> {
-                try {
-                    MimeMessage message = mailSender.createMimeMessage();
-                    MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
-                    // Set values from the model
-                    String path = "/Users/wenyuanhuizi/Desktop/dash/Dash-backend/Dashboard-Service/src/main/resources/templates/";
-
-                    freemarkerConfig.setDirectoryForTemplateLoading(new File(path));
-                    Template t = freemarkerConfig.getTemplate("email_template.ftl");
-                    String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
-
-                    helper.setTo(email); // recipient
-                    helper.setText(html, true);
-                    helper.setSubject("Email Verification");
-                    helper.setFrom("noreply@dashAnalytics.com");
-
-                    mailSender.send(message);
-                    log.info("Activation email sent asynchronously to: " + email);
-                } catch (MessagingException | IOException | TemplateException e) {
-                    log.error("Error sending activation email to: " + email, e);
-                }
+                emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl",3);
             });
+
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Failed to send activation key to " + email, e);

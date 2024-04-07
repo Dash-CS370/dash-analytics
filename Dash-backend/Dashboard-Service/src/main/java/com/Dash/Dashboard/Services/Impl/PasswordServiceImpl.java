@@ -2,7 +2,9 @@ package com.Dash.Dashboard.Services.Impl;
 
 import com.Dash.Dashboard.Entites.PasswordResetToken;
 import com.Dash.Dashboard.Entites.User;
+import com.Dash.Dashboard.Services.EmailService;
 import com.Dash.Dashboard.Services.PasswordService;
+import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,10 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.*;
 
 
 @Slf4j
@@ -31,17 +32,20 @@ public class PasswordServiceImpl implements PasswordService {
     private final PasswordEncoder passwordEncoder;
     private final TaskExecutor taskExecutor;
 
+    private final EmailService emailService;
+
     @Autowired
     public PasswordServiceImpl(@Qualifier("passwordResetMongoTemplate") MongoTemplate passwordResetTokenDAO,
                                @Qualifier("userMongoTemplate") MongoTemplate userDAO,
                                PasswordEncoder passwordEncoder,
-                               TaskExecutor taskExecutor) {
+                               TaskExecutor taskExecutor,
+                               EmailService emailService) {
 
         this.passwordResetTokenDAO = passwordResetTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
         this.userDAO = userDAO;
-    }
+        this.emailService = emailService;}
 
 
 
@@ -175,24 +179,29 @@ public class PasswordServiceImpl implements PasswordService {
      * @param passwordResetKey
      * @return
      */
-    private String sendPasswordResetEmail(String email, String passwordResetKey) {
+
+    public String sendPasswordResetEmail(String email, String passwordResetKey) {
         try {
             final String url = "www.dash.com/reset-password?token=" + passwordResetKey;
 
-            // TODO
+            Map<String, Object> model = new HashMap<>();
+            model.put("passwordResetKey", passwordResetKey);
+            model.put("verificationUrl", url);
+
             taskExecutor.execute(() -> {
-                // Send email with activation token/key // TODO ***************** VERA IMPL EMAIL SERVICE
-                log.warn("ASYNC");
+                emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3);
             });
 
-            log.warn("Password rest key was successfully sent to " + email);
+            log.info("Password reset key was successfully sent to " + email);
 
             return url;
 
         } catch (Exception e) {
-            log.warn("Password rest key could not be sent at the moment");
+            log.warn("Password reset key could not be sent at the moment to " + email, e);
             return "";
         }
     }
+
+
 
 }
