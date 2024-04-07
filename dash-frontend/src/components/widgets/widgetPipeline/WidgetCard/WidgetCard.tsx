@@ -54,14 +54,8 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     const handleCheckClick = (e: React.MouseEvent) => {
         e.stopPropagation();
 
-        console.log(`handling check click, isEditing: ${editingName}`);
-
-        // grab new name from input field
-        const newName = (
-            document.querySelector(`.${styles.editInput}`) as HTMLInputElement
-        ).value;
-
-        console.log(`new name: ${newName}`);
+        console.log('id:', id);
+        console.log('newName:', newName);
 
         onEditTitle(id, newName);
         setEditingName(false);
@@ -72,11 +66,8 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     ) => {
         e.stopPropagation();
         if (e.key === 'Enter') {
-            const newName = (
-                document.querySelector(
-                    `.${styles.editInput}`,
-                ) as HTMLInputElement
-            ).value;
+            console.log('id:', id);
+            console.log('newName:', newName);
 
             onEditTitle(id, newName);
             setEditingName(false);
