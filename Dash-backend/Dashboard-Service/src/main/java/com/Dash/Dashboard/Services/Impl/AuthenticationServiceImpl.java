@@ -149,8 +149,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return new ResponseEntity<>("An account associated with this email has not been activated yet", HttpStatus.BAD_REQUEST);
         } else if (user.isEmpty()) {
             return new ResponseEntity<>("The provided email is not associated with an account", HttpStatus.BAD_REQUEST);
-        } else if (user.get().isEnabled()) {
-            return new ResponseEntity<>("The provided email is already associated with an account", HttpStatus.BAD_REQUEST);
+        } else if (user.get().getPassword() != null) {
+            return new ResponseEntity<>("The provided email is already associated with a registered account", HttpStatus.BAD_REQUEST);
         }
 
         // Build verified customer
