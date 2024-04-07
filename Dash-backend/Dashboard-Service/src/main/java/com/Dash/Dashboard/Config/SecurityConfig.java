@@ -49,7 +49,7 @@ public class SecurityConfig {
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui.html").permitAll() // TODO - REMOVE IN THE FUTURE
             .antMatchers("/api/v1/password/**").permitAll()
-            .antMatchers("/api/v1/user/**").permitAll()
+            .antMatchers("/api/v1/user/**").authenticated()
             .antMatchers("/api/v1/dashboards/**").authenticated()
             .anyRequest().authenticated()
             .and()

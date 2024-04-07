@@ -102,7 +102,7 @@ export default function Signin() {
                         <SigninButton
                             className={styles.signinWithDash}
                             buttonText="Login with"
-                            href="http://127.0.0.1:8080/oauth2/authorization/Dash"
+                            href="http://3.138.112.56:8080/oauth2/authorization/Dash"
                             imgSrc="assets/DashLogo.svg"
                             alt="Dash Logo"
                             imgWidth={30}

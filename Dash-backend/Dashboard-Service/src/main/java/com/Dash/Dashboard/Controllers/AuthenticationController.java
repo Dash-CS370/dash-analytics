@@ -110,5 +110,9 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/send-verification-email")
+    public ResponseEntity<String> sendVerificationEmail(@RequestParam String email, @RequestParam String activationToken){
+        return authenticationService.sendVerificationEmail(email, activationToken);
+    }
 
 }

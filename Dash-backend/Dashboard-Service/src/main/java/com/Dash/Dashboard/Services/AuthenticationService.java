@@ -11,4 +11,6 @@ public interface AuthenticationService {
 
     ResponseEntity<String> register(UserRegistrationRequest registrationRequest);
 
+    ResponseEntity<String> sendVerificationEmail(String email, String activationToken);
+
 }

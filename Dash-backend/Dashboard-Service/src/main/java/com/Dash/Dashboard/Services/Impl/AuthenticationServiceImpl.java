@@ -6,6 +6,8 @@ import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import com.Dash.Dashboard.Services.AuthenticationService;
+import com.Dash.Dashboard.Services.EmailService;
+import freemarker.template.Configuration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,13 +19,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 
 
 @Slf4j
@@ -39,16 +40,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final TaskExecutor taskExecutor;
 
+    private final EmailService emailService;
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
-                              TaskExecutor taskExecutor) {
+                              TaskExecutor taskExecutor,
+                              EmailService emailService) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
+        this.emailService = emailService;
     }
 
 
@@ -209,18 +213,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     // TODO !!! ASYNC
-    private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
+    public ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
-            final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
+            final String verificationUrl = "www.your-email.com/verifyRegistration?token=" + activationToken;
 
+            Map<String, Object> model = new HashMap<>();
+            model.put("activationToken", activationToken);
+            model.put("verificationUrl", verificationUrl);
+
+            // Executes the block of code async
             taskExecutor.execute(() -> {
-                // Send email with activation token/key
-                log.warn("ASYNC");
+                emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl",3);
             });
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
-
         } catch (Exception e) {
+            log.error("Failed to send activation key to " + email, e);
             return new ResponseEntity<>("Activation key could not be sent at the moment", HttpStatus.BAD_REQUEST);
         }
     }

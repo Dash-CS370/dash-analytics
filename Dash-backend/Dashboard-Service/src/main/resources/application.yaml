@@ -17,14 +17,29 @@ spring:
     multipart:
       max-file-size: 5MB
 
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: analyticsdash0@gmail.com
+    password: tlmaljruygkucyqt
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   security:
     oauth2:
       client:
         registration:
           Dash:
             provider: spring
-            client-id: ${DASH_CLIENT_ID}
-            client-secret: ${DASH_CLIENT_SECRET}
+            client-id: Dash-client
+            client-secret: secret
             authorization-grant-type: authorization_code
             redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
             scope: openid
@@ -32,24 +47,24 @@ spring:
 
           resource-access-client:
             provider: spring
-            client-id: ${RESOURCE_CLIENT_ID}
-            client-secret: ${RESOURCE_CLIENT_SECRET}
+            client-id: Dash-client
+            client-secret: secret
             authorization-grant-type: client_credentials
             redirect-uri: "http://127.0.0.1:8080/authorized"
             scope: api.read
             client-name: resource-access-client
 
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-
-          azure-ad:
-            client-id: ${AZURE_CLIENT_ID}
-            client-secret: ${AZURE_CLIENT_SECRET}
-            provider: azure
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
-            scope: openid
+#           google:
+#             client-id: ${GOOGLE_CLIENT_ID}
+#             client-secret: ${GOOGLE_CLIENT_SECRET}
+#
+#           azure-ad:
+#             client-id: ${AZURE_CLIENT_ID}
+#             client-secret: ${AZURE_CLIENT_SECRET}
+#             provider: azure
+#             authorization-grant-type: authorization_code
+#             redirect-uri: "http://127.0.0.1/login/oauth2/code/azure"
+#             scope: openid
 
         provider:
           spring:

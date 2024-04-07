@@ -7,7 +7,7 @@ import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraph
 
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
     switch (config.graphType) {
-        case 'bar_chart':
+        case 'BAR_GRAPH':
             return (
                 <BarChartThumbnail
                     title={config.title}
@@ -16,7 +16,7 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-        case 'line_graph':
+        case 'LINE_GRAPH':
             return (
                 <LineGraphThumbnail
                     title={config.title}
