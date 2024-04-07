@@ -164,7 +164,6 @@ public class DashboardController {
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
-
         } catch (WebClientResponseException e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
