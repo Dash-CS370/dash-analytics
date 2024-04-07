@@ -9,7 +9,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +17,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class OpenAIUtils {
+
+
+    private static final Integer PIN_COUNT = 4;
 
 
     // TODO
@@ -51,15 +53,15 @@ public class OpenAIUtils {
         /*
         // General context and list of graph types to choose from
         additionalContext =
-                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'column_data_operations'. " +
-                "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
+                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'description', and 'column_data_operations'. " +
+                "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'description' provides a brief overview of the visualization in present tense. " +
                 "The 'column_data_operations' maps required columns to their data operations, detailing how each column is processed to generate the graph." +
                 "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
         */
 
         additionalContext =
-                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'widget_description', and 'columns'. " +
-                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options, 'widget_description' provides a brief overview of the visualization in present tense. " +
+                "Each configuration option (aka Widget) MUST include 'title', 'graph_type', 'description', and 'columns'. " +
+                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options, 'description' provides a brief overview of the visualization in present tense. " +
                         "The 'columns' is a list of the required columns needed to generate a widget of the given graph type." +
                         "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
 
@@ -94,7 +96,7 @@ public class OpenAIUtils {
 
     public static Optional<List<Widget>> extractWidgets(String response) {
 
-        final List<Widget> filteredWidgets;
+        final List<Widget> processedWidgets;
 
         if (!response.startsWith("{")) {
             response = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1).strip();
@@ -106,24 +108,25 @@ public class OpenAIUtils {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            final List<Widget> potentialWidgets;
+
+            final List<Widget> widgets;
 
             if (!response.contains("widgets")) {
                 String alt = response.substring(response.indexOf("["), response.lastIndexOf("]") + 1).strip();
-                potentialWidgets = objectMapper.readValue(alt, widgetListTypeReference);
+                widgets = objectMapper.readValue(alt, widgetListTypeReference);
             } else {
-                potentialWidgets = objectMapper.readValue(objectMapper.readTree(response).get("widgets").toString(), widgetListTypeReference);
+                widgets = objectMapper.readValue(objectMapper.readTree(response).get("widgets").toString(), widgetListTypeReference);
             }
 
-            if (potentialWidgets == null) return Optional.empty();
+            if (widgets == null) return Optional.empty();
 
-            log.warn("BEFORE FILTER SIZE: " + potentialWidgets.size());
+            log.warn("BEFORE FILTER SIZE: " + widgets.size());
 
-            filteredWidgets = filterWidgetList(potentialWidgets);
+            processedWidgets = processWidgetList(widgets);
 
-            log.warn("AFTER FILTER SIZE: " + filteredWidgets.size());
+            log.warn("AFTER FILTER SIZE: " + processedWidgets.size());
 
-            return Optional.of(filteredWidgets);
+            return Optional.of(processedWidgets);
 
         } catch (JsonProcessingException e) {
             // TODO return preset
@@ -135,13 +138,14 @@ public class OpenAIUtils {
 
 
 
-    public static List<Widget> filterWidgetList(List<Widget> widgets) {
-        return widgets.stream()
+    public static List<Widget> processWidgetList(List<Widget> unprocessedWidgets) {
+        // TODO
+        final List<Widget> widgets = unprocessedWidgets.stream()
                 .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
-                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
+                //.filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
                 //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {
                     //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
@@ -149,6 +153,21 @@ public class OpenAIUtils {
                     //return isMultiColumnGraph || isSingleColumnGraph;
                 //})
                 .collect(Collectors.toList());
+
+
+        // Assign each Widget a Unique Identifier
+        widgets.forEach(widget -> {
+            widget.setId(UUID.randomUUID().toString().substring(0, 8));
+        });
+
+        // Enable pinning for the first N random widgets
+        Collections.shuffle(widgets);
+
+        for (int i = 0; i < PIN_COUNT; i++) {
+            widgets.get(i).setPinned(true);
+        }
+
+        return widgets;
     }
 
 
@@ -165,7 +184,7 @@ public class OpenAIUtils {
                 + "    \"graph_type\": {"
                 + "      \"type\": \"string\""
                 + "    },"
-                + "    \"widget_description\": {"
+                + "    \"description\": {"
                 + "      \"type\": \"string\""
                 + "    },"
                 + "    \"columns\": {"
@@ -175,7 +194,7 @@ public class OpenAIUtils {
                 + "      }"
                 + "    }"
                 + "  },"
-                + "  \"required\": [\"title\", \"graph_type\", \"widget_description\", \"columns\"]"
+                + "  \"required\": [\"title\", \"graph_type\", \"description\", \"columns\"]"
                 + "}"
                 + "},"
                 + "\"required\": [\"widgets\"]"
@@ -196,7 +215,7 @@ public class OpenAIUtils {
                 + "       \"graph_type\": {"
                 + "         \"type\": \"string\""
                 + "       },"
-                + "       \"widget_description\": {"
+                + "       \"description\": {"
                 + "         \"type\": \"string\""
                 + "       },"
                 + "       \"column_data_operations\": {"
@@ -209,7 +228,7 @@ public class OpenAIUtils {
                 + "         }"
                 + "       }"
                 + "     },"
-                + "     \"required\": [\"title\", \"graph_type\", \"widget_description\", \"column_data_operations\"]"
+                + "     \"required\": [\"title\", \"graph_type\", \"description\", \"column_data_operations\"]"
                 + "   }"
                 + "},"
                 + "\"required\": [\"widgets\"]"

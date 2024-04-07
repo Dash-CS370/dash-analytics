@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 @Data
@@ -14,16 +15,16 @@ import java.util.Map;
 @NoArgsConstructor
 public class Widget {
 
-    @JsonProperty("widget_id")
+    @JsonProperty("id")
     private String id;
 
-    @JsonProperty("widget_title")
+    @JsonProperty("title")
     private String title;
 
     @JsonProperty("graph_type")
     private GraphType graphType;
 
-    @JsonProperty("widget_description")
+    @JsonProperty("description")
     private String description;
 
     @JsonProperty("pinned")

@@ -26,3 +26,7 @@ Object Paths:
 
 
 <-- EXAMPLE user.json file --> TODO
+
+
+
+TODO --> MAKE RESOURCE SERVER INTERNAL (Private IPv4 Addr)
