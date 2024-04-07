@@ -123,6 +123,11 @@ export default function Dashboards() {
             }
         }
 
+        if (project.project_id === 'ex1') {
+            setActiveProjectConfig(project);
+            return;
+        }
+
         // format chart data
         fetch(`/api/fetch-csv?link=${project.project_csv_link}`, {
             method: 'GET',
