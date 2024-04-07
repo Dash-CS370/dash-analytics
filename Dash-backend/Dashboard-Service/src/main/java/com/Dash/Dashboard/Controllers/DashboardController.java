@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -136,6 +137,8 @@ public class DashboardController {
 
         } catch (WebClientResponseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -147,36 +150,25 @@ public class DashboardController {
      * @return Object confirming deletion
      */
     @DeleteMapping(value = "/project")
-    public ResponseEntity<Object> deleteProject(@RequestParam("project-id") String projectId,
-                                                @RegisteredOAuth2AuthorizedClient("resource-access-client")
-                                                OAuth2AuthorizedClient authorizedClient,
-                                                @AuthenticationPrincipal OAuth2User oauth2User) {
+    public ResponseEntity<?> deleteProject(@RequestParam("project-id") String projectId,
+                                           @RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                           OAuth2AuthorizedClient authorizedClient,
+                                           @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
             Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
 
-            if (projectDeletionConfirmation.isPresent() && projectDeletionConfirmation.get().endsWith("/")) {
+            if (projectDeletionConfirmation.isPresent()) {
                 return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
             }
 
             return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
+
         } catch (WebClientResponseException e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-
-    @GetMapping("/test")
-    public String foo(@AuthenticationPrincipal OAuth2User oauth2User) {
-        return "INSIDE PROTECTED ENDPOINT, WELCOME " + (new CustomAuthUser(oauth2User)).getEmail();
-    }
-
-    @PreAuthorize("permitAll()")
-    @GetMapping("/resource")
-    public String boo() {
-        return dashboardService.hitResourceController();
     }
 
 

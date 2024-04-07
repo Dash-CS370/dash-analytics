@@ -88,7 +88,7 @@ public class ResourceController {
     /**
      * @return
      */
-    @PutMapping(value = "/projects")
+    @PutMapping(value = "/projects") // TODO -> ATTEMPT WITH RETRIES
     public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
 
@@ -107,7 +107,7 @@ public class ResourceController {
      * @param projectId
      * @return
      */
-    @DeleteMapping(value = "/project")
+    @DeleteMapping(value = "/project") // TODO -> ATTEMPT WITH RETRIES
     public Optional<String> deleteProject(@RequestParam("user-id") String userId,
                                           @RequestParam("project-id") String projectId) {
         try {

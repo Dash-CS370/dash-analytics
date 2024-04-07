@@ -22,6 +22,4 @@ public interface DashboardService {
 
     Optional<String> deleteProject(OAuth2AuthorizedClient client, OAuth2User oauth2User, String projectId) throws WebClientResponseException;
 
-    String hitResourceController();
-
 }

@@ -171,18 +171,6 @@ public class DashboardServiceImpl implements DashboardService {
 
 
 
-    public String hitResourceController() {
-        final String resourceUrl = UriComponentsBuilder.fromUriString("http://18.189.41.235:8081/api/v1/resources/pull").toUriString();
-
-        // Hit Resource Server
-        return this.webClient.get().uri(resourceUrl)
-                //.attributes(oauth2AuthorizedClient(client))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-
     /**
      *  Utility methods
      */

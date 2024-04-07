@@ -118,7 +118,6 @@ public class ResourceServiceImpl implements ResourceService {
      * @param projectsToUpdate
      * @return
      */
-    // TODO @Async > ?????????
     public Optional<Object> updateProjects(List<Project> projectsToUpdate) throws JsonProcessingException {
 
         for (Project project : projectsToUpdate) {
@@ -145,7 +144,6 @@ public class ResourceServiceImpl implements ResourceService {
      * @return
      * @throws SdkClientException
      */
-    // TODO @Async > ?????????
     public Optional<String> deleteProject(String userId, String projectId) throws SdkClientException {
         final String projectKey = userId.concat("/project-").concat(projectId).concat("/");
         final String configKey = projectKey.concat(projectId + ".json");
