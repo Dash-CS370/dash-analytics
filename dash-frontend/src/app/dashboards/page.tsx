@@ -75,7 +75,8 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                router.push('/start');
+                console.log(error);
+                // router.push('/start');
             });
 
         return () => {
@@ -228,7 +229,7 @@ export default function Dashboards() {
 
     const deleteProject = (id: string) => {
         fetch(
-            `http://127.0.0.1:8080/api/v1/dashboards/project?project-id=${id}`,
+            `http://18.189.41.235:8080/api/v1/dashboards/project?project-id=${id}`,
             {
                 method: 'DELETE',
                 credentials: 'include',

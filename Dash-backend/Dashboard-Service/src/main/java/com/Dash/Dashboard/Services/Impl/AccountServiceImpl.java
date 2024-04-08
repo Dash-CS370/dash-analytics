@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
             // MAKE HTTP request to Resource Server
             // call resource-server/delete-user/{userId} where userId is the email
             final String deleteUserUrl = UriComponentsBuilder // FIXME
-                    .fromUriString("http://127.0.0.1:8081/api/v1/resources/user")
+                    .fromUriString("http://18.189.41.235:8081/api/v1/resources/user")
                     .queryParam("userId", id)
                     .buildAndExpand().toUriString();
 

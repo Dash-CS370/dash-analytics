@@ -3,7 +3,6 @@ package com.Dash.Dashboard.Controllers;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
-import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.DashboardService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -19,7 +17,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -159,7 +156,9 @@ public class DashboardController {
                                            OAuth2AuthorizedClient authorizedClient,
                                            @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
+
+            final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
+
             if (projectDeletionConfirmation.isPresent()) {
                 return new ResponseEntity<>(projectDeletionConfirmation.get(), HttpStatus.OK);
             }

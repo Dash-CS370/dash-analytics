@@ -90,7 +90,7 @@ const fetchGPTResponse = async (
     formData.append('csv-file', csv);
 
     const resp = await fetch(
-        `http://127.0.0.1:8080/api/v1/dashboards/project`,
+        `http://18.189.41.235:8080/api/v1/dashboards/project`,
         {
             method: 'POST',
             body: formData,
@@ -106,7 +106,7 @@ const fetchGPTResponse = async (
 };
 
 export const fetchProjects = async (): Promise<GPTProjConfig[]> => {
-    const resp = await fetch('http://127.0.0.1:8080/api/v1/dashboards', {
+    const resp = await fetch('http://18.189.41.235:8080/api/v1/dashboards', {
         method: 'GET',
         credentials: 'include',
     });
@@ -160,7 +160,7 @@ export const updateRemoteProjects = async (
     });
 
     const resp = await fetch(
-        'http://127.0.0.1:8080/api/v1/dashboards/projects',
+        'http://18.189.41.235:8080/api/v1/dashboards/projects',
         {
             method: 'PUT',
             body: JSON.stringify(updatedProjects),

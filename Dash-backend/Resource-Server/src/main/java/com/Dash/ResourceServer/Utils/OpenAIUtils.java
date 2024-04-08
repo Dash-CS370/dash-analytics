@@ -156,6 +156,7 @@ public class OpenAIUtils {
 
 
         // Assign each Widget a Unique Identifier
+        /*
         widgets.forEach(widget -> {
             widget.setId(UUID.randomUUID().toString().substring(0, 8));
         });
@@ -166,6 +167,7 @@ public class OpenAIUtils {
         for (int i = 0; i < PIN_COUNT; i++) {
             widgets.get(i).setPinned(true);
         }
+        */
 
         return widgets;
     }

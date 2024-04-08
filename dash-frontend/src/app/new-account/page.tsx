@@ -52,7 +52,7 @@ export default function NewAccount() {
         // TODO: validate password format & confirm password match
 
         // --> set error message if unsuccessful and return before redirecting
-        fetch('http://127.0.0.1:8080/auth/register-account', {
+        fetch('http://18.189.41.235:8080/auth/register-account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

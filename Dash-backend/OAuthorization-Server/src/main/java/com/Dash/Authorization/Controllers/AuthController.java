@@ -38,7 +38,7 @@ public class AuthController {
         cookieWithSlash.setMaxAge(0);
         response.addCookie(cookieWithSlash);
 
-        response.sendRedirect("http://127.0.0.1:3000/signin");
+        response.sendRedirect("http://18.189.41.235:3000/signin");
     }
 
     @GetMapping("/login")

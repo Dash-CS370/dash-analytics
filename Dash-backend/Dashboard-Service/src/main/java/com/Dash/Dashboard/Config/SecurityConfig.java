@@ -48,7 +48,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://127.0.0.1:3000/start")
+                    .loginPage("http://18.189.41.235:3000/start")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults());
@@ -60,7 +60,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000", "http://127.0.0.1:8080"));
+        configuration.setAllowedOrigins(List.of("http://18.189.41.235:3000", "http://18.189.41.235:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

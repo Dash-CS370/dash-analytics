@@ -15,8 +15,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Widget {
 
+    /*
     @JsonProperty("id")
     private String id;
+    */
 
     @JsonProperty("title")
     private String title;
@@ -24,11 +26,13 @@ public class Widget {
     @JsonProperty("graph_type")
     private GraphType graphType;
 
-    @JsonProperty("description")
+    @JsonProperty("widget_description")
     private String description;
 
+    /*
     @JsonProperty("pinned")
     private boolean pinned;
+    */
 
     //@JsonProperty("column_data_operations")
     //private Map<String, List<DataOperations>> columnDataOperations;
