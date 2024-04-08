@@ -66,13 +66,11 @@ public class ResourceController {
             log.warn("UPLOADING");
             // Create Config with GPT API
             Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
-                                                                project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT
-                                                            );
-
-            resourceService.uploadProjectFiles(project, csvFile);
+                                                                project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
 
             return widgets.map(widgetList -> {
                 project.setWidgets(widgetList);
+                resourceService.uploadProjectFiles(project, csvFile);
                 return project;
             });
 
