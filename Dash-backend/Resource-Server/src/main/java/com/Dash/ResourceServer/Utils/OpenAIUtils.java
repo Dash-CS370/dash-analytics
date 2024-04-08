@@ -145,7 +145,8 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
-                //.filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
+                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
+                .filter(widget -> widget.getColumns().size() >= 2)
                 //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {
                     //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;

@@ -17,7 +17,7 @@ export interface GPTProjConfig {
 export interface GPTResponse {
     title: string;
     graph_type: string;
-    widget_description: string;
+    description: string;
     columns: string[];
 }
 

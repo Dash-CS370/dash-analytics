@@ -15,6 +15,7 @@ export async function GET(request: Request): Promise<Response> {
     const csvLink = searchParams.get('link');
 
     const s3Url = `${baseS3Url}${csvLink}`;
+
     // Parse S3 URI to get bucket name and object key
     const urlParts = s3Url.match(/^s3:\/\/([^\/]+)\/(.+)$/);
     if (!urlParts) {

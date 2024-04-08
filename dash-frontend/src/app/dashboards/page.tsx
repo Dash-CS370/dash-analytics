@@ -65,7 +65,7 @@ export default function Dashboards() {
                                     pinned: index < 4, // pin first 4 widgets
                                     columns: widget.columns,
                                     data: [],
-                                    description: widget.widget_description,
+                                    description: widget.description,
                                 };
                             }),
                         };

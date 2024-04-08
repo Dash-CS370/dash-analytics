@@ -49,7 +49,7 @@ export async function fetchWidgetConfigs(
                 pinned: true,
                 columns: response.columns,
                 data: rechartsData as DataItem[],
-                description: response.widget_description,
+                description: response.description,
             };
         });
 
@@ -142,7 +142,7 @@ export const updateRemoteProjects = async (
             return {
                 title: widget.title,
                 graph_type: widget.graphType,
-                widget_description: widget.description,
+                description: widget.description,
                 columns: widget.columns,
             };
         });
