@@ -104,7 +104,7 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
                         {!expanded && (
                             <CiEdit
                                 className={styles.icon}
-                                onClick={handleEditClick}
+                                // onClick={handleEditClick}
                             />
                         )}
                     </div>
