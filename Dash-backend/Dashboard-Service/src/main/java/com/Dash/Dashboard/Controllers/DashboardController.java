@@ -24,7 +24,6 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/dashboards")
 public class DashboardController {
 
@@ -50,8 +49,6 @@ public class DashboardController {
                                                        OAuth2AuthorizedClient authorizedClient,
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-
-            //log.warn(oauth2User.getAttributes().toString());
 
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 

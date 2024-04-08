@@ -1,6 +1,6 @@
 package com.Dash.Dashboard.Config;
 
-//import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
@@ -17,7 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig  {
 
     @Bean
-   // @LoadBalanced
+    @LoadBalanced
     WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
         final ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);

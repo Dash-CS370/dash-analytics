@@ -61,3 +61,4 @@ eureka:
       defaultZone: http://dash-app-registry:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+

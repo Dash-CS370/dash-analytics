@@ -26,7 +26,7 @@ public class Widget {
     @JsonProperty("graph_type")
     private GraphType graphType;
 
-    @JsonProperty("widget_description")
+    @JsonProperty("description")
     private String description;
 
     /*

@@ -14,7 +14,6 @@ import java.util.Optional;
 
 
 @Slf4j
-@CrossOrigin(origins = "http://18.189.41.235:3000")
 @RestController
 @RequestMapping("/api/gpt")
 public class GptController {

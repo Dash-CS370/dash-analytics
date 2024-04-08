@@ -11,8 +11,9 @@ public enum GraphType {
 
     BAR_GRAPH("BAR_GRAPH", "A chart that represents categorical data with rectangular bars with heights or lengths proportional to " +
             "the numerical values they represent. Versatile for comparing numerical quantities across different categories, even over time if categories are ordered chronologically. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL."),
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL.");
 
+    /*
     PIE_CHART("PIE_CHART", "A circular chart divided into sectors, each representing a proportion of the whole. " +
             "Primarily used for displaying the relative sizes, ideal for visualizing distribution of categories or percentages. Specifically tailored for categorical data." +
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 COLUMNS, ONE CATEGORICAL COLUMN AND AT LEAST ONE NUMERICAL COLUMN."),
@@ -37,6 +38,7 @@ public enum GraphType {
                     "For every numerical column, the following statistics MUST be included: Mean, Median, Mode, Percentiles. " +
                     "This ensures a comprehensive summary of the data's central tendency and dispersion, suitable for quick insights into the dataset's characteristics." +
                     "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL COLUMN & NO DATA OPERATIONS WITH THE COLUMN, JUST THE COLUMN.");
+    */
 
 
     /*

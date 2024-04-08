@@ -58,7 +58,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         // Hit Resource Server
         final List<Project> userProjects = this.webClient.get().uri(resourceUrl)
-                                        //.attributes(oauth2AuthorizedClient(client))
+                                        .attributes(oauth2AuthorizedClient(client))
                                         .retrieve()
                                         .bodyToMono(new ParameterizedTypeReference<List<Project>>() {})
                                         .block();
@@ -109,7 +109,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData(csvBuilder.build())
                 .with("template-project", templateProject))
-                //.attributes(oauth2AuthorizedClient(client))
+                .attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Project>>() {})
                 .block();
@@ -132,7 +132,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
-                //.attributes(oauth2AuthorizedClient(client))
+                .attributes(oauth2AuthorizedClient(client))
                 .body(BodyInserters.fromValue(projects))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<Object>>() {})
@@ -164,7 +164,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
-                //.attributes(oauth2AuthorizedClient(client))
+                .attributes(oauth2AuthorizedClient(client))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
                 .block();

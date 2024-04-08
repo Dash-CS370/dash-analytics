@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/resources")
 public class ResourceController {
 
