@@ -93,6 +93,7 @@ public class DashboardController {
                                                                                       datasetDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
+                log.warn("New Project created AND returned...");
                 return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);
             }
 

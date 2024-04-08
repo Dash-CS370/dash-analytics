@@ -23,7 +23,7 @@ export async function fetchWidgetConfigs(
     setStatus('Parsing CSV...');
     const df = await dfd.readCSV(csvFile);
 
-    setStatus('Fetching graph congigurations...');
+    setStatus('Fetching graph configurations...');
     const gptResponse = await fetchGPTResponse(
         projectName,
         projectDescription,
@@ -54,7 +54,7 @@ export async function fetchWidgetConfigs(
         });
 
         // sleep for 3.5 seconds to allow file to upload to s3
-        await sleep(3500);
+        await sleep(2500);
 
         setStatus(''); // clear status
         return {
@@ -97,7 +97,7 @@ const fetchGPTResponse = async (
             credentials: 'include',
         },
     );
-    if (resp.status !== 200) {
+    if (resp.status !== 201) {
         throw new Error(`Failed to fetch GPT response. ${resp.statusText}`);
     }
 

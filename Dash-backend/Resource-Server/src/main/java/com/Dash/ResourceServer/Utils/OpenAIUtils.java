@@ -25,7 +25,7 @@ public class OpenAIUtils {
     // TODO
     public static String generatePrompt(String datasetDescription, List<String> columnDescriptions) {
 
-        final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate 20 DISTINCT configuration options for graph " +
+        final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate UP TO 20 DISTINCT configuration options for graph " +
                                    "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
 
         String prompt = BASE_PROMPT + datasetDescription;

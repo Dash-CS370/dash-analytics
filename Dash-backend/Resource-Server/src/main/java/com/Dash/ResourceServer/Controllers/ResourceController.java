@@ -63,6 +63,7 @@ public class ResourceController {
     public Optional<Project> addProject(@RequestPart("template-project") Project project,
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
+
             log.warn("UPLOADING");
             // Create Config with GPT API
             Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
