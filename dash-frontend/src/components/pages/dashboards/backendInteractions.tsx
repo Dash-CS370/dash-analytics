@@ -98,7 +98,7 @@ const fetchGPTResponse = async (
         },
     );
     if (resp.status !== 200) {
-        throw new Error('Failed to fetch GPT response. Try again.');
+        throw new Error(`Failed to fetch GPT response. ${resp.statusText}`);
     }
 
     const gptResponse: GPTProjConfig = await resp.json();
