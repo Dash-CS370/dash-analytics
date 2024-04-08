@@ -75,7 +75,7 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 // router.push('/start');
             });
 
@@ -147,7 +147,6 @@ export default function Dashboards() {
         }
 
         // format chart data
-        console.log(`starting fetch for project ${project.project_name}`);
         fetch(`/api/fetch-csv?link=${project.project_csv_link}`, {
             method: 'GET',
         })
@@ -155,9 +154,6 @@ export default function Dashboards() {
                 response
                     .json()
                     .then((data) => {
-                        console.log(`data fetched for ${project.project_name}`);
-                        console.log(data);
-
                         const activeProjectWithData = {
                             ...project,
                             widgets: project.widgets.map((widget) => {
@@ -173,7 +169,6 @@ export default function Dashboards() {
                             }),
                         };
                         setActiveProjectConfig(activeProjectWithData);
-                        console.log('active project set');
                     })
                     .catch((error) => {
                         console.error(error);

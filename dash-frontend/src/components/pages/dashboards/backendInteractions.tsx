@@ -53,8 +53,8 @@ export async function fetchWidgetConfigs(
             };
         });
 
-        // sleep for 2 seconds to allow file to upload to s3
-        await sleep(2000);
+        // sleep for 3.5 seconds to allow file to upload to s3
+        await sleep(3500);
 
         setStatus(''); // clear status
         return {
