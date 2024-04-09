@@ -41,7 +41,9 @@ public class ResourceController {
     @GetMapping(value = "/projects/{userAccount}")
     public List<Project> getUserProjects(@PathVariable String userAccount) {
         try {
-            log.warn("S3 pinged for user projects...");
+
+            log.info("S3 pinged for user projects...");
+
             return resourceService.getProjectsBelongingTo(userAccount);
 
         } catch (Exception e) {
@@ -63,7 +65,9 @@ public class ResourceController {
     public Optional<Project> addProject(@RequestPart("template-project") Project project,
                                         @RequestPart("csv-file") MultipartFile csvFile) {
         try {
-            log.warn("UPLOADING");
+
+            log.info("Uploading new project...");
+
             // Create Config with GPT API
             Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
                                                                 project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
@@ -88,7 +92,9 @@ public class ResourceController {
     @PutMapping(value = "/projects") // TODO -> ATTEMPT WITH RETRIES
     public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
-            log.warn("updated");
+
+            log.warn("Updating projects...");
+
             return resourceService.updateProjects(projects);
 
         } catch (Exception e) {
@@ -108,7 +114,9 @@ public class ResourceController {
     public Optional<String> deleteProject(@RequestParam("user-id") String userId,
                                           @RequestParam("project-id") String projectId) {
         try {
-            log.warn("finished deletion");
+
+            log.warn("Finished deletion ... ");
+
             return resourceService.deleteProject(userId, projectId);
 
         } catch (Exception e) {
@@ -133,20 +141,6 @@ public class ResourceController {
             return Optional.empty();
         }
     }
-
-
-
-    /*** DUMMY ***/
-    @GetMapping("/pull")
-    public String demoEndpoint() {
-        try {
-            return "HITT THE RESOURCES CONTROLLER";
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return "SMTH WENT WRONG";
-        }
-    }
-
 
 
 }

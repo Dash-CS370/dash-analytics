@@ -30,6 +30,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 @Slf4j
 public class DashboardServiceImpl implements DashboardService {
 
+
     private final WebClient webClient;
 
     private final UserCreditCheckEventListener userCreditCheckEventListener;
@@ -52,8 +53,7 @@ public class DashboardServiceImpl implements DashboardService {
         final String userAccount = extractUserDetails(oauth2User);
 
         // Encode url with username
-        final String resourceUrl = UriComponentsBuilder.fromUriString(
-                "http://18.189.41.235:8081/api/v1/resources/projects/{userAccount}")
+        final String resourceUrl = UriComponentsBuilder.fromUriString("http://dash-resource-server:8081/api/v1/resources/projects/{userAccount}")
                 .buildAndExpand(userAccount).toUriString();
 
         // Hit Resource Server
@@ -96,7 +96,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .build();
 
 
-        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://18.189.41.235:8081/api/v1/resources/project")
+        final String createProjectUrl = UriComponentsBuilder.fromUriString("http://dash-resource-server:8081/api/v1/resources/project")
                 .toUriString();
 
         MultipartBodyBuilder csvBuilder = new MultipartBodyBuilder();
@@ -128,7 +128,7 @@ public class DashboardServiceImpl implements DashboardService {
     public Optional<Object> updateProjects(OAuth2AuthorizedClient client, List<Project> projects) throws WebClientResponseException {
 
         final String updateProjectUrl = UriComponentsBuilder
-                .fromUriString("http://18.189.41.235:8081/api/v1/resources/projects").toUriString();
+                .fromUriString("http://dash-resource-server:8081/api/v1/resources/projects").toUriString();
 
         return this.webClient.put()
                 .uri(updateProjectUrl)
@@ -155,7 +155,7 @@ public class DashboardServiceImpl implements DashboardService {
         String userAccount = extractUserDetails(oauth2User);
 
         final String deleteProjectUrl = UriComponentsBuilder
-                .fromUriString("http://18.189.41.235:8081/api/v1/resources/project")
+                .fromUriString("http://dash-resource-server:8081/api/v1/resources/project")
                 .queryParam("user-id", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();

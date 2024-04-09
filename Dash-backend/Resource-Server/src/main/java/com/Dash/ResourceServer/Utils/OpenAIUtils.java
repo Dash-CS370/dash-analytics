@@ -25,7 +25,7 @@ public class OpenAIUtils {
     // TODO
     public static String generatePrompt(String datasetDescription, List<String> columnDescriptions) {
 
-        final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate 20 DISTINCT configuration options for graph " +
+        final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate UP TO 20 DISTINCT configuration options for graph " +
                                    "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
 
         String prompt = BASE_PROMPT + datasetDescription;
@@ -145,7 +145,8 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
-                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
+                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH)
+                //.filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
                 .filter(widget -> widget.getColumns().size() >= 2)
                 //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {

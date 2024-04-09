@@ -3,6 +3,7 @@ package com.Dash.Dashboard.Controllers;
 import com.Dash.Dashboard.Exceptions.NotEnoughCreditsException;
 import com.Dash.Dashboard.Exceptions.UserAlreadyExistsException;
 import com.Dash.Dashboard.Models.Project;
+import com.Dash.Dashboard.OAuth2.CustomAuthUser;
 import com.Dash.Dashboard.Services.DashboardService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,8 @@ public class DashboardController {
                                                        @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
 
+            log.info("Pulling dashboard for " + (new CustomAuthUser(oauth2User)).getName());
+
             final Optional<List<Project>> projectList = dashboardService.loadAllProjects(authorizedClient, oauth2User);
 
             return projectList.map(projects -> ResponseEntity.ok().header("Content-Type", "application/json")
@@ -93,6 +96,7 @@ public class DashboardController {
                                                                                       datasetDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
+                log.warn("New Project created AND returned...");
                 return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);
             }
 
@@ -125,6 +129,8 @@ public class DashboardController {
                                                  OAuth2AuthorizedClient authorizedClient) {
         try {
 
+            log.info("Projects to be updated...");
+
             final Optional<Object> updateProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
 
             if (updateProjectsConfirmation.isPresent()) {
@@ -153,6 +159,8 @@ public class DashboardController {
                                            OAuth2AuthorizedClient authorizedClient,
                                            @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
+
+            log.info("Project with id " + projectId + ", to be deleted...");
 
             final Optional<String> projectDeletionConfirmation = dashboardService.deleteProject(authorizedClient, oauth2User, projectId);
 
