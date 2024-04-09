@@ -1,5 +1,5 @@
 'use client';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 import HowToPage from '@/components/pages/aboutPage/HowToPage';
 import OverviewPage from '@/components/pages/aboutPage/OverviewPage';
 import RequestPage from '@/components/pages/aboutPage/RequestPage';

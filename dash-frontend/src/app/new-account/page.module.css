@@ -1,0 +1,60 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.fieldTitle {
+    color: var(--background);
+    align-self: flex-start;
+    margin-left: 1.15rem;
+}
+
+.lineFormat {
+    margin-top: 1.5rem;
+}
+
+.buttonFormat {
+    /* margin-top: 1rem; */
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
+    font-size: 1em;
+}
+
+.buttonFormat:hover {
+    background-color: transparent !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 10px;
+    height: 30px;
+    width: 80%;
+    text-align: center;
+}
+
+.warningFormat {
+    color: var(--background);
+    font-size: 10px !important;
+}
+
+.warningFormat a {
+    color: var(--primary);
+    text-decoration: underline;
+}

@@ -1,6 +1,6 @@
 import styles from './page.module.css';
 import { DynamicDescription } from '@/components/pages/landingPage/DynamicDescription';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 
 export default function Home() {
     return (
@@ -16,7 +16,7 @@ export default function Home() {
                 <div className={styles.heroBtns}>
                     <PrimaryButton
                         className={styles.btns}
-                        href="/signup"
+                        href="/start"
                         width="200px"
                         height="50px"
                     >
@@ -24,6 +24,7 @@ export default function Home() {
                     </PrimaryButton>
 
                     <PrimaryButton
+                        /* add href */
                         className={styles.btns}
                         width="200px"
                         height="50px"

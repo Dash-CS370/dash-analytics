@@ -1,6 +1,6 @@
 'use client';
 import Styles from './UserData.module.css';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 
 const UserData = () => {
     return (

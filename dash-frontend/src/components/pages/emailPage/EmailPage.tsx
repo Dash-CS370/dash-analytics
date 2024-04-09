@@ -1,5 +1,5 @@
 'use client';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import Styles from './EmailPage.module.css';
 
 const EmailPage = () => {

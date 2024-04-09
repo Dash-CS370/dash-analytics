@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { CgProfile } from 'react-icons/cg';
-import { PrimaryButton } from '@/components/buttons/PrimaryButton/PrimaryButton';
+import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import Link from 'next/link';
 
@@ -98,7 +98,7 @@ export const AccountDetails: FC = () => {
                             <div className={styles.BarWrapper}>
                                 {testData.map((item, index) => (
                                     <ProgressBar
-                                        className={styles.bar}
+                                        // className={styles.bar}
                                         key={index}
                                         bgcolor={item.bgcolor}
                                         completed={item.completed}

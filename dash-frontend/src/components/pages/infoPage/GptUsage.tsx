@@ -1,6 +1,6 @@
 'use client';
 import Styles from './GptUsage.module.css';
-import { NavBar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 
 const GptUsage = () => {
     return (

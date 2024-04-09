@@ -1,0 +1,18 @@
+.baseForm {
+    background-color: var(--form-color);
+    color: var(--background);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+
+.title {
+    margin-top: 0.25rem;
+}
+
+.baseForm p {
+    font-size: small;
+    text-align: center;
+}
