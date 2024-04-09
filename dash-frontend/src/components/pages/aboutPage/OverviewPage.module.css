@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'Colfax';
+    src: url('/fonts/Colfax.otf') format('opentype');
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: var(--background);
+}
+
+.sidebar,
+.content {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.content {
+    display: flex;
+    flex-grow: 1;
+    /* background-color: blue; */
+}
+
+.text {
+    flex-grow: 1;
+}
+
+.sidebar {
+    position: fixed;
+    background-color: var(--background);
+    color: var(--on-background);
+    height: 100vh;
+    width: 12%;
+}
+.sidebar a {
+    margin-left: 40px;
+    display: block;
+    color: var(--on-background);
+    padding-bottom: 10px;
+    font-size: 30px;
+    text-decoration: none;
+    margin-top: 6rem;
+}
+
+.sidebar a:hover {
+    font-weight: bolder;
+    transition: ease 0.3s;
+}
+
+.imageContainer {
+    height: 700px;
+    width: 700px;
+    margin-left: 110px;
+    flex-basis: 80%;
+}
+
+.imageContainer h1 {
+    color: white;
+    font-size: 900px;
+    margin-top: -200px;
+    margin-left: 50px;
+}
+
+.image {
+    padding-top: 100px;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+    margin-right: 100px;
+    padding-bottom: 150px;
+    color: white;
+}
+
+.text h1 {
+    font-family: 'Colfax';
+    font-size: 60px;
+    font-weight: bolder;
+    padding-bottom: 15px;
+    padding-top: 100px;
+}
+
+.text h4 {
+    font-family: 'Colfax';
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.text p {
+    font-family: 'Colfax';
+    font-size: 18px;
+    padding-top: 15px;
+}
+
+.buttonSection {
+    padding-top: 30px;
+}
+
+.buttonSection button {
+    margin-left: 40px;
+}

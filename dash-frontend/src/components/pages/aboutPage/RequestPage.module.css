@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'Colfax';
+    src: url('/fonts/Colfax.otf') format('opentype');
+}
+
+.container {
+    background-color: var(--background);
+    color: white;
+    font-family: 'Colfax';
+    width: 88%;
+    height: 100vh;
+    display: grid;
+    justify-content: space-between;
+    margin-left: 12%;
+    margin-top: 80px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.item1 {
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 120px;
+}
+
+.item1 h1 {
+    font-size: 60px;
+    margin-bottom: 35px;
+}
+
+.item1 p {
+    margin-top: -25px;
+}
+
+.item2 {
+    margin-top: 10px;
+    background-color: var(--background);
+}
+
+.item3 {
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 120%;
+}
+
+.item3 h1 {
+    font-size: 60px;
+    margin-left: 120px;
+    margin-top: -70px;
+    margin-bottom: 15px;
+}
+
+.item3 p {
+    margin-left: 120px;
+    margin-bottom: 20px;
+}
+
+.item4 {
+    width: 109%;
+    background-color: var(--background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 120px;
+    padding-right: 90px;
+}
+
+.item4 h1 {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.item4 h1 {
+    margin-top: -90px;
+}
+
+.fingerImage {
+    margin-top: 30px;
+    height: 90%;
+    width: 110%;
+}
+
+.touchImage {
+    height: 90%;
+    width: 100%;
+}
+
+.requestLink {
+    font-size: 16.5px;
+    color: rgba(0, 145, 255, 0.83);
+}
+
+.requestLink:hover {
+    font-weight: bolder;
+    text-decoration: underline;
+    transition: 0.2s ease-in-out;
+}

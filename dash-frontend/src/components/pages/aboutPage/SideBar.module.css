@@ -1,0 +1,24 @@
+.sidebar {
+    flex-grow: 1;
+    padding: 10px;
+    position: fixed;
+    background-color: var(--background);
+    color: white;
+    height: 100vh;
+    /* width: 250px; */
+    width: 12%;
+}
+.sidebar a {
+    margin-left: 40px;
+    display: block;
+    color: var(--on-background);
+    padding-bottom: 10px;
+    font-size: 30px;
+    text-decoration: none;
+    margin-top: 6rem;
+}
+
+.sidebar a:hover {
+    font-weight: bolder;
+    transition: ease 0.3s;
+}
