@@ -15,6 +15,23 @@ spring:
     multipart:
       max-file-size: 5MB
 
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: analyticsdash0@gmail.com
+    password: tlmaljruygkucyqt
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
   security:
     oauth2:
       client:
@@ -54,6 +71,7 @@ spring:
             issuer-uri: http://dash.aperturetoolkit.com:9000
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
+
 
 eureka:
   client:

@@ -6,6 +6,7 @@ import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import com.Dash.Dashboard.Services.AuthenticationService;
+import com.Dash.Dashboard.Services.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,10 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Slf4j
@@ -33,22 +31,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${spring.application.default-start-credits}")
     private int DEFAULT_STARTING_CREDIT_AMOUNT;
 
-    // Dependency injections done by constructor (all private and final fields)
     private final MongoTemplate userDAO;
+
     private final MongoTemplate verificationTokenDAO;
+
     private final PasswordEncoder passwordEncoder;
+
     private final TaskExecutor taskExecutor;
+
+    private final EmailService emailService;
 
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
+                              EmailService emailService,
                               TaskExecutor taskExecutor) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.taskExecutor = taskExecutor;
+        this.emailService = emailService;
     }
 
 
@@ -211,11 +215,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     // TODO !!! ASYNC
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
-            final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
+            // TODO FIXME
+            final String activateAccountUrl = "www.dash-analytics.com/activate-account";
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("activationToken", activationToken);
+            model.put("activateAccountUrl", activateAccountUrl); // TODO CHANGE IN TEMPLATE
 
             taskExecutor.execute(() -> {
-                // Send email with activation token/key
-                log.warn("ASYNC");
+                try {
+                    emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
