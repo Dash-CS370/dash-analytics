@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 @Configuration
-public class EmailConfig{
+public class EmailConfig {
 
     @Primary
     @Bean

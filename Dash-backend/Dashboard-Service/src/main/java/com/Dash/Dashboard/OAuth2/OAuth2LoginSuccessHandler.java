@@ -39,7 +39,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             thirdPartyLoginEventListener.onApplicationEvent(new OAuth2UserLoginEvent(authUser));
         }
 
-        log.warn(DEFAULT_SUCCESS_URL);
+        log.warn("Redirecting to DEFAULT_SUCCESS_URL");
+
         response.sendRedirect(DEFAULT_SUCCESS_URL);
 
         super.onAuthenticationSuccess(request, response, authentication);

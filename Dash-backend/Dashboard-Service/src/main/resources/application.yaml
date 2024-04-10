@@ -20,7 +20,7 @@ spring:
     default-encoding: UTF-8
     host: smtp.gmail.com
     username: analyticsdash0@gmail.com
-    password: tlmaljruygkucyqt
+    password: ${SMTP_PASSWORD}
     port: 587
     protocol: smtp
     test-connection: false

@@ -216,7 +216,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             // TODO FIXME
-            final String activateAccountUrl = "www.dash-analytics.com/activate-account";
+            final String activateAccountUrl = "www.dash-analytics.com/signin?activate=true";
 
             Map<String, Object> model = new HashMap<>();
             model.put("activationToken", activationToken);

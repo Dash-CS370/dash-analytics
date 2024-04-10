@@ -15,9 +15,6 @@ public enum DataOperations {
 
     // FIXME - REDUNDANT?
     //CALCULATE_DELTA("CALCULATE_DELTA", "Calculates the change (delta) between consecutive rows in a specified column"),
-    //PERCENTAGE_OF_TOTAL("PERCENTAGE_OF_TOTAL", "Calculates percentages of the total for each row in a column"),
-    //CALCULATE_PERCENT_CHANGE("CALCULATE_PERCENT_CHANGE", "Calculates the percentage change between consecutive rows in a specified column"),
-
 
     private final String value;
 
