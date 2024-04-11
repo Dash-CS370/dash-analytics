@@ -78,7 +78,9 @@ public class AccountController {
 
 
     /**
+     *
      * @param id
+     * @return
      */
     @DeleteMapping("/account")
     public ResponseEntity<String> deleteUserAccount(@RequestParam String id) {
@@ -95,7 +97,12 @@ public class AccountController {
 
 
 
-
+    /**
+     *
+     * @param session
+     * @param request
+     * @param response
+     */
     @GetMapping("/logout")
     public void testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         try {

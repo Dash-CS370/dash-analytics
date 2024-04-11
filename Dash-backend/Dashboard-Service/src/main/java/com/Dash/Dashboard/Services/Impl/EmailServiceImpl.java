@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -46,18 +47,19 @@ public class EmailServiceImpl implements EmailService {
         helper.setFrom("no-reply@dash-analytics.com");
 
         mailSender.send(message);
+
         log.info("Activation email sent asynchronously to: " + email);
     }
 
 
     public void sendEmailWithRetries(String email, Map<String, Object> model, String templateName, Integer maxRetryCount) throws InterruptedException {
         try {
+
             sendEmail(email, model, templateName);
-        } catch (MessagingException | IOException | TemplateException e) {
+
+        } catch (SendFailedException e) { // TODO
             if (maxRetryCount > 0) {
-
-                Thread.sleep(1000 * 20); // TODO
-
+                Thread.sleep(1000 * 25); // WAIT 25 seconds in between attempts
                 sendEmailWithRetries(email, model, templateName, maxRetryCount - 1);
                 log.error("Attempting to send activation email again to : " + email, e);
             } else {

@@ -150,11 +150,12 @@ public class PasswordServiceImpl implements PasswordService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 3); // FIXME -> give them 24 hours to use link to reset password
+        calendar.add(Calendar.MINUTE, 60 * 12);
 
         final String activationKey = UUID.randomUUID().toString();
 
-        Update update = new Update().set("resetPasswordKey", activationKey)
+        Update update = new Update()
+                .set("resetPasswordKey", activationKey)
                 .set("expirationDate", new Date(calendar.getTime().getTime()));
 
         passwordResetTokenDAO.updateFirst(new Query(Criteria.where("userId").is(userId)), update, PasswordResetToken.class);
@@ -182,12 +183,12 @@ public class PasswordServiceImpl implements PasswordService {
      */
     public String sendPasswordResetEmail(String email, String passwordResetKey) {
         try {
-            final String url = "www.dash.com/reset-password"; // TODO
+            final String resetPasswordUrl = "www.dash.com/reset-password"; // TODO
 
-            Map<String, Object> model = new HashMap<>();
-            model.put("passwordResetKey", passwordResetKey);
-            model.put("resetPasswordUrl", url); //TODO FIX IN TEMPLATE
+            //TODO FIX IN TEMPLATE
+            final Map<String, Object> model = Map.of("passwordResetKey", passwordResetKey, "resetPasswordUrl", resetPasswordUrl);
 
+            /*
             taskExecutor.execute(() -> {
                 try {
                     emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
@@ -195,10 +196,11 @@ public class PasswordServiceImpl implements PasswordService {
                     throw new RuntimeException(e);
                 }
             });
+            */
 
             log.info("Password reset key was successfully sent to " + email);
 
-            return url;
+            return resetPasswordUrl;
 
         } catch (Exception e) {
             log.warn("Password reset key could not be sent at the moment to " + email, e);

@@ -45,8 +45,8 @@ public class OpenAIServiceImpl implements OpenAIService {
 
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
-                " least one TEMPORAL and one NUMERICAL column to depict time-based changes or relationships. Avoid using 'LINE_GRAPH' without TEMPORAL" +
-                " data. 'BAR_GRAPH' REQUIRES 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and a NUMERICAL column for values. Avoid using 'BAR_GRAPH' without CATEGORICAL data." +
+                " least one TEMPORAL and ONE OR MORE NUMERICAL column to depict time-based changes or relationships. Avoid using 'LINE_GRAPH' without TEMPORAL" +
+                " data. 'BAR_GRAPH' REQUIRES 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and AT LEAST 1 NUMERICAL column for values. Avoid using 'BAR_GRAPH' WITHOUT CATEGORICAL data." +
                 " Lastly, avoid nonsensical widgets by ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS AND" +
                 " ONLY ADD GRAPHS THAT MAKE SENSE GIVEN THE USER CONTEXT, IT IS BETTER TO HAVE FEWER GRAPHS THAN GRAPHS THAT AREN'T USEFUL."));
@@ -103,14 +103,18 @@ public class OpenAIServiceImpl implements OpenAIService {
 
 
 
-    public Optional<List<Widget>> attemptWidgetGenerationWithRetry(String datasetDescription, List<String> columnDescriptions, int retryCount) {
+    public Optional<List<Widget>> attemptWidgetGenerationWithRetry(String datasetDescription, List<String> columnDescriptions, int retryCount) throws InterruptedException {
         try {
             return generateWidgetConfigs(datasetDescription, columnDescriptions);
         }
         catch (TimeoutException | HttpResponseException e) {
             log.warn("Connection Error : " + e.getMessage());
+
             if (retryCount > 0) {
+
+                Thread.sleep(1000 * 10);
                 log.warn("Attempting to re-establish connection with OpenAI Client...");
+
                 return attemptWidgetGenerationWithRetry(datasetDescription, columnDescriptions, retryCount - 1);
             } else {
                 log.error("Retries exhausted. Failing operation...");

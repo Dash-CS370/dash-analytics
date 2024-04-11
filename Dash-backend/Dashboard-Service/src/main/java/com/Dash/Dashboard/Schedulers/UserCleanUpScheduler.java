@@ -20,14 +20,15 @@ import java.time.temporal.ChronoUnit;
 @EnableScheduling
 public class UserCleanUpScheduler {
 
-    @Autowired
     private final MongoTemplate userDAO;
 
+    @Autowired
     public UserCleanUpScheduler(@Qualifier("userMongoTemplate") MongoTemplate userDAO) {
         this.userDAO = userDAO;
     }
 
-    @Scheduled(fixedRate = 1000L * 60 * 60 * 24 * 7) // FIXME
+
+    @Scheduled(cron = "0 0 12 * * MON")
     public void deleteNotEnabledUsers() {
         final Instant SevenDaysAgo = Instant.now().minus(1, ChronoUnit.MINUTES);
 

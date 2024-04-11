@@ -82,7 +82,7 @@ public class OpenAIUtils {
         */
 
         additionalContext += ". The column descriptions should include a list of strings that represent the category of represented data they fall under, given below"
-        + ". Use these descriptions and categories to better choose Widget graphs and columns";
+        + ". Use these descriptions and CATEGORIES for each column to appropriately choose Widget graphs and columns";
 
         // Column categories
         for (GraphType.ColumnCategory columnCategory : GraphType.ColumnCategory.values()) {

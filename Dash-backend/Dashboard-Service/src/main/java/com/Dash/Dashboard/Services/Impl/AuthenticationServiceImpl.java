@@ -29,15 +29,13 @@ import java.util.*;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Value("${spring.application.default-start-credits}")
-    private int DEFAULT_STARTING_CREDIT_AMOUNT;
+    private int STARTING_CREDIT_AMOUNT;
 
     private final MongoTemplate userDAO;
 
     private final MongoTemplate verificationTokenDAO;
 
     private final PasswordEncoder passwordEncoder;
-
-    private final TaskExecutor taskExecutor;
 
     private final EmailService emailService;
 
@@ -51,7 +49,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
-        this.taskExecutor = taskExecutor;
         this.emailService = emailService;
     }
 
@@ -81,7 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Otherwise this is a completely new User (email has not been used)
         final User tempUser = User.builder().
                 email(email).
-                enabled(true). // TODO SWITCH BACK
+                enabled(true). // FIXME -> must be false
                 creationDate(getCurrentDate()).
                 build();
 
@@ -161,7 +158,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final Update registeredUser = new Update()
                     .set("name", registrationRequest.getName())
                     .set("password", passwordEncoder.encode(registrationRequest.getPassword()))
-                    .set("credits", DEFAULT_STARTING_CREDIT_AMOUNT)
+                    .set("credits", STARTING_CREDIT_AMOUNT)
                     .set("role", Role.USER)
                     .set("userType", UserType.DASH);
 
@@ -169,7 +166,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDAO.updateFirst(unactivatedUser, registeredUser, User.class);
 
         // Send dashboard request
-        //return new ResponseEntity<>(registrationRequest.getEmail(), HttpStatus.CREATED);
         return new ResponseEntity<>("Successfully registered", HttpStatus.CREATED);
     }
 
@@ -197,7 +193,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 5); // FIXME -> give user 24 hours
+        calendar.add(Calendar.MINUTE, 60 * 12);
 
         final Query query = new Query(Criteria.where("userId").is(userId));
 
@@ -212,16 +208,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 
-    // TODO !!! ASYNC
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             // TODO FIXME
             final String activateAccountUrl = "www.dash-analytics.com/signin?activate=true";
 
-            Map<String, Object> model = new HashMap<>();
-            model.put("activationToken", activationToken);
-            model.put("activateAccountUrl", activateAccountUrl); // TODO CHANGE IN TEMPLATE
+            final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
 
+            /*
             taskExecutor.execute(() -> {
                 try {
                     emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
@@ -229,6 +223,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     throw new RuntimeException(e);
                 }
             });
+            */
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 
