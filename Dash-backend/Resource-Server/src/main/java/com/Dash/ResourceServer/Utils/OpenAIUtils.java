@@ -61,9 +61,10 @@ public class OpenAIUtils {
 
         additionalContext =
                 "Each configuration option (aka Widget) MUST include 'title', 'graph_type', 'description', and 'columns'. " +
-                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options, 'description' provides a brief overview of the visualization in present tense. " +
-                        "The 'columns' is a list of the required columns needed to generate a widget of the given graph type." +
-                        "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
+                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options," +
+                        "'description' provides an insightful overview of the visualization in present tense. The 'columns' is a list of the required columns needed to " +
+                        "generate a widget of the given graph type. For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the " +
+                        "following options (the string must match spelling and case):";
 
         for (GraphType graphType : GraphType.values()) {
             additionalContext = additionalContext.concat(graphType.getValue() + ": " + graphType.getDescription() + ", ");
@@ -157,6 +158,7 @@ public class OpenAIUtils {
                 .collect(Collectors.toList());
 
 
+
         // Assign each Widget a Unique Identifier
         /*
         widgets.forEach(widget -> {
@@ -170,6 +172,7 @@ public class OpenAIUtils {
             widgets.get(i).setPinned(true);
         }
         */
+
 
         return widgets;
     }
