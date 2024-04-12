@@ -20,8 +20,13 @@
     justify-content: space-between;
 }
 
+.newDashboard h1 {
+    color: var(--primary); /* Use the primary color variable */
+    font-weight: bold;     /* Make the font bold */
+}
+
 .horizontalLine {
-    width: 200px;
+    width: 300px;
     height: 2px;
     background-color: var(--on-background);
     margin: 1rem 0;

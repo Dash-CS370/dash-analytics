@@ -23,20 +23,21 @@
     height: 25px;
 }
 
-.icon {
-    width: 20px;
-    height: 20px;
+a[href="http://18.189.41.235:8080/api/v1/user/logout"] .icon {
+    width: 28px;
+    height: 28px;
+    transform: translateX(-0.55em);
 }
 
 .right {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    gap: 2.25rem;
 }
 
 .navLink {
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 .navLink:hover {

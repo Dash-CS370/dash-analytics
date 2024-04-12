@@ -12,7 +12,7 @@
     --default-font: 'Colfax', sans-serif;
 
     --form-color: #d9d9d9;
-    --primary: #8b67c5;
+    --primary: #6434af;
     --secondary: #048c6a;
     --alternative: #1ae1af;
 
@@ -54,10 +54,23 @@ html, body {
     height: 1rem;
 }
 
+.navbar a img[src="/css/Dash.svg"] {
+    width: 85px;
+    height: 40px;
+    transform: translateY(-0.25em);
+}
+
+
 .navLink {
     font-size: 1em;
     text-decoration: none;
     color: #FFF;
+}
+
+
+.navLink[href$="/learn-more"] {
+    font-size: 1.1em;
+    transform: translateY(-0.25em) translateX(1.5em);
 }
 
 .navLink:hover {
@@ -87,6 +100,11 @@ html, body {
     width: 300px;
     height: 400px;
 }
+
+.form h1 {
+    transform: translateY(0.2em);
+}
+
 
 .login-form {
     display: flex;

@@ -63,7 +63,6 @@ public enum GraphType {
     }
 
 
-
     public enum ColumnCategory {
 
         NUMERICAL("NUMERICAL", "Represents quantitative data that can be measured and ordered. Examples include height, weight, and age."),

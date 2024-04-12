@@ -12,7 +12,7 @@ export const DisconnectedNavBar: FC = () => {
                 <Image
                     src="/assets/dash.svg"
                     alt="Dash"
-                    width="75"
+                    width="85"
                     height="40"
                 />
             </Link>

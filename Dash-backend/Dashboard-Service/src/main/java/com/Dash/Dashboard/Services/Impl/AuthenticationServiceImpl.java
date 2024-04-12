@@ -39,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final EmailService emailService;
 
+    private final TaskExecutor taskExecutor;
+
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
@@ -50,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.taskExecutor = taskExecutor;
     }
 
 
@@ -78,7 +81,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Otherwise this is a completely new User (email has not been used)
         final User tempUser = User.builder().
                 email(email).
-                enabled(true). // FIXME -> must be false
+                enabled(false). // FIXME -> must be false
                 creationDate(getCurrentDate()).
                 build();
 
@@ -211,11 +214,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             // TODO FIXME
-            final String activateAccountUrl = "www.dash-analytics.com/signin?activate=true";
+            final String activateAccountUrl = "http://18.189.41.235:3000/signin?activate=true";
 
             final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
 
-            /*
             taskExecutor.execute(() -> {
                 try {
                     emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
@@ -223,7 +225,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     throw new RuntimeException(e);
                 }
             });
-            */
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 
