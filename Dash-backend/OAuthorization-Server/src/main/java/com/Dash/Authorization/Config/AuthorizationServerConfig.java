@@ -73,8 +73,8 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://18.189.41.235:8080/login/oauth2/code/Dash")
-                .redirectUri("http://18.189.41.235:8080/authorized")
+                .redirectUri("https://dash-analytics.solutions/login/oauth2/code/Dash")
+                .redirectUri("https://dash-analytics.solutions/authorized")
                 .scope(OidcScopes.OPENID)
                 .scope("api.read")
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build())
@@ -113,7 +113,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().issuer("http://dash.aperturetoolkit.com:9000").build();
+        return ProviderSettings.builder().issuer("https://auth.dash-analytics.solutions").build();
     }
 
 

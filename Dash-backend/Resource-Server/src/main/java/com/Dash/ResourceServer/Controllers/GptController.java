@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/gpt")
+@RequestMapping("/api/v1/widgets")
 public class GptController {
 
     private final Integer DEFAULT_RETRY_COUNT = 1;

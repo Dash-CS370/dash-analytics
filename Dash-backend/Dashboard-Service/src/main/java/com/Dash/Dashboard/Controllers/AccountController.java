@@ -126,7 +126,7 @@ public class AccountController {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
 
-            response.sendRedirect("http://dash.aperturetoolkit.com:9000/user/logout"); //FIXME
+            response.sendRedirect("https://auth.dash-analytics.solutions/user/logout"); //FIXME
 
         } catch (Exception e) {
             log.warn(e.getMessage());

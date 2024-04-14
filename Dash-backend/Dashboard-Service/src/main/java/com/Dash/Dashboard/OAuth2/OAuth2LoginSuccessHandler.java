@@ -19,7 +19,7 @@ import java.io.IOException;
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final static String DEFAULT_SUCCESS_URL = "http://18.189.41.235:3000/dashboards";
+    private final static String DEFAULT_SUCCESS_URL = "https://dash-analytics.solutions/dashboards";
 
     private final OAuth2UserLoginEventListener thirdPartyLoginEventListener;
 

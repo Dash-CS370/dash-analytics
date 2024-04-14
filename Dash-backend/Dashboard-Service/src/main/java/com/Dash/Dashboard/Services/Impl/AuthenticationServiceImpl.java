@@ -39,20 +39,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final EmailService emailService;
 
-    private final TaskExecutor taskExecutor;
-
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
-                              EmailService emailService,
-                              TaskExecutor taskExecutor) {
+                              EmailService emailService) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
-        this.taskExecutor = taskExecutor;
     }
 
 
@@ -214,17 +210,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
             // TODO FIXME
-            final String activateAccountUrl = "http://18.189.41.235:3000/signin?activate=true";
+            final String activateAccountUrl = "https://dash-analytics.solutions/signin?activate=true";
 
             final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
 
-            taskExecutor.execute(() -> {
-                try {
-                    emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            //emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 

@@ -102,7 +102,7 @@ export default function Signin() {
                         <SigninButton
                             className={styles.signinWithDash}
                             buttonText="Login with"
-                            href="http://18.189.41.235:8080/oauth2/authorization/Dash"
+                            href="https://dash-analytics.solutions/oauth2/authorization/Dash"
                             imgSrc="assets/DashLogo.svg"
                             alt="Dash Logo"
                             imgWidth={30}
@@ -118,7 +118,7 @@ export default function Signin() {
                         <div className={styles.externalAccountOpts}>
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/google"
+                                href="https://dash-analytics.solutions/oauth2/authorization/google"
                                 imgSrc="assets/google.svg"
                                 alt="Google Logo"
                                 imgWidth={35}
@@ -127,7 +127,7 @@ export default function Signin() {
 
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/azure-ad"
+                                href="https://dash-analytics.solutions/oauth2/authorization/azure-ad"
                                 imgSrc="assets/microsoft.svg"
                                 alt="Microsoft Logo"
                                 imgWidth={22.5}
@@ -136,7 +136,7 @@ export default function Signin() {
 
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/github"
+                                href="https://dash-analytics.solutions/oauth2/authorization/github"
                                 imgSrc="assets/github.svg"
                                 alt="Github Logo"
                                 imgWidth={25}

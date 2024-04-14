@@ -37,7 +37,7 @@ export default function RequestAccess() {
         }
         setErrorMessage('');
 
-        fetch(`http://18.189.41.235:8080/auth/request-access?email=${email}`, {
+        fetch(`https://dash-analytics.solutions/auth/request-access?email=${email}`, {
             method: 'GET',
         })
             .then((response) => {

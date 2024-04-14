@@ -30,21 +30,17 @@ public class PasswordServiceImpl implements PasswordService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final TaskExecutor taskExecutor;
-
     private final EmailService emailService;
 
     @Autowired
     public PasswordServiceImpl(@Qualifier("passwordResetMongoTemplate") MongoTemplate passwordResetTokenDAO,
                                @Qualifier("userMongoTemplate") MongoTemplate userDAO,
                                PasswordEncoder passwordEncoder,
-                               EmailService emailService,
-                               TaskExecutor taskExecutor) {
+                               EmailService emailService) {
 
         this.passwordResetTokenDAO = passwordResetTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
-        this.taskExecutor = taskExecutor;
         this.userDAO = userDAO;
     }
 
@@ -188,15 +184,7 @@ public class PasswordServiceImpl implements PasswordService {
             //TODO FIX IN TEMPLATE
             final Map<String, Object> model = Map.of("passwordResetKey", passwordResetKey, "resetPasswordUrl", resetPasswordUrl);
 
-            /*
-            taskExecutor.execute(() -> {
-                try {
-                    emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            */
+            //emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
 
             log.info("Password reset key was successfully sent to " + email);
 

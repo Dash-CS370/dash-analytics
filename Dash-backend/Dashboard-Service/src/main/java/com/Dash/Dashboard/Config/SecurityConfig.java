@@ -10,12 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 @EnableWebSecurity
@@ -30,7 +24,7 @@ public class SecurityConfig {
 
         http
             .csrf().disable()
-            .cors(cors -> corsConfigurationSource())
+            .cors().disable()
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/swagger-ui/**").permitAll() // TODO - REMOVE IN THE FUTURE
@@ -40,28 +34,13 @@ public class SecurityConfig {
             .anyRequest().authenticated()
             .and()
             .oauth2Login(oauth2login -> oauth2login
-                    .loginPage("http://18.189.41.235:3000/start")
+                    .loginPage("https://dash-analytics.solutions/start")
                     .successHandler(loginSuccessHandler)
             )
             .oauth2Client(Customizer.withDefaults()); // TODO SESSION POLICY
 
         return http.build();
     }
-
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://18.189.41.235:3000")); // FIXME FUTURE DNS
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

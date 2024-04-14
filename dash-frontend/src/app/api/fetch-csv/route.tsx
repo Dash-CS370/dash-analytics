@@ -4,8 +4,7 @@ import * as csv from 'csv-parser';
 const baseS3Url = 's3://dash-analytics-test/';
 
 AWS.config.update({
-    accessKeyId: process.env.S3_ACCESS_KEY,
-    secretAccessKey: process.env.S3_SECRET_KEY,
+    region: 'us-east-2'
 });
 
 const s3 = new AWS.S3();

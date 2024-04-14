@@ -23,7 +23,8 @@
     height: 25px;
 }
 
-a[href="http://18.189.41.235:8080/api/v1/user/logout"] .icon {
+.icon {
+    cursor: pointer;
     width: 28px;
     height: 28px;
     transform: translateX(-0.55em);

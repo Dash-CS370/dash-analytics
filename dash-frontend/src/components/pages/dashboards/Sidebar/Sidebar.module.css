@@ -13,6 +13,13 @@
     width: 250px;
 }
 
+
+.projectsContainer h1 {
+    font-weight: lighter;  /* Optionally make the font bold */
+    transform: translateX(0.25em) translateY(-0.1em);
+}
+
+
 .sidebarClosed {
     width: 30px;
     overflow: hidden;
