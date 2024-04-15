@@ -41,6 +41,8 @@ export default function Dashboards() {
         const checkScreenSize = () => {
             if (window.innerWidth < 700 || window.innerHeight < 700) {
                 setIsMobile(true);
+            } else {
+                setIsMobile(false);
             }
         };
         checkScreenSize();
