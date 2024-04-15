@@ -26,6 +26,7 @@ export const SigninButton: React.FC<SigninButtonProps> = ({
             className={`${styles.btn} ${className}`}
             href={href}
             width="275px"
+            prefetch={false}
         >
             <div className={styles.btnContents}>
                 {buttonText}

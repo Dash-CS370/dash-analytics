@@ -8,6 +8,7 @@ interface SecondaryButtonProps {
     href?: string;
     width?: string;
     height?: string;
+    prefetch?: boolean;
 }
 
 export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
@@ -16,6 +17,7 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
     href = '',
     width = '200px',
     height = '50px',
+    prefetch = true,
     ...props
 }) => {
     if (href === '') {
@@ -36,7 +38,7 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
             style={{ width: width, height: height }}
             {...props}
         >
-            <Link className={styles.link} href={href}>
+            <Link className={styles.link} href={href} prefetch={prefetch}>
                 {children}
             </Link>
         </button>

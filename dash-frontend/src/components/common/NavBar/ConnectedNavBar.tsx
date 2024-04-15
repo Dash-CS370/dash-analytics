@@ -1,10 +1,15 @@
 import styles from '@/components/common/NavBar/NavBar.module.css';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { VscAccount } from 'react-icons/vsc';
 
 export const ConnectedNavBar: FC = () => {
+    const handleLogout = () => {
+        window.location.href = '';
+    };
+
     return (
         <div className={styles.main}>
             <div className={styles.account}>
@@ -16,9 +21,10 @@ export const ConnectedNavBar: FC = () => {
                 <Link className={styles.navLink} href="/">
                     Learn More
                 </Link>
-                <Link href="http://18.189.41.235:8080/api/v1/user/logout">
-                    <IoLogOutOutline className={styles.icon} />
-                </Link>
+                <IoLogOutOutline
+                    className={styles.icon}
+                    onClick={handleLogout}
+                />
             </div>
         </div>
     );

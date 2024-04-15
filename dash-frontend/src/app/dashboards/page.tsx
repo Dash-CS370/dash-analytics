@@ -41,6 +41,8 @@ export default function Dashboards() {
         const checkScreenSize = () => {
             if (window.innerWidth < 700 || window.innerHeight < 700) {
                 setIsMobile(true);
+            } else {
+                setIsMobile(false);
             }
         };
         checkScreenSize();
@@ -76,7 +78,7 @@ export default function Dashboards() {
             })
             .catch((error) => {
                 console.error(error);
-                // router.push('/start');
+                router.push('/start');
             });
 
         return () => {
@@ -94,9 +96,11 @@ export default function Dashboards() {
                 });
         };
         window.addEventListener('beforeunload', handleUnload);
+        window.addEventListener('pagehide', handleUnload);
 
         return () => {
             window.removeEventListener('beforeunload', handleUnload);
+            window.removeEventListener('pagehide', handleUnload);
         };
     });
 
