@@ -5,7 +5,6 @@ import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/Primary
 import { SecondaryButton } from '@/components/common/buttons/SecondaryButton/SecondaryButton';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function CreateAccount() {
     const searchParams = useSearchParams();

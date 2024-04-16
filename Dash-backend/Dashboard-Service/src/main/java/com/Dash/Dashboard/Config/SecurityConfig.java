@@ -37,7 +37,9 @@ public class SecurityConfig {
                     .loginPage("https://dash-analytics.solutions/start")
                     .successHandler(loginSuccessHandler)
             )
-            .oauth2Client(Customizer.withDefaults()); // TODO SESSION POLICY
+            .oauth2Client(Customizer.withDefaults());
+            //.logout().disable();
+
 
         return http.build();
     }

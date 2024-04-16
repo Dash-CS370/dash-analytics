@@ -1,8 +1,3 @@
-.dynamicText {
-    display: inline-block;
-    transition: transform 1s ease-in-out;
-}
-
 .description {
     display: flex;
     flex-direction: column;
@@ -10,52 +5,58 @@
 }
 
 .constantDescription {
-    font-family: 'Colfax';
+    font-family: 'Colfax', sans-serif;
     font-size: 33px;
-}
-
-@keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: calc(100% - 40px);
-    }
-}
-
-@keyframes running {
-    from {
-        width: 100%;
-    }
-    to {
-        width: 40px;
-    }
-}
-
-.dynamicText {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 4s steps(60, end) infinite;
-    color: var(--primary);
-    font-family: 'Colfax';
-    font-size: 34px;
-    font-weight: bold;
 }
 
 .dynamicContainer {
     display: flex;
     flex-direction: row;
     width: 100%;
+    overflow: hidden;
 }
 
-.animationExpandingContainer {
-    display: flex;
-    justify-content: right;
-    animation: running 4s steps(60, end) infinite;
+.dynamicText {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--primary);
+    font-family: 'Colfax', serif;
+    font-size: 34px;
+    font-weight: bold;
+    position: relative;
 }
 
-.animationContainer {
-    width: 40px;
-    height: 40px;
+.dynamicText {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--primary);
+    font-family: 'Colfax', serif;
+    font-size: 34px;
+    font-weight: bold;
+    position: relative;
+}
+
+.dynamicCover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: var(--background);
+    border-left: 2px solid var(--primary);
+    animation: animate 5s steps(120) infinite; /* Extended to 5s for a better-timed pause */
+}
+
+@keyframes animate {
+    0%, 20% {
+        transform: translateX(0%); /* Start and pause with text covered */
+    }
+    50% {
+        transform: translateX(100%); /* Slide to the right to reveal the text */
+    }
+    80% {
+        transform: translateX(100%); /* Pause with text fully revealed */
+    }
+    100% {
+        transform: translateX(0%); /* Slide back to left and pause with text covered */
+    }
 }

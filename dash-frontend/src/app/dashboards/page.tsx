@@ -77,7 +77,6 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                console.error(error);
                 router.push('/start');
             });
 
