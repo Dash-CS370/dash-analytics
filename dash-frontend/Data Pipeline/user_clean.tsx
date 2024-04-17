@@ -10,6 +10,8 @@ export async function userClean(
     columns_to_drop: string[],
 ): Promise<dfd.DataFrame> {
     // Try to Drop Col's
+    console.log(dataframe.shape[1])
+
     if (dataframe.shape[0] === 0) {
         throw new Error('Uploaded Dataframe is empty.');
     }
@@ -21,6 +23,7 @@ export async function userClean(
             'No Data Left in Dataframe After Performing these Drops',
         );
     } else {
+        console.log(finalClean.shape[1])
         return finalClean;
     }
 }

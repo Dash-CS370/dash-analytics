@@ -17,13 +17,17 @@ export async function standardClean(file: File): Promise<dfd.DataFrame> {
 
             try {
                 const upload_data = await dfd.readCSV(file); //Reads in CSV
-                const drop_rows = upload_data.dropna(); // Drops Rows w/ NaN's
-                const cols_drop = drop_rows.columns.filter((col: string) =>
-                    drop_rows[col].isna().all(),
-                );
-                const standardForm = drop_rows.drop(cols_drop, { axis: 1 });
+                console.log(upload_data.shape[0])
+                console.log(upload_data.shape[1])
+                console.log(upload_data.head(5))
 
-                resolve(standardForm);
+                const drop_rows = upload_data.dropNa(); // Drops Rows w/ NaN's
+
+                console.log(drop_rows.shape[0])
+                console.log(drop_rows.shape[1])
+                console.log(drop_rows.head(5))
+
+                resolve(drop_rows);
             } catch (error) {
                 reject(error);
             }
