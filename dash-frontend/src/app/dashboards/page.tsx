@@ -47,36 +47,37 @@ export default function Dashboards() {
         window.addEventListener('resize', checkScreenSize);
 
         // pull projects from backend
-        fetchProjects()
-            .then((projects) => {
-                if (projects.length === 0) {
-                    setProjects(exampleProjects);
-                } else {
-                    const localProjects = projects.map((project) => {
-                        return {
-                            ...project,
-                            widgets: project.widgets.map((widget, index) => {
-                                return {
-                                    title: widget.title,
-                                    id: `${
-                                        project.project_id
-                                    }-${index.toString()}`,
-                                    graphType: widget.graph_type,
-                                    pinned: index < 4, // pin first 4 widgets
-                                    columns: widget.columns,
-                                    data: [],
-                                    description: widget.widget_description,
-                                };
-                            }),
-                        };
-                    });
+        setProjects(exampleProjects);
+        // fetchProjects()
+        //     .then((projects) => {
+        //         if (projects.length === 0) {
+        //             setProjects(exampleProjects);
+        //         } else {
+        //             const localProjects = projects.map((project) => {
+        //                 return {
+        //                     ...project,
+        //                     widgets: project.widgets.map((widget, index) => {
+        //                         return {
+        //                             title: widget.title,
+        //                             id: `${
+        //                                 project.project_id
+        //                             }-${index.toString()}`,
+        //                             graphType: widget.graph_type,
+        //                             pinned: index < 4, // pin first 4 widgets
+        //                             columns: widget.columns,
+        //                             data: [],
+        //                             description: widget.widget_description,
+        //                         };
+        //                     }),
+        //                 };
+        //             });
 
-                    setProjects(localProjects);
-                }
-            })
-            .catch((error) => {
-                router.push('/start');
-            });
+        //             setProjects(localProjects);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         router.push('/start');
+        //     });
 
         return () => {
             window.removeEventListener('resize', checkScreenSize);

@@ -167,3 +167,7 @@
         transform: rotate(360deg);
     }
 }
+
+.dropdown {
+    font-size: 3 rem;
+}

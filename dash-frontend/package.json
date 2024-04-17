@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "aws-sdk": "^2.1594.0",
     "csv-parser": "^3.0.0",
     "danfojs": "^1.1.2",
+    "framer-motion": "^11.0.28",
     "lottie-web": "^5.12.2",
     "next": "14.1.0",
     "react": "^18",
