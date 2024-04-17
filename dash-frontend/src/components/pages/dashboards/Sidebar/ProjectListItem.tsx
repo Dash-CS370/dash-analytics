@@ -53,10 +53,9 @@ export const ProjectListItem: FC<ProjectListItemProps> = ({
     const handleFileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
-            console.log(file.name); // Optionally log the file name
             const cleaned_df = await standardClean(file); // Function to process the file
-            const smoothed_df = await processAndSliceDF(cleaned_df, 3000, 1);
-            userClean(smoothed_df, ["humidity"]);
+            //const smoothed_df = await processAndSliceDF(cleaned_df, 3000, 1);
+            //userClean(smoothed_df, ["humidity"]);
         }
     };
 

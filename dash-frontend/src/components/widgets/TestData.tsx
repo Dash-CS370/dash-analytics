@@ -45,6 +45,18 @@ export const exampleLineData = [
     },
 ];
 
+
+export const exampleBarData = [
+    {
+        car_brand: 'Chevy',
+        price: [10, 12]
+    },
+    {
+        car_brand: 'BMW',
+        price: 20
+    },
+];
+
 export const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Test 1',
@@ -58,7 +70,7 @@ export const exampleConfigs: WidgetConfig[] = [
         id: '2',
         graphType: 'bar_chart',
         pinned: false,
-        data: exampleLineData,
+        data: exampleBarData,
     },
     {
         title: 'Test 3',

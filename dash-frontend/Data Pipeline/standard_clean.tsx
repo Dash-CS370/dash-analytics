@@ -1,6 +1,7 @@
 // Takes in File
 
 import * as dfd from 'danfojs';
+import {userClean} from "./user_clean";
 
 export async function standardClean(file: File): Promise<dfd.DataFrame> {
     // Promise DF or File?
@@ -19,15 +20,22 @@ export async function standardClean(file: File): Promise<dfd.DataFrame> {
                 const upload_data = await dfd.readCSV(file); //Reads in CSV
                 console.log(upload_data.shape[0])
                 console.log(upload_data.shape[1])
-                console.log(upload_data.head(5))
 
-                const drop_rows = upload_data.dropNa(); // Drops Rows w/ NaN's
+                const drop_rows_df = upload_data.dropNa(); // Drops Rows w/ NaN's
 
-                console.log(drop_rows.shape[0])
-                console.log(drop_rows.shape[1])
-                console.log(drop_rows.head(5))
+                console.log(drop_rows_df.shape[0])
+                console.log(drop_rows_df.shape[1])
 
-                resolve(drop_rows);
+                // GROUP BY AND SEE THE OUT
+                let drop_rows_dF = await userClean(drop_rows_df, ["mpg", "rep78", "headroom", "trunk",
+                "weight", "length", "turn", "displacement", "gear_ratio", "make"]);
+
+                const grouped_df = drop_rows_dF.groupby(["brand"]);
+                // @ts-ignore
+                const mean_price_df = grouped_df.mean();
+                mean_price_df.print();
+
+                resolve(drop_rows_df);
             } catch (error) {
                 reject(error);
             }

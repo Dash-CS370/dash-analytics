@@ -1,5 +1,5 @@
 export interface DataItem {
-    [key: string]: number | string;
+    [key: string]: number | string | number[];
 }
 
 export interface WidgetConfig {
