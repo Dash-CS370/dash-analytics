@@ -29,9 +29,15 @@
             <input type="password" name="password" placeholder="Password" />
           </div>
           <div class="error">
-            <span th:if="${param.error}">Invalid username and/or password.</span>
+            <span th:if="${param.error}"
+              >Invalid username and/or password.</span
+            >
           </div>
-          <a href="https://dash-analytics.solutions/forgot-password" class="forgotPass">forgot password?</a>
+          <a
+            href="https://dash-analytics.solutions/user/request-new-password"
+            class="forgotPass"
+            >forgot password?</a
+          >
           <button class="button" type="submit">Log In</button>
         </form>
       </div>

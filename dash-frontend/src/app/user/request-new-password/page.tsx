@@ -14,11 +14,11 @@ export default function RequestNewPassword() {
         event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
         if (event.key === 'Enter') {
-            handleRequestAccess(event);
+            handleRequestChange(event);
         }
     };
 
-    const handleRequestAccess = (event: React.FormEvent) => {
+    const handleRequestChange = (event: React.FormEvent) => {
         event.preventDefault();
 
         // handle empty email
@@ -33,8 +33,25 @@ export default function RequestNewPassword() {
             return;
         }
 
-        // TODO: send email to backend
-        console.log(email);
+        // send email to backend
+        fetch('https://dash-analytics.solutions/api/v1/password/reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+            }),
+        })
+            .then(() => {
+                window.location.href = '/start';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                setErrorMessage(
+                    'Error sending password reset email. Try again.',
+                );
+            });
     };
 
     return (
@@ -45,7 +62,6 @@ export default function RequestNewPassword() {
                     width="350px"
                     height="450px"
                 >
-                    {/* <form className={styles.form} id="request-form"> */}
                     <p className={styles.subtext_top}>
                         Enter the email address linked with your account and
                         we&apos;ll send you a link to reset your password.
@@ -66,11 +82,10 @@ export default function RequestNewPassword() {
                     )}
                     <PrimaryButton
                         className={styles.buttonFormat}
-                        onClick={handleRequestAccess}
+                        onClick={handleRequestChange}
                     >
                         Continue
                     </PrimaryButton>
-                    {/* </form> */}
                     <div className={styles.line}></div>
                     <p className={styles.subtext}>
                         By proceeding, you agree to Dash Analytics Privacy

@@ -4,39 +4,63 @@ import styles from '@/app/user/change-password/page.module.css';
 import { TextInput } from '@/components/common/TextInput/TextInput';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function ChangePassword() {
-    const [email, setEmail] = useState('');
+    const [token, setToken] = useState('');
+    const [pass, setPass] = useState('');
+    const [confirmPass, setConfirmPass] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    const handleEnterForEmail = (
-        event: React.KeyboardEvent<HTMLInputElement>,
-    ) => {
-        if (event.key === 'Enter') {
-            handleRequestAccess(event);
+    const searchParams = useSearchParams();
+    let t = searchParams.get('token');
+    useEffect(() => {
+        if (!t) {
+            window.location.href = '/users/request-new-password';
+            t = '';
         }
-    };
+        setToken(t);
+    }, [t]);
 
-    const handleRequestAccess = (event: React.FormEvent) => {
+    const handleChangePassword = (event: React.FormEvent) => {
         event.preventDefault();
 
-        // handle empty email
-        if (email === '') {
-            setErrorMessage('Email is required');
+        // password checks
+        if (pass === '') {
+            setErrorMessage('Password is required');
             return;
         }
-        // handle invalid email format
-        if (!email.includes('@') || !email.includes('.')) {
-            setErrorMessage('Invalid email format');
-            setEmail('');
+        if (confirmPass === '') {
+            setErrorMessage('Confirm Password is required');
+            return;
+        }
+        if (pass !== confirmPass) {
+            setErrorMessage('Passwords do not match');
             return;
         }
 
-        // TODO: password formatting
-
-        // TODO: send email to backend
-        console.log(email);
+        // TODO: send request to backend
+        fetch(
+            'https://dash-analytics.solutions/api/v1/password/reset-password',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    token: token,
+                    'new-password': pass,
+                    'confirmed-password': confirmPass,
+                }),
+            },
+        ).then((response) => {
+            if (response.ok) {
+                window.location.href = '/signin';
+            } else {
+                setErrorMessage('Error changing password. Try again.');
+            }
+        });
     };
 
     return (
@@ -47,39 +71,16 @@ export default function ChangePassword() {
                     width="350px"
                     height="500px"
                 >
-                    {/* <form className={styles.form} id="request-form"> */}
                     <div className={styles.textFields}>
                         <TextInput
-                            // className={styles.textInput}
-                            defText="Enter Email"
-                            onKeyDown={handleEnterForEmail}
-                            onChange={(event) => setEmail(event.target.value)}
-                        />
-                        {errorMessage === '' ? (
-                            <div className={styles.errorMessage}></div>
-                        ) : (
-                            <div className={styles.errorMessage}>
-                                {errorMessage}
-                            </div>
-                        )}
-                        <TextInput
-                            // className={styles.textInput}
                             defText="Enter New Password"
-                            // onKeyDown={handleEnterForEmail}
-                            // onChange={(event) => setEmail(event.target.value)}
+                            onChange={(event) => setPass(event.target.value)}
                         />
-                        {errorMessage === '' ? (
-                            <div className={styles.errorMessage}></div>
-                        ) : (
-                            <div className={styles.errorMessage}>
-                                {errorMessage}
-                            </div>
-                        )}
                         <TextInput
-                            // className={styles.textInput}
                             defText="Confirm New Password"
-                            // onKeyDown={handleEnterForEmail}
-                            // onChange={(event) => setEmail(event.target.value)}
+                            onChange={(event) =>
+                                setConfirmPass(event.target.value)
+                            }
                         />
                         {errorMessage === '' ? (
                             <div className={styles.errorMessage}></div>
@@ -92,11 +93,10 @@ export default function ChangePassword() {
 
                     <PrimaryButton
                         className={styles.buttonFormat}
-                        onClick={handleRequestAccess}
+                        onClick={handleChangePassword}
                     >
                         Change Password
                     </PrimaryButton>
-                    {/* </form> */}
                     <div className={styles.line}></div>
                     <p className={styles.subtext}>
                         By proceeding, you agree to Dash Analytics Privacy
