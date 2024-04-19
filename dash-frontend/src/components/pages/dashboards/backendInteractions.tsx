@@ -7,6 +7,7 @@ import {
 } from '@/components/widgets/WidgetTypes';
 import { ColumnInfo } from './NewProject/NewProject';
 import * as dfd from 'danfojs';
+import { cleanOnUpload } from '@/components/dataPipeline/dataOperations/cleanOnUpload';
 
 export async function fetchWidgetConfigs(
     projectName: string,
@@ -20,15 +21,19 @@ export async function fetchWidgetConfigs(
             `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.dataType}`,
     );
 
+    // clean and parse csv
     setStatus('Parsing CSV...');
-    const df = await dfd.readCSV(csvFile);
+    const df = await cleanOnUpload(csvFile);
+    const df_json = JSON.stringify(dfd.toJSON(df));
+    const cleanedFileData = new Blob([df_json], { type: 'application/json' });
+    const cleanedFile = new File([cleanedFileData], csvFile.name);
 
     setStatus('Fetching graph configurations...');
     const gptResponse = await fetchGPTResponse(
         projectName,
         projectDescription,
         columnDescriptions,
-        csvFile,
+        cleanedFile,
     );
 
     if (Array.isArray(gptResponse.widgets) && gptResponse.widgets.length != 0) {
@@ -53,7 +58,7 @@ export async function fetchWidgetConfigs(
             };
         });
 
-        // sleep for 3.5 seconds to allow file to upload to s3
+        // sleep for 2.5 seconds to allow file to upload to s3
         await sleep(2500);
 
         setStatus(''); // clear status
@@ -106,10 +111,13 @@ const fetchGPTResponse = async (
 };
 
 export const fetchProjects = async (): Promise<GPTProjConfig[]> => {
-    const resp = await fetch('https://dash-analytics.solutions/api/v1/dashboards', {
-        method: 'GET',
-        credentials: 'include',
-    });
+    const resp = await fetch(
+        'https://dash-analytics.solutions/api/v1/dashboards',
+        {
+            method: 'GET',
+            credentials: 'include',
+        },
+    );
     if (resp.status !== 200) {
         throw new Error('Failed to fetch projects. Try again.');
     }
