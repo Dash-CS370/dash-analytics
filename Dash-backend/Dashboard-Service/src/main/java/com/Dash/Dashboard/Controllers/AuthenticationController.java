@@ -52,7 +52,7 @@ public class AuthenticationController {
      * @param activationKey The unique key provided for account activation.
      * @return ResponseEntity with success or error message, including an appropriate HTTP status code.
      */
-    @GetMapping(value = "/activate-account")
+    @GetMapping(value = "/activate-account", produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> verifyRegistration(@RequestParam("key") String activationKey) {
         try {
 

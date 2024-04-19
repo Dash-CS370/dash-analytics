@@ -81,7 +81,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         final String userAccount = extractUserDetails(oauth2User);
 
-        //verifyUserCreditCount("userAccount");
+        verifyUserCreditCount(userAccount);
 
         final String projectId = UUID.randomUUID().toString();
 
@@ -91,7 +91,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
                 .datasetDescription(datasetDescription).widgets(new ArrayList<>())
-                .columnDescriptions(Arrays.asList(columnDescriptions.split(">")))
+                .columnDescriptions(Arrays.asList(columnDescriptions.split(">"))) // FIXME
                 .creationDate(getCurrentDate())
                 .build();
 
@@ -160,8 +160,6 @@ public class DashboardServiceImpl implements DashboardService {
                 .queryParam("project-id", projectId)
                 .toUriString();
 
-        log.warn(deleteProjectUrl);
-
         return this.webClient.delete()
                 .uri(deleteProjectUrl)
                 .attributes(oauth2AuthorizedClient(client))
@@ -177,9 +175,8 @@ public class DashboardServiceImpl implements DashboardService {
      *  Utility methods
      */
 
-    // TODO - add Token attribute to User Entity
-    public void verifyUserCreditCount(String userId) throws NotEnoughCreditsException {
-        userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userId));
+    public void verifyUserCreditCount(String userEmail) throws NotEnoughCreditsException {
+        userCreditCheckEventListener.onApplicationEvent(new UserCreditCheckEvent(userEmail));
     }
 
     public static String extractUserDetails(OAuth2User oauth2User) {

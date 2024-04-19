@@ -61,9 +61,10 @@ public class OpenAIUtils {
 
         additionalContext =
                 "Each configuration option (aka Widget) MUST include 'title', 'graph_type', 'description', and 'columns'. " +
-                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options, 'description' provides a brief overview of the visualization in present tense. " +
-                        "The 'columns' is a list of the required columns needed to generate a widget of the given graph type." +
-                        "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
+                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options," +
+                        "'description' provides an insightful overview of the visualization in present tense. The 'columns' is a list of the required columns needed to " +
+                        "generate a widget of the given graph type. For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the " +
+                        "following options (the string must match spelling and case):";
 
         for (GraphType graphType : GraphType.values()) {
             additionalContext = additionalContext.concat(graphType.getValue() + ": " + graphType.getDescription() + ", ");
@@ -82,7 +83,7 @@ public class OpenAIUtils {
         */
 
         additionalContext += ". The column descriptions should include a list of strings that represent the category of represented data they fall under, given below"
-        + ". Use these descriptions and categories to better choose Widget graphs and columns";
+        + ". Use these descriptions and CATEGORIES for each column to appropriately choose Widget graphs and columns";
 
         // Column categories
         for (GraphType.ColumnCategory columnCategory : GraphType.ColumnCategory.values()) {
@@ -145,8 +146,7 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
-                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH)
-                //.filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
+                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
                 .filter(widget -> widget.getColumns().size() >= 2)
                 //.filter(widget -> widget.getColumnDataOperations() != null)
                 //.filter(widget -> {
@@ -155,6 +155,7 @@ public class OpenAIUtils {
                     //return isMultiColumnGraph || isSingleColumnGraph;
                 //})
                 .collect(Collectors.toList());
+
 
 
         // Assign each Widget a Unique Identifier
@@ -170,6 +171,7 @@ public class OpenAIUtils {
             widgets.get(i).setPinned(true);
         }
         */
+
 
         return widgets;
     }

@@ -78,7 +78,9 @@ public class AccountController {
 
 
     /**
+     *
      * @param id
+     * @return
      */
     @DeleteMapping("/account")
     public ResponseEntity<String> deleteUserAccount(@RequestParam String id) {
@@ -95,7 +97,12 @@ public class AccountController {
 
 
 
-
+    /**
+     *
+     * @param session
+     * @param request
+     * @param response
+     */
     @GetMapping("/logout")
     public void testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -119,7 +126,7 @@ public class AccountController {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
 
-            response.sendRedirect("http://dash.aperturetoolkit.com:9000/user/logout"); //FIXME
+            response.sendRedirect("https://auth.dash-analytics.solutions/user/logout"); //FIXME
 
         } catch (Exception e) {
             log.warn(e.getMessage());

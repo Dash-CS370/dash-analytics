@@ -15,6 +15,23 @@ spring:
     multipart:
       max-file-size: 5MB
 
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: analyticsdash0@gmail.com
+    password: ${SMTP_PASSWORD}
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
   security:
     oauth2:
       client:
@@ -24,7 +41,7 @@ spring:
             client-id: ${DASH_CLIENT_ID}
             client-secret: ${DASH_CLIENT_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "http://18.189.41.235:8080/login/oauth2/code/{registrationId}"
+            redirect-uri: "https://dash-analytics.solutions/login/oauth2/code/{registrationId}"
             scope: openid
             client-name: Dash
 
@@ -33,7 +50,7 @@ spring:
             client-id: ${RESOURCE_CLIENT_ID}
             client-secret: ${RESOURCE_CLIENT_SECRET}
             authorization-grant-type: client_credentials
-            redirect-uri: "http://18.189.41.235:8080/authorized"
+            redirect-uri: "https://dash-analytics.solutions/authorized"
             scope: api.read
             client-name: resource-access-client
 
@@ -46,14 +63,15 @@ spring:
             client-secret: ${AZURE_CLIENT_SECRET}
             provider: azure
             authorization-grant-type: authorization_code
-            redirect-uri: "http://18.189.41.235:8080/login/oauth2/code/azure"
+            redirect-uri: "https://dash-analytics.solutions/login/oauth2/code/azure"
             scope: openid
 
         provider:
           spring:
-            issuer-uri: http://dash.aperturetoolkit.com:9000
+            issuer-uri: https://auth.dash-analytics.solutions
           azure:
             issuer-uri: https://login.microsoftonline.com/0f19a1a1-232d-464f-a8c9-0d29e84f0a42/v2.0
+
 
 eureka:
   client:

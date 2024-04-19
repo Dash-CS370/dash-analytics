@@ -64,7 +64,7 @@ export default function Dashboards() {
                                         project.project_id
                                     }-${index.toString()}`,
                                     graphType: widget.graph_type,
-                                    pinned: index < 4, // pin first 4 widgets
+                                    pinned: index < 6, // pin first 6 widgets
                                     columns: widget.columns,
                                     data: [],
                                     description: widget.description,
@@ -77,7 +77,6 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                console.error(error);
                 router.push('/start');
             });
 
@@ -95,11 +94,14 @@ export default function Dashboards() {
                     console.error(error);
                 });
         };
+
         window.addEventListener('beforeunload', handleUnload);
+        window.addEventListener('pagehide', handleUnload);
         window.addEventListener('pagehide', handleUnload);
 
         return () => {
             window.removeEventListener('beforeunload', handleUnload);
+            window.removeEventListener('pagehide', handleUnload);
             window.removeEventListener('pagehide', handleUnload);
         };
     });
@@ -233,7 +235,7 @@ export default function Dashboards() {
 
     const deleteProject = (id: string) => {
         fetch(
-            `http://18.189.41.235:8080/api/v1/dashboards/project?project-id=${id}`,
+            `https://dash-analytics.solutions/api/v1/dashboards/project?project-id=${id}`,
             {
                 method: 'DELETE',
                 credentials: 'include',

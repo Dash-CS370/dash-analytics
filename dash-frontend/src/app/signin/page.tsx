@@ -58,12 +58,18 @@ export default function Signin() {
             setErrorMessage('Activation key is required');
             return;
         }
-        setErrorMessage('');
 
-        // TODO: validate activation key, set error message if invalid
-        console.log(activationKey);
-
-        window.location.href = '/create-account'; // redirect to create account page (include activation key as arg if needed)
+        fetch(`https://dash-analytics.solutions/auth/activate-account?key=${activationKey}`, {
+            method: 'GET',
+        }).then((response) => {
+            if (response.status == 200) {
+                response.text().then((email) => {
+                    window.location.href = `/new-account?email=${email}`; // Redirect to new-account page with email
+                });
+            } else {
+                setErrorMessage('');
+            }
+        });
     };
 
     if (!pageLoaded) {
@@ -102,7 +108,7 @@ export default function Signin() {
                         <SigninButton
                             className={styles.signinWithDash}
                             buttonText="Login with"
-                            href="http://18.189.41.235:8080/oauth2/authorization/Dash"
+                            href="https://dash-analytics.solutions/oauth2/authorization/Dash"
                             imgSrc="assets/DashLogo.svg"
                             alt="Dash Logo"
                             imgWidth={30}
@@ -118,7 +124,7 @@ export default function Signin() {
                         <div className={styles.externalAccountOpts}>
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/google"
+                                href="https://dash-analytics.solutions/oauth2/authorization/google"
                                 imgSrc="assets/google.svg"
                                 alt="Google Logo"
                                 imgWidth={35}
@@ -127,7 +133,7 @@ export default function Signin() {
 
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/azure-ad"
+                                href="https://dash-analytics.solutions/oauth2/authorization/azure-ad"
                                 imgSrc="assets/microsoft.svg"
                                 alt="Microsoft Logo"
                                 imgWidth={22.5}
@@ -136,7 +142,7 @@ export default function Signin() {
 
                             <SigninButton
                                 buttonText="Login with"
-                                href="http://18.189.41.235:8080/oauth2/authorization/github"
+                                href="https://dash-analytics.solutions/oauth2/authorization/github"
                                 imgSrc="assets/github.svg"
                                 alt="Github Logo"
                                 imgWidth={25}

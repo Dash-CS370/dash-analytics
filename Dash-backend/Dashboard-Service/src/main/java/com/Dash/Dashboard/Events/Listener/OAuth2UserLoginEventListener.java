@@ -44,7 +44,7 @@ public class OAuth2UserLoginEventListener implements ApplicationListener<OAuth2U
         );
 
         if (queriedUser.isPresent() && queriedUser.get().getUserType() == UserType.DASH)
-            throw new UserAlreadyExistsException("An account is already associated with this email " + user.getEmail());
+            throw new UserAlreadyExistsException("A Dash account is already associated with this email " + user.getEmail());
 
         else if (queriedUser.isEmpty()) {
             final Calendar calendar = Calendar.getInstance();

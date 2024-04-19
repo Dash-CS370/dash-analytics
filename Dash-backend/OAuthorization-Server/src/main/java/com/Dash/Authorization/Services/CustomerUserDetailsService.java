@@ -28,8 +28,11 @@ public class CustomerUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Query query = new Query(Criteria.where("email").is(username));
+
         User queriedUser = userDAO.findOne(query, User.class);
+
         if (queriedUser != null) {
             if (!queriedUser.isEnabled())
                 throw new UsernameNotFoundException("Account has not been activated");

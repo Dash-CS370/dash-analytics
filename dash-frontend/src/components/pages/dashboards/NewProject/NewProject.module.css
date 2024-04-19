@@ -20,8 +20,17 @@
     justify-content: space-between;
 }
 
+.newDashboard h1 {
+    font-family: var(--secondary-font);
+    color: var(--primary); /* Use the primary color variable */
+}
+
+.newDashboard h2 {
+    font-weight: lighter;
+}
+
 .horizontalLine {
-    width: 200px;
+    width: 300px;
     height: 2px;
     background-color: var(--on-background);
     margin: 1rem 0;

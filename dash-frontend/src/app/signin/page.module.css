@@ -20,6 +20,7 @@
 .SignInTitle {
     font-size: 1.75em;
     margin-top: 1rem;
+    font-family: var(--secondary-font);
 }
 
 .signinWithDash {
@@ -54,6 +55,7 @@
 .toggleButtonFormat_SignIn_SignInView {
     background-color: var(--primary) !important;
     color: var(--on-background) !important;
+    font-family: var(--secondary-font);
     margin-right: -10px;
     z-index: 1;
     position: relative;
@@ -61,6 +63,7 @@
 
 .toggleButtonFormat_Activate_SignInView {
     background-color: var(--on-background);
+    font-family: var(--secondary-font);
     color: var(--primary);
     margin-left: -10px;
     position: relative;

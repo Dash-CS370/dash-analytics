@@ -2,6 +2,7 @@ package com.Dash.Dashboard.Services.Impl;
 
 import com.Dash.Dashboard.Entites.PasswordResetToken;
 import com.Dash.Dashboard.Entites.User;
+import com.Dash.Dashboard.Services.EmailService;
 import com.Dash.Dashboard.Services.PasswordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Slf4j
@@ -27,19 +25,22 @@ import java.util.UUID;
 public class PasswordServiceImpl implements PasswordService {
 
     private final MongoTemplate passwordResetTokenDAO;
+
     private final MongoTemplate userDAO;
+
     private final PasswordEncoder passwordEncoder;
-    private final TaskExecutor taskExecutor;
+
+    private final EmailService emailService;
 
     @Autowired
     public PasswordServiceImpl(@Qualifier("passwordResetMongoTemplate") MongoTemplate passwordResetTokenDAO,
                                @Qualifier("userMongoTemplate") MongoTemplate userDAO,
                                PasswordEncoder passwordEncoder,
-                               TaskExecutor taskExecutor) {
+                               EmailService emailService) {
 
         this.passwordResetTokenDAO = passwordResetTokenDAO;
         this.passwordEncoder = passwordEncoder;
-        this.taskExecutor = taskExecutor;
+        this.emailService = emailService;
         this.userDAO = userDAO;
     }
 
@@ -145,11 +146,12 @@ public class PasswordServiceImpl implements PasswordService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 3); // FIXME -> give them 24 hours to use link to reset password
+        calendar.add(Calendar.MINUTE, 60 * 12);
 
         final String activationKey = UUID.randomUUID().toString();
 
-        Update update = new Update().set("resetPasswordKey", activationKey)
+        Update update = new Update()
+                .set("resetPasswordKey", activationKey)
                 .set("expirationDate", new Date(calendar.getTime().getTime()));
 
         passwordResetTokenDAO.updateFirst(new Query(Criteria.where("userId").is(userId)), update, PasswordResetToken.class);
@@ -175,24 +177,24 @@ public class PasswordServiceImpl implements PasswordService {
      * @param passwordResetKey
      * @return
      */
-    private String sendPasswordResetEmail(String email, String passwordResetKey) {
+    public String sendPasswordResetEmail(String email, String passwordResetKey) {
         try {
-            final String url = "www.dash.com/reset-password?token=" + passwordResetKey;
+            final String resetPasswordUrl = "www.dash.com/reset-password"; // TODO
 
-            // TODO
-            taskExecutor.execute(() -> {
-                // Send email with link
-                log.warn("ASYNC");
-            });
+            //TODO FIX IN TEMPLATE
+            final Map<String, Object> model = Map.of("passwordResetKey", passwordResetKey, "resetPasswordUrl", resetPasswordUrl);
 
-            log.warn("Password rest key was successfully sent to " + email);
+            emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
 
-            return url;
+            log.info("Password reset key was successfully sent to " + email);
+
+            return resetPasswordUrl;
 
         } catch (Exception e) {
-            log.warn("Password rest key could not be sent at the moment");
+            log.warn("Password reset key could not be sent at the moment to " + email, e);
             return "";
         }
     }
+
 
 }

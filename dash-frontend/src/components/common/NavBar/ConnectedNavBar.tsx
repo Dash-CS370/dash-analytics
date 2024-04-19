@@ -6,8 +6,9 @@ import { IoLogOutOutline } from 'react-icons/io5';
 import { VscAccount } from 'react-icons/vsc';
 
 export const ConnectedNavBar: FC = () => {
+
     const handleLogout = () => {
-        window.location.href = '';
+        window.location.href = "https://dash-analytics.solutions/api/v1/user/logout";
     };
 
     return (
@@ -21,11 +22,9 @@ export const ConnectedNavBar: FC = () => {
                 <Link className={styles.navLink} href="/">
                     Learn More
                 </Link>
-                <IoLogOutOutline
-                    className={styles.icon}
-                    onClick={handleLogout}
-                />
+                <IoLogOutOutline className={styles.icon} onClick={handleLogout} />
             </div>
         </div>
     );
+
 };

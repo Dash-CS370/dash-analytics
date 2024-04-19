@@ -32,7 +32,7 @@ build/
 !**/src/test/**/build/
 
 ###
-src/main/resources/.env
+#src/main/resources/.env
 
 ### VS Code ###
 .vscode/

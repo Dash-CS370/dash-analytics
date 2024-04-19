@@ -2,8 +2,14 @@ server:
   port: 8081
 
 spring:
+
   application:
     name: Resource-Server
+
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration
+      - org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration
 
   servlet:
     multipart:
@@ -13,16 +19,13 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://dash.aperturetoolkit.com:9000
+          issuer-uri: https://auth.dash-analytics.solutions
 
 application:
   bucket: dash-analytics-test
 
 cloud:
   aws:
-    credentials:
-      access-key: ${S3_ACCESS_KEY}
-      secret-key: ${S3_SECRET_KEY}
     region:
       static: us-east-2
     stack:

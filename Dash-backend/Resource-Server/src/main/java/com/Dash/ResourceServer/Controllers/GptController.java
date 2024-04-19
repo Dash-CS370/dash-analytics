@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/gpt")
+@RequestMapping("/api/v1/widgets")
 public class GptController {
 
     private final Integer DEFAULT_RETRY_COUNT = 1;
@@ -28,11 +28,11 @@ public class GptController {
     }
 
 
-    // TODO TEMP
+    // TODO TEMP TESTING ENDPOINT
     @PostMapping()
-    public List<Widget> demoWidgetGenerator(@RequestBody RequestDTO dataDTO) {
+    public List<Widget> demoWidgetGenerator(@RequestBody RequestDTO dataDTO) throws InterruptedException {
         // DTO -> "dataset description" | "column descriptions"
-        log.warn("WIDGETS ENPINT");
+        log.warn("WIDGETS ENDPOINT");
 
         if (dataDTO.getDatasetDescription().isEmpty() || dataDTO.getDatasetDescription().isBlank())
             dataDTO.setDatasetDescription("My dataset deals with air-quality data. It contains hourly readings of particulate matter concentrations in the city.");
@@ -68,7 +68,7 @@ public class GptController {
 
             // LOGIC -> Passing in List of Previous Widgets (JUST THE TITLES) and WARN GPT NOT TO GENERATE IDENTICAL ONES
             return openAIService.attemptWidgetGenerationWithRetry(
-                        currentProject.getDatasetDescription(), currentProject.getColumnDescriptions(), 1);
+                        currentProject.getDatasetDescription(), currentProject.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
 
         } catch (Exception e) {
             log.error(e.getMessage());

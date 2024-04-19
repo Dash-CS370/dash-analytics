@@ -33,13 +33,15 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .cors(cors -> corsConfigurationSource())
+            .cors().disable()
             .authorizeRequests(authorizeRequests -> authorizeRequests
                     .antMatchers("/user/logout").permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(login -> login
                     .loginPage("/login").permitAll()
-            );
+            )
+            .logout().disable();
 
         return http.build();
     }
@@ -48,10 +50,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://18.189.41.235:3000"));
+        configuration.setAllowedOrigins(List.of("https://dash-analytics.solutions"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Access-Control-Allow-Headers", "X-Requested-With",
-                "Accept", "Accept-Version", "Content-Length", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Access-Control-Allow-Headers", "X-Requested-With", "Accept", "Accept-Version", "Content-Length", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

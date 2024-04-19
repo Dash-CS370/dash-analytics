@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Project {
 
-    @Id
     @JsonProperty("project_id")
     private String projectId;
 

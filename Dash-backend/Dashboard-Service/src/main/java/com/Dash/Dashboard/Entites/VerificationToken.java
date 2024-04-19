@@ -17,7 +17,7 @@ import java.util.Date;
 @Document(collection = "VerificationTokens")
 public class VerificationToken {
 
-    private static final int EXPIRATION_TIME = 5; // FIXME -> change to 24 hours for user to verify with this token
+    private static final int EXPIRATION_TIME = 60 * 24;
 
     @Id
     private String id;

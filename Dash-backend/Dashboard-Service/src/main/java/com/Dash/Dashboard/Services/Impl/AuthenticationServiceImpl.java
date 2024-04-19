@@ -6,6 +6,7 @@ import com.Dash.Dashboard.Entites.UserType;
 import com.Dash.Dashboard.Entites.VerificationToken;
 import com.Dash.Dashboard.Models.UserRegistrationRequest;
 import com.Dash.Dashboard.Services.AuthenticationService;
+import com.Dash.Dashboard.Services.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,10 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @Slf4j
@@ -31,24 +29,26 @@ import java.util.UUID;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Value("${spring.application.default-start-credits}")
-    private int DEFAULT_STARTING_CREDIT_AMOUNT;
+    private int STARTING_CREDIT_AMOUNT;
 
-    // Dependency injections done by constructor (all private and final fields)
     private final MongoTemplate userDAO;
+
     private final MongoTemplate verificationTokenDAO;
+
     private final PasswordEncoder passwordEncoder;
-    private final TaskExecutor taskExecutor;
+
+    private final EmailService emailService;
 
 
     @Autowired
     AuthenticationServiceImpl(@Qualifier("userMongoTemplate") MongoTemplate userDAO,
                               @Qualifier("verificationMongoTemplate") MongoTemplate verificationTokenDAO,
                               PasswordEncoder passwordEncoder,
-                              TaskExecutor taskExecutor) {
+                              EmailService emailService) {
         this.userDAO = userDAO;
         this.verificationTokenDAO = verificationTokenDAO;
         this.passwordEncoder = passwordEncoder;
-        this.taskExecutor = taskExecutor;
+        this.emailService = emailService;
     }
 
 
@@ -77,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Otherwise this is a completely new User (email has not been used)
         final User tempUser = User.builder().
                 email(email).
-                enabled(true). // TODO SWITCH BACK
+                enabled(false). // FIXME -> must be false
                 creationDate(getCurrentDate()).
                 build();
 
@@ -124,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Ensure account activation is successful
         if (activateAccount(linkedUser.getId()))
-            return new ResponseEntity<>("Account successfully activated!", HttpStatus.CREATED);
+            return new ResponseEntity<>(linkedUser.getEmail(), HttpStatus.OK);
 
 
         return new ResponseEntity<>("Account could not be activated at the moment", HttpStatus.BAD_GATEWAY);
@@ -157,7 +157,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final Update registeredUser = new Update()
                     .set("name", registrationRequest.getName())
                     .set("password", passwordEncoder.encode(registrationRequest.getPassword()))
-                    .set("credits", DEFAULT_STARTING_CREDIT_AMOUNT)
+                    .set("credits", STARTING_CREDIT_AMOUNT)
                     .set("role", Role.USER)
                     .set("userType", UserType.DASH);
 
@@ -165,7 +165,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userDAO.updateFirst(unactivatedUser, registeredUser, User.class);
 
         // Send dashboard request
-        //return new ResponseEntity<>(registrationRequest.getEmail(), HttpStatus.CREATED);
         return new ResponseEntity<>("Successfully registered", HttpStatus.CREATED);
     }
 
@@ -193,7 +192,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 5); // FIXME -> give user 24 hours
+        calendar.add(Calendar.MINUTE, 60 * 12);
 
         final Query query = new Query(Criteria.where("userId").is(userId));
 
@@ -208,15 +207,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
 
-    // TODO !!! ASYNC
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
-            final String url = "www.ur-email.com"; //getApplicationUrl() + "/verifyRegistration?token= + token;
+            // TODO FIXME
+            final String activateAccountUrl = "https://dash-analytics.solutions/signin?activate=true";
 
-            taskExecutor.execute(() -> {
-                // Send email with activation token/key
-                log.warn("ASYNC");
-            });
+            final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
+
+            emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 

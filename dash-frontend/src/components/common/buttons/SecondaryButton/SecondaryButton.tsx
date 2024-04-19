@@ -43,4 +43,5 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
             </Link>
         </button>
     );
+
 };

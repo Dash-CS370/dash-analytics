@@ -24,19 +24,21 @@
 }
 
 .icon {
-    width: 20px;
-    height: 20px;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    transform: translateX(-0.55em);
 }
 
 .right {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    gap: 2.25rem;
 }
 
 .navLink {
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 .navLink:hover {
