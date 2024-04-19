@@ -1,6 +1,6 @@
 import { DataFrame, readCSV } from 'danfojs';
 
-export async function cleanOnUpload(file: File): Promise<(DataFrame,File)> {
+export async function cleanOnUpload(file: File): Promise<DataFrame> {
     return new Promise((resolve, reject) => {
         const file_reader = new FileReader();
 
