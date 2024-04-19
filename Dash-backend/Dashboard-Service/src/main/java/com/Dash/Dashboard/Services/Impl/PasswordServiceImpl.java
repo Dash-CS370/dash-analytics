@@ -184,7 +184,7 @@ public class PasswordServiceImpl implements PasswordService {
             //TODO FIX IN TEMPLATE
             final Map<String, Object> model = Map.of("passwordResetKey", passwordResetKey, "resetPasswordUrl", resetPasswordUrl);
 
-            //emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
+            emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
 
             log.info("Password reset key was successfully sent to " + email);
 

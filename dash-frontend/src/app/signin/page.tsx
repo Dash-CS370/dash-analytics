@@ -58,12 +58,17 @@ export default function Signin() {
             setErrorMessage('Activation key is required');
             return;
         }
-        setErrorMessage('');
 
-        // TODO: validate activation key, set error message if invalid
-        console.log(activationKey);
-
-        window.location.href = '/create-account'; // redirect to create account page (include activation key as arg if needed)
+        fetch(`https://dash-analytics.solutions/auth/activate-account?key=${activationKey}`, {
+            method: 'GET',
+        }).then((response) => {
+            if (response.status == 200) {
+                console.log(response.body);
+                window.location.href = `/new-account?email=${response.body}`; // redirect to create account page
+            } else {
+                setErrorMessage('');
+            }
+        });
     };
 
     if (!pageLoaded) {

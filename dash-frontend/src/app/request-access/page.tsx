@@ -41,8 +41,7 @@ export default function RequestAccess() {
             method: 'GET',
         })
             .then((response) => {
-                // setAccessRequested(true);
-                window.location.href = '/new-account?email=' + email;
+                setAccessRequested(true);
             })
             .catch((error) => {
                 console.error(error);

@@ -124,7 +124,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Ensure account activation is successful
         if (activateAccount(linkedUser.getId()))
-            return new ResponseEntity<>("Account successfully activated!", HttpStatus.CREATED);
+            return new ResponseEntity<>(linkedUser.getEmail(), HttpStatus.OK);
 
 
         return new ResponseEntity<>("Account could not be activated at the moment", HttpStatus.BAD_GATEWAY);
@@ -214,7 +214,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
 
-            //emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
+            emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 

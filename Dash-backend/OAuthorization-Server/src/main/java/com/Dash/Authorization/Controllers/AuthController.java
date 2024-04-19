@@ -37,7 +37,7 @@ public class AuthController {
         cookieWithSlash.setMaxAge(0);
         response.addCookie(cookieWithSlash);
 
-        response.sendRedirect("https://auth.dash-analytics.solutions/signin");
+        response.sendRedirect("https://dash-analytics.solutions/signin");
     }
 
     @GetMapping("/login")

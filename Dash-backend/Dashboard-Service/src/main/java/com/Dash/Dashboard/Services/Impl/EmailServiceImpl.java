@@ -39,16 +39,16 @@ public class EmailServiceImpl implements EmailService {
 
         // Set values from the model
         Template t = freemarkerConfig.getTemplate(templateName);
-        String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+        final String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
-        helper.setTo(email); // recipient
+        helper.setTo(email);
         helper.setText(html, true);
         helper.setSubject("Email Verification");
         helper.setFrom("no-reply@dash-analytics.com");
 
         mailSender.send(message);
 
-        log.info("Activation email sent asynchronously to: " + email);
+        log.info("Activation email sent to: " + email);
     }
 
 
@@ -57,11 +57,13 @@ public class EmailServiceImpl implements EmailService {
 
             sendEmail(email, model, templateName);
 
-        } catch (SendFailedException e) { // TODO
+        } catch (SendFailedException e) {
             if (maxRetryCount > 0) {
+
                 Thread.sleep(1000 * 25); // WAIT 25 seconds in between attempts
                 sendEmailWithRetries(email, model, templateName, maxRetryCount - 1);
                 log.error("Attempting to send activation email again to : " + email, e);
+
             } else {
                 log.error("Error sending activation email to: " + email, e);
             }

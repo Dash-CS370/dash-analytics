@@ -1,3 +1,5 @@
+'use client'
+
 import styles from '@/app/create-account/page.module.css';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
 import { NavBar } from '@/components/common/NavBar';

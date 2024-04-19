@@ -6,7 +6,7 @@
         <style>
             @font-face {
                 font-family: 'Colfax';
-                src: url('https://auth.dash-analytics.solutions/css/Colfax.otf');
+                src: url('https://dash-analytics.solutions/css/Colfax.otf') format('opentype');
             }
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -19,7 +19,7 @@
                 margin: 0 auto;
                 background-color: #ffffff;
             }
-            .header,
+            C .header,
             .footer {
                 background-color: #000000;
                 color: #ffffff;
@@ -27,24 +27,22 @@
                 padding: 20px;
             }
             .header {
-                font-family: 'Colfax', serif;
-                width: 560px;
+                color: white;
+                font-family: 'Colfax';
+                font-size: 100px;
+                width: 600px;
                 height: 110px;
                 font-size: 48px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 background-image: linear-gradient(
                     to right,
                     rgb(0, 0, 0) 60%,
                     rgb(117, 5, 117) 100%
                 );
                 background-blend-mode: screen;
-            }
-            .header h1 {
-                font-family: 'Colfax', monospace;
-                margin: 0;
-                font-weight: lighter;
             }
             .footer {
                 font-size: 14px;
@@ -70,13 +68,13 @@
                 margin-bottom: 50px;
             }
 
-            .activate-link {
+            .reset-link {
                 display: flex;
                 justify-content: center;
                 padding: 20px 20px;
             }
 
-            .activate-link a:hover {
+            .reset-link a:hover {
                 font-weight: bolder;
                 color: rgb(168, 1, 168);
                 transition: 0.2s ease-in-out;
@@ -127,41 +125,49 @@
                 <h1>DASH</h1>
             </div>
             <div class="content">
-                <div class="highlight">Activate Your Account</div>
+                <div class="highlight">Password Reset Request</div>
                 <p>Dear User,</p>
+
                 <p>
-                    To complete your sign-up, please verify your email by
-                    clicking the link below and using the provided activation code:
+                    You have requested to reset your password. Please click on
+                    the link below to proceed with setting a new password:
                 </p>
-                <div class="activate-link">
-                    <a href=${activateAccountUrl} target=""><strong>Activate Account</strong></a>
+                <div class="reset-link">
+                    <a href="" target=""><strong>Reset Password</strong></a>
                 </div>
-                <p>If you did not request this, please ignore this email.</p>
-                <p>Activation Code: <strong>${activationToken}</strong></p>
+                <p>
+                    If you did not request a password reset, please ignore this
+                    email.
+                </p>
+                <p>
+                    If you prefer, you can also enter the password reset key
+                    manually:
+                </p>
+                <p>Password Reset Key: <strong>${passwordResetKey}</strong></p>
                 <hr />
                 <div class="infoSection">
                     <table>
                         <tr>
                             <td>
-                                <strong>Getting Started</strong>
+                                <strong>Tutorial & Intro</strong>
                                 <p>
-                                <p>
-                                    Welcome to your first step towards harnessing AI for data visualization!
-                                    Our platform is designed to help you effortlessly create stunning data dashboards
-                                    and insightful charts. Begin your journey with just a click and explore the essential
-                                    tools and techniques to transform your data into visual stories.
+                                    We have put together all the things you need
+                                    to know to start creating amazing charts and
+                                    graphs.
                                 </p>
-                                <button class="btn" onclick="window.location.href='https://dash-analytics.solutions/create-account';">Get Started</button>
+                                <button class="btn">Let's Go</button>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <strong>Our Terms of Use</strong>
                                 <p>
-                                    For details on data privacy and protection, as well as insights
-                                    into how GPT enhances data understanding, please visit our information section.
+                                    Having questions about your data privacy /
+                                    protection? Wondering how GPT is helping us
+                                    understand your data? Learn more in our
+                                    informatio section!
                                 </p>
-                                <button class="btn" onclick="window.location.href='https://dash-analytics.solutions/learn-more';">Learn More</button>
+                                <button class="btn">Learn More</button>
                             </td>
                         </tr>
                     </table>
