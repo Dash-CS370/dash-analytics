@@ -7,6 +7,8 @@ import {
 } from '@/components/widgets/WidgetTypes';
 import { ColumnInfo } from './NewProject/NewProject';
 import * as dfd from 'danfojs';
+import { cleanOnUpload } from '@/components/dataPipeline/dataOperations/cleanOnUpload';
+import pp from 'papaparse';
 
 export async function fetchWidgetConfigs(
     projectName: string,
@@ -21,56 +23,70 @@ export async function fetchWidgetConfigs(
     );
 
     setStatus('Parsing CSV...');
-    const df = await dfd.readCSV(csvFile);
+    const df = await cleanOnUpload(csvFile);
+    const cleanedCSV = pp.unparse(df.toJSON() as DataItem[]);
+    const blob = new Blob([cleanedCSV], { type: 'text/csv' });
+    const cleanedFile = new File([blob], csvFile.name, { type: 'text/csv' });
 
     setStatus('Fetching graph congigurations...');
-    const gptResponse = await fetchGPTResponse(
-        projectName,
-        projectDescription,
-        columnDescriptions,
-        csvFile,
-    );
+    // const gptResponse = await fetchGPTResponse(
+    //     projectName,
+    //     projectDescription,
+    //     columnDescriptions,
+    //     cleanedFile,
+    // );
 
-    if (Array.isArray(gptResponse.widgets) && gptResponse.widgets.length != 0) {
-        setStatus(`Preparing data for graphs...`);
-        const widgets = gptResponse.widgets.map((response, index) => {
-            const data_df = df.loc({ columns: response.columns });
-            const data_json = dfd.toJSON(data_df);
-            if (data_json === undefined) {
-                throw new Error('Failed to convert DataFrame to JSON');
-            }
+    // if (Array.isArray(gptResponse.widgets) && gptResponse.widgets.length != 0) {
+    //     setStatus(`Preparing data for graphs...`);
+    //     const widgets = gptResponse.widgets.map((response, index) => {
+    //         const data_df = df.loc({ columns: response.columns });
+    //         const data_json = dfd.toJSON(data_df);
+    //         if (data_json === undefined) {
+    //             throw new Error('Failed to convert DataFrame to JSON');
+    //         }
 
-            const rechartsData = data_json;
+    //         const rechartsData = data_json;
 
-            return {
-                title: response.title,
-                id: `${gptResponse.project_id}-${index.toString()}`,
-                graphType: response.graph_type,
-                pinned: true,
-                columns: response.columns,
-                data: rechartsData as DataItem[],
-                description: response.widget_description,
-            };
-        });
+    //         return {
+    //             title: response.title,
+    //             id: `${gptResponse.project_id}-${index.toString()}`,
+    //             graphType: response.graph_type,
+    //             pinned: true,
+    //             columns: response.columns,
+    //             data: rechartsData as DataItem[],
+    //             description: response.widget_description,
+    //         };
+    //     });
 
-        // sleep for 2 seconds to allow file to upload to s3
-        await sleep(2000);
+    // sleep for 2 seconds to allow file to upload to s3
+    await sleep(2000);
 
-        setStatus(''); // clear status
-        return {
-            project_name: gptResponse.project_name,
-            project_id: gptResponse.project_id,
-            project_config_link: gptResponse.project_config_link,
-            project_csv_link: gptResponse.project_csv_link,
-            dataset_description: gptResponse.dataset_description,
-            column_descriptions: gptResponse.column_descriptions,
-            created_date: gptResponse.created_date,
-            last_modified: gptResponse.last_modified,
-            widgets: widgets,
-        };
-    } else {
-        throw new Error('Failed to fetch GPT response. Try again.');
-    }
+    setStatus(''); // clear status
+    // return {
+    //     project_name: gptResponse.project_name,
+    //     project_id: gptResponse.project_id,
+    //     project_config_link: gptResponse.project_config_link,
+    //     project_csv_link: gptResponse.project_csv_link,
+    //     dataset_description: gptResponse.dataset_description,
+    //     column_descriptions: gptResponse.column_descriptions,
+    //     created_date: gptResponse.created_date,
+    //     last_modified: gptResponse.last_modified,
+    //     widgets: widgets,
+    // };
+    return {
+        project_name: '',
+        project_id: 'gptResponse.project_id',
+        project_config_link: 'gptResponse.project_config_link',
+        project_csv_link: 'gptResponse.project_csv_link',
+        dataset_description: 'gptResponse.dataset_description',
+        column_descriptions: ['gptResponse.column_descriptions'],
+        created_date: 'gptResponse.created_date',
+        last_modified: 'gptResponse.last_modified',
+        widgets: [],
+    };
+    // } else {
+    //     throw new Error('Failed to fetch GPT response. Try again.');
+    // }
 }
 
 function sleep(milliseconds: number) {
