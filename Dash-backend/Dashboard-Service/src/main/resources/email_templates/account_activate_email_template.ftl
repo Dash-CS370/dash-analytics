@@ -6,7 +6,7 @@
         <style>
             @font-face {
                 font-family: 'Colfax';
-                src: url('https://auth.dash-analytics.solutions/css/Colfax.otf');
+                src: local('Colfax'), url("/css/Colfax.otf") format("truetype");
             }
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -99,26 +99,6 @@
                 margin-bottom: 3px;
             }
 
-            .infoSection .btn {
-                border-radius: 12px;
-                outline: none;
-                border: solid 2px;
-                cursor: pointer;
-                background-color: white;
-                color: black;
-                border: 1px solid gray;
-                width: 170px;
-                height: 40px;
-                margin-bottom: 20px;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .infoSection .btn:hover {
-                background-color: black;
-                color: white;
-                transition: all 0.3s ease-out;
-            }
         </style>
     </head>
     <body>
@@ -127,11 +107,10 @@
                 <h1>DASH</h1>
             </div>
             <div class="content">
-                <div class="highlight">Activate Your Account</div>
                 <p>Dear User,</p>
                 <p>
-                    To complete your sign-up, please verify your email by
-                    clicking the link below and using the provided activation code:
+                    To complete your sign-up, please verify your account by
+                    clicking on the link below and using the provided activation code:
                 </p>
                 <div class="activate-link">
                     <a href=${activateAccountUrl} target=""><strong>Activate Account</strong></a>
@@ -143,25 +122,54 @@
                     <table>
                         <tr>
                             <td>
-                                <strong>Getting Started</strong>
+                                <strong style="font-size: 22px; color: black;">About Us</strong>
                                 <p>
-                                <p>
-                                    Welcome to your first step towards harnessing AI for data visualization!
-                                    Our platform is designed to help you effortlessly create stunning data dashboards
-                                    and insightful charts. Begin your journey with just a click and explore the essential
-                                    tools and techniques to transform your data into visual stories.
+                                    Our platform is crafted to facilitate the efficient creation of comprehensive
+                                    data dashboards and detailed charts. To begin, create an account or log in to access
+                                    our full suite of tools. Discover the methodologies necessary to transform your
+                                    data into compelling visual narratives and start creating impactful visualizations today.
                                 </p>
-                                <button class="btn" onclick="window.location.href='https://dash-analytics.solutions/create-account';">Get Started</button>
+                                <a href="https://dash-analytics.solutions/create-account"
+                                  style="display: inline-block;
+                                  text-align: center;
+                                  background-color: black;
+                                  color: white;
+                                  text-decoration: none;
+                                  border-radius: 12px;
+                                  border: 1px solid gray;
+                                  font-size: 14px;
+                                  width: 150px;
+                                  height: 25px;
+                                  line-height: 25px;
+                                  box-sizing: border-box;">
+                                    Get Started</a>
                             </td>
                         </tr>
                         <tr>
+                            <td style="height: 30px;"></td> <!-- Simple empty row for spacing -->
+                        </tr>
+                        <tr>
                             <td>
-                                <strong>Our Terms of Use</strong>
+                                <strong style="font-size: 22px; color: black;">Our Terms of Use</strong>
                                 <p>
                                     For details on data privacy and protection, as well as insights
                                     into how GPT enhances data understanding, please visit our information section.
                                 </p>
-                                <button class="btn" onclick="window.location.href='https://dash-analytics.solutions/learn-more';">Learn More</button>
+                                <a href="https://dash-analytics.solutions/learn-more"
+                                   class="btn"
+                                   style="display: inline-block;
+                                   text-align: center;
+                                   background-color: black;
+                                   color: white;
+                                   text-decoration: none;
+                                   border-radius: 12px;
+                                   border: 1px solid gray;
+                                   font-size: 14px;
+                                   width: 150px;
+                                   height: 25px;
+                                   line-height: 25px;
+                                   box-sizing: border-box;">
+                                    Learn More</a>
                             </td>
                         </tr>
                     </table>

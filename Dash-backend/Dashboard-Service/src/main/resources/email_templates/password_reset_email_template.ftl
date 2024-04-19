@@ -97,26 +97,6 @@
                 margin-bottom: 3px;
             }
 
-            .infoSection .btn {
-                border-radius: 12px;
-                outline: none;
-                border: solid 2px;
-                cursor: pointer;
-                background-color: white;
-                color: black;
-                border: 1px solid gray;
-                width: 170px;
-                height: 40px;
-                margin-bottom: 20px;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .infoSection .btn:hover {
-                background-color: black;
-                color: white;
-                transition: all 0.3s ease-out;
-            }
         </style>
     </head>
     <body>
@@ -127,21 +107,16 @@
             <div class="content">
                 <div class="highlight">Password Reset Request</div>
                 <p>Dear User,</p>
-
                 <p>
                     You have requested to reset your password. Please click on
-                    the link below to proceed with setting a new password:
+                    the link below to proceed with the password reset process:
                 </p>
                 <div class="reset-link">
-                    <a href="" target=""><strong>Reset Password</strong></a>
+                    <a href=${resetPasswordUrl} target=""><strong>Reset Password</strong></a>
                 </div>
                 <p>
                     If you did not request a password reset, please ignore this
                     email.
-                </p>
-                <p>
-                    If you prefer, you can also enter the password reset key
-                    manually:
                 </p>
                 <p>Password Reset Key: <strong>${passwordResetKey}</strong></p>
                 <hr />
@@ -149,30 +124,58 @@
                     <table>
                         <tr>
                             <td>
-                                <strong>Tutorial & Intro</strong>
+                                <strong style="font-size: 22px; color: black;">About Us</strong>
                                 <p>
-                                    We have put together all the things you need
-                                    to know to start creating amazing charts and
-                                    graphs.
+                                    Our platform is crafted to facilitate the efficient creation of comprehensive
+                                    data dashboards and detailed charts. To begin, create an account or log in to access
+                                    our full suite of tools. Discover the methodologies necessary to transform your
+                                    data into compelling visual narratives and start creating impactful visualizations today.
                                 </p>
-                                <button class="btn">Let's Go</button>
+                                <a href="https://dash-analytics.solutions/create-account"
+                                   style="display: inline-block;
+                                  text-align: center;
+                                  background-color: black;
+                                  color: white;
+                                  text-decoration: none;
+                                  border-radius: 12px;
+                                  border: 1px solid gray;
+                                  font-size: 14px;
+                                  width: 150px;
+                                  height: 25px;
+                                  line-height: 25px;
+                                  box-sizing: border-box;">
+                                    Get Started</a>
                             </td>
                         </tr>
                         <tr>
+                            <td style="height: 30px;"></td> <!-- Simple empty row for spacing -->
+                        </tr>
+                        <tr>
                             <td>
-                                <strong>Our Terms of Use</strong>
+                                <strong style="font-size: 22px; color: black;">Our Terms of Use</strong>
                                 <p>
-                                    Having questions about your data privacy /
-                                    protection? Wondering how GPT is helping us
-                                    understand your data? Learn more in our
-                                    informatio section!
+                                    For details on data privacy and protection, as well as insights
+                                    into how GPT enhances data understanding, please visit our information section.
                                 </p>
-                                <button class="btn">Learn More</button>
+                                <a href="https://dash-analytics.solutions/learn-more"
+                                   class="btn"
+                                   style="display: inline-block;
+                                   text-align: center;
+                                   background-color: black;
+                                   color: white;
+                                   text-decoration: none;
+                                   border-radius: 12px;
+                                   border: 1px solid gray;
+                                   font-size: 14px;
+                                   width: 150px;
+                                   height: 25px;
+                                   line-height: 25px;
+                                   box-sizing: border-box;">
+                                    Learn More</a>
                             </td>
                         </tr>
                     </table>
                 </div>
-            </div>
             <div class="footer">
                 This is an automated message, please do not reply.
             </div>

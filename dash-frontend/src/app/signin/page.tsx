@@ -63,8 +63,9 @@ export default function Signin() {
             method: 'GET',
         }).then((response) => {
             if (response.status == 200) {
-                console.log(response.body);
-                window.location.href = `/new-account?email=${response.body}`; // redirect to create account page
+                response.text().then((email) => {
+                    window.location.href = `/new-account?email=${email}`; // Redirect to new-account page with email
+                });
             } else {
                 setErrorMessage('');
             }

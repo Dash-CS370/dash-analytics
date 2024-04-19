@@ -16,6 +16,7 @@
 
 .projectsContainer h1 {
     font-weight: lighter;  /* Optionally make the font bold */
+    font-family: var(--secondary-font);
     transform: translateX(0.25em) translateY(-0.1em);
 }
 

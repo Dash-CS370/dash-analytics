@@ -5,7 +5,7 @@
 }
 
 .constantDescription {
-    font-family: 'Colfax', sans-serif;
+    font-family: var(--secondary-font), sans-serif;
     font-size: 33px;
 }
 
@@ -20,7 +20,7 @@
     display: inline-block;
     white-space: nowrap;
     color: var(--primary);
-    font-family: 'Colfax', serif;
+    font-family: var(--secondary-font), serif;
     font-size: 34px;
     font-weight: bold;
     position: relative;
@@ -30,7 +30,7 @@
     display: inline-block;
     white-space: nowrap;
     color: var(--primary);
-    font-family: 'Colfax', serif;
+    font-family: var(--secondary-font), serif;
     font-size: 34px;
     font-weight: bold;
     position: relative;

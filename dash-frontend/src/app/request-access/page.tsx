@@ -67,8 +67,8 @@ export default function RequestAccess() {
                                 an email with an activation key upon approval.
                             </p>
                         </div>
-                        <PrimaryButton href="/signin" width="150px">
-                            Login
+                        <PrimaryButton href="/signin?activate=true" width="180px">
+                            Activate Account
                         </PrimaryButton>
                     </BaseForm>
                 </div>

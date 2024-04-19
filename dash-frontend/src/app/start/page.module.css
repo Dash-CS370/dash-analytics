@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Colfax';
+    src: local('Colfax'), url("/fonts/Colfax.otf") format("truetype");
+    font-weight: 400;
+}
+
 .main {
     display: flex;
     flex-direction: column;
@@ -40,10 +46,12 @@
 }
 
 .dash {
+    font-family: var(--secondary-font);
     color: var(--on-background);
 }
 
 .analytics {
+    font-family: var(--secondary-font);
     color: var(--primary);
 }
 

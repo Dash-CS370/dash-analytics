@@ -1,13 +1,20 @@
 @font-face {
+    font-family: 'TestSöhne-Buch';
+    src: local('TestSöhne-Buch'), url('/fonts/TestSöhne-Buch.otf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
     font-family: 'Colfax';
-    src: local('Colfax'), url('/fonts/Colfax.otf') format('truetype');
+    src: local('Colfax'), url("/fonts/Colfax.otf") format("truetype");
     font-weight: 400;
 }
 
 :root {
     --max-width: 1100px;
     --border-radius: 12px;
-    --default-font: 'Colfax', sans-serif;
+    --default-font: 'TestSöhne-Buch', sans-serif;
+    --secondary-font: 'Colfax', sans-serif;
 
     --background: #000;
     --background-contrast: #212121;

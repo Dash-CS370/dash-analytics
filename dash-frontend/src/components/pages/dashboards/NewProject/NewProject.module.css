@@ -21,8 +21,12 @@
 }
 
 .newDashboard h1 {
+    font-family: var(--secondary-font);
     color: var(--primary); /* Use the primary color variable */
-    font-weight: bold;     /* Make the font bold */
+}
+
+.newDashboard h2 {
+    font-weight: lighter;
 }
 
 .horizontalLine {

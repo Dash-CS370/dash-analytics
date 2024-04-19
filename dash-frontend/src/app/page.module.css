@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
     margin: 2rem;
     z-index: 1;
 }
@@ -24,10 +24,12 @@
 
 .dash {
     color: var(--on-background);
+    font-family: var(--secondary-font), serif;
 }
 
 .analytics {
     color: var(--primary);
+    font-family: var(--secondary-font), serif;
 }
 
 .heroVideo {
@@ -48,6 +50,7 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
+    padding-top: 2rem;
 }
 
 /* @media (prefers-reduced-motion) {
