@@ -8,6 +8,7 @@ import {
 import { ColumnInfo } from './NewProject/NewProject';
 import * as dfd from 'danfojs';
 import { cleanOnUpload } from '@/components/dataPipeline/dataOperations/cleanOnUpload';
+import pp from 'papaparse';
 
 export async function fetchWidgetConfigs(
     projectName: string,
@@ -24,9 +25,9 @@ export async function fetchWidgetConfigs(
     // clean and parse csv
     setStatus('Parsing CSV...');
     const df = await cleanOnUpload(csvFile);
-    const df_json = JSON.stringify(dfd.toJSON(df));
-    const cleanedFileData = new Blob([df_json], { type: 'application/json' });
-    const cleanedFile = new File([cleanedFileData], csvFile.name);
+    const cleanedCSV = pp.unparse(dfd.toJSON(df) as DataItem[]);
+    const blob = new Blob([cleanedCSV], { type : 'text/csv'});
+    const cleanedFile = new File([blob], csvFile.name, { type : 'text/csv'});
 
     setStatus('Fetching graph configurations...');
     const gptResponse = await fetchGPTResponse(
