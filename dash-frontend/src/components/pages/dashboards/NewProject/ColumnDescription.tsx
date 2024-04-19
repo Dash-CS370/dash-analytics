@@ -9,6 +9,7 @@ interface ColumnDescriptionProps {
     id: number;
     handleDescriptionChange: (value: string) => void;
     handleDropdownChange: (value: string) => void;
+    handleDelete: (colName: string) => void;
 }
 
 export const ColumnDescription: React.FC<ColumnDescriptionProps> = ({
@@ -16,6 +17,7 @@ export const ColumnDescription: React.FC<ColumnDescriptionProps> = ({
     id,
     handleDescriptionChange,
     handleDropdownChange,
+    handleDelete,
 }) => {
     const options = ['CATEGORICAL', 'NUMERIC', 'TEMPORAL', 'IDENTIFIER'];
     const [selectedOption, setSelectedOption] =
@@ -36,8 +38,10 @@ export const ColumnDescription: React.FC<ColumnDescriptionProps> = ({
                     selectedOption={selectedOption}
                     setSelectedOption={setSelectedOpt}
                 />
-                <FiTrash2 className={styles.delete_label} />{' '}
-                {/* ADD DELETE ON CLICK */}
+                <FiTrash2
+                    className={styles.delete_label}
+                    onClick={() => handleDelete(columnMetadata.colName)}
+                />
             </div>
             <textarea
                 className={styles.formDescription}

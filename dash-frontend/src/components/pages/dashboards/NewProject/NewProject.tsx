@@ -121,6 +121,13 @@ export const NewProject: React.FC<NewProjectProps> = ({
         columns[index].userType = value;
     };
 
+    // track list of columns to drop from df
+    let colsToDelete = [];
+    const handleDeleteCol = (colName: string) => {
+        colsToDelete.push(colName);
+        setColumns(columns.filter((item) => item.colName !== colName));
+    };
+
     const handleCreateDashboard = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -142,8 +149,6 @@ export const NewProject: React.FC<NewProjectProps> = ({
                 return;
             }
         }
-
-        console.log(columns);
 
         setDescriptionLoaded(false); // clear status
         fetchWidgetConfigs(
@@ -178,6 +183,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
                 handleCreateDashboard={handleCreateDashboard}
                 handleBackButton={handleBackButton}
                 handleDropdownChange={handleDropdownChange}
+                handleDeleteCol={handleDeleteCol}
             />
         );
     }
