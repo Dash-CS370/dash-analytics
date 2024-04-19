@@ -2,6 +2,8 @@ import React from 'react';
 import { LineGraphWidget } from '../../graphWidgets/LineGraphWidget/LineGraphWidget';
 import { BaseGraphProps, WidgetConfig } from '../../WidgetTypes';
 import { BarChartWidget } from '../../graphWidgets/BarChartWidget/BarChartWidget';
+import { PieChartWidget } from '../../graphWidgets/PieChartWidget/PieChartWidget';
+import { ScatterPlotWidget } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotWidget';
 
 const renderWidget = (
     config: WidgetConfig,
@@ -24,6 +26,26 @@ const renderWidget = (
         case 'LINE_GRAPH':
             return (
                 <LineGraphWidget
+                    config={config}
+                    isExpanded={isExpanded}
+                    onExpand={onExpand}
+                    onTogglePin={onTogglePin}
+                    onEditTitle={() => {}}
+                />
+            );
+        case 'PIE_CHART':
+            return (
+                <PieChartWidget
+                    config={config}
+                    isExpanded={isExpanded}
+                    onExpand={onExpand}
+                    onTogglePin={onTogglePin}
+                    onEditTitle={() => {}}
+                />
+            );
+        case 'SCATTER_PLOT':
+            return (
+                <ScatterPlotWidget
                     config={config}
                     isExpanded={isExpanded}
                     onExpand={onExpand}

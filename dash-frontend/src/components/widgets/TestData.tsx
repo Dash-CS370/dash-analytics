@@ -77,11 +77,11 @@ const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Example 4',
         id: '4',
-        graphType: 'BAR_GRAPH',
+        graphType: 'SCATTER_PLOT',
         pinned: true,
-        columns: ['name', 'uv', 'pv', 'amt'],
+        columns: ['name', 'uv'],
         data: exampleLineData,
-        description: 'Bar graph of example data.',
+        description: 'Scatter plot of example data.',
     },
     {
         title: 'Example 5',
