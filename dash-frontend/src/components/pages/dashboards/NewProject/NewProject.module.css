@@ -78,6 +78,13 @@
     height: 25px;
 }
 
+.delete_label {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
 .check {
     width: 35px;
     height: 35px;
@@ -166,8 +173,4 @@
     100% {
         transform: rotate(360deg);
     }
-}
-
-.dropdown {
-    font-size: 3 rem;
 }

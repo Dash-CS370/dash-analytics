@@ -23,6 +23,7 @@ export async function getColumnInfo(file: File): Promise<ColumnInfo[]> {
                                 colName,
                                 dataType: dtypes[index] || 'unknown',
                                 description: '',
+                                userType: 'DATA TYPE...',
                             }),
                         );
                         resolve(columnInfoArray);

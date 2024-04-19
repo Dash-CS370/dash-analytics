@@ -11,6 +11,7 @@ interface ColumnFormProps {
     handleDescriptionChange: (index: number, value: string) => void;
     handleCreateDashboard: (e: React.FormEvent) => void;
     handleBackButton: () => void;
+    handleDropdownChange: (index: number, value: string) => void;
 }
 
 export const ColumnForm: React.FC<ColumnFormProps> = ({
@@ -19,6 +20,7 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({
     handleDescriptionChange,
     handleCreateDashboard,
     handleBackButton,
+    handleDropdownChange,
 }) => {
     return (
         <div className={styles.content}>
@@ -47,10 +49,14 @@ export const ColumnForm: React.FC<ColumnFormProps> = ({
                             colName: column.colName,
                             dataType: column.dataType,
                             description: '',
+                            userType: 'DATA TYPE...',
                         }}
                         id={index}
                         handleDescriptionChange={(value) =>
                             handleDescriptionChange(index, value)
+                        }
+                        handleDropdownChange={(value) =>
+                            handleDropdownChange(index, value)
                         }
                     />
                 ))}

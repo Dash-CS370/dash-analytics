@@ -1,9 +1,8 @@
-// Takes in File
+// Takes User Upload DF & Drops Rows w/ NaNs
 
 import * as dfd from 'danfojs';
 
 export async function standardClean(file: File): Promise<dfd.DataFrame> {
-    // Promise DF or File?
     return new Promise((resolve, reject) => {
         const file_reader = new FileReader();
 
@@ -17,13 +16,9 @@ export async function standardClean(file: File): Promise<dfd.DataFrame> {
 
             try {
                 const upload_data = await dfd.readCSV(file); //Reads in CSV
-                const drop_rows = upload_data.dropna(); // Drops Rows w/ NaN's
-                const cols_drop = drop_rows.columns.filter((col: string) =>
-                    drop_rows[col].isna().all(),
-                );
-                const standardForm = drop_rows.drop(cols_drop, { axis: 1 });
+                const drop_rows_df = upload_data.dropna(); // Drops Rows w/ NaN's
 
-                resolve(standardForm);
+                resolve(drop_rows_df);
             } catch (error) {
                 reject(error);
             }
