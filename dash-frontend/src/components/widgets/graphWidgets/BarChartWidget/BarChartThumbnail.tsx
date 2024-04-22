@@ -22,6 +22,9 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
             rootStyle.getPropertyValue('--primary'),
             rootStyle.getPropertyValue('--secondary'),
             rootStyle.getPropertyValue('--alternative'),
+            'red',
+            'blue',
+            'orange'
         ]);
     }, []);
 

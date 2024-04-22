@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '@/components/common/DropDown/DropDown.module.css';
+import styles from '@/components/common/Dropdown/Dropdown.module.css';
 import { IoIosArrowDropdown, IoIosArrowDropup } from 'react-icons/io';
 
 interface DropdownProps {

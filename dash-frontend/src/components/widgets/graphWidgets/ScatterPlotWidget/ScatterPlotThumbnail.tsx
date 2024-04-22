@@ -10,6 +10,7 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
+import {processAndSliceDF} from "@/components/dataPipeline/dataOperations/smoothData";
 
 export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
     title,
@@ -28,8 +29,13 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
             rootStyle.getPropertyValue('--primary'),
             rootStyle.getPropertyValue('--secondary'),
             rootStyle.getPropertyValue('--alternative'),
+            'red',
+            'blue',
+            'orange'
         ]);
     }, []);
+
+    const slicedData = processAndSliceDF(data, 100, 1);
 
     return (
         <GraphThumbnail
@@ -38,17 +44,8 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
             handleClick={handleClick}
         >
             <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 20,
-                        left: 20,
-                    }}
-                >
-                    <XAxis type="number" dataKey={xDataKey} />
-                    <YAxis type="number" dataKey={keys[1]} />
-                    <Scatter data={data} fill={colors[0]} />
+                <ScatterChart>
+                    <Scatter data={slicedData} fill={colors[0]} />
                 </ScatterChart>
             </ResponsiveContainer>
         </GraphThumbnail>
