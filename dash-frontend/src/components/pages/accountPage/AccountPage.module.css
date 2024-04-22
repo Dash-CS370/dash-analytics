@@ -1,0 +1,131 @@
+.pageContainer {
+    width: 100%;
+    height: 100%;
+    margin-top: var(--navbar-height);
+    background-color: var(--background);
+    display: flex;
+}
+
+.infoContainer {
+    margin-left: 270px;
+    background-color: var(--background);
+    padding: 30px 20px 10px;
+    width: 80%;
+    overflow-y: auto;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    background-color: var(--background);
+    background-clip: border-box;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 15px;
+    margin-bottom: 1rem;
+}
+
+.section h1 {
+    font-size: 3rem;
+    margin: 1rem;
+    padding-top: 1rem;
+    margin-left: 0px;
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5rem 5px;
+    margin-bottom: 1.2rem;
+    align-items: center;
+}
+
+.row h5 {
+    font-size: 25px;
+    justify-content: center;
+}
+
+.title {
+    flex: 0 0 25%;
+    max-width: 25%;
+    color: var(--on-background);
+    align-items: center;
+}
+
+.section hr {
+    margin-bottom: 15px;
+}
+
+.info {
+    flex: 0 0 75%;
+    max-width: 75%;
+    color: var(--on-background);
+}
+
+.deleteBtn {
+    align-self: center;
+    margin-top: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.requestBtnContainer {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar {
+    position: fixed;
+    /* background-color: #6c757d; */
+    background-color: --background;
+    color: white;
+    height: 90%;
+    width: 250px;
+}
+
+.sidebar a {
+    margin-left: 40px;
+    display: block;
+    color: white;
+    padding-bottom: 10px;
+    font-size: 30px;
+    text-decoration: none;
+    margin-top: 5rem;
+}
+
+.sidebar a:hover {
+    font-weight: bolder;
+    transition: ease 0.3s;
+}
+
+.BarWrapperContainer {
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    margin-top: -40px;
+}
+
+.BarWrapper {
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.creditRequestContainer {
+    display: flex;
+    justify-content: center;
+    margin-left: 15px;
+}
+.requestBox {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+    width: 45%;
+    height: 200px;
+    color: black;
+}
