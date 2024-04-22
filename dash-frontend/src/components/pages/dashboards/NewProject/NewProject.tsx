@@ -13,6 +13,7 @@ export interface ColumnInfo {
     colName: string;
     dataType: string;
     description: string;
+    userType: string;
 }
 
 export interface NewProjectProps {
@@ -43,6 +44,18 @@ export const NewProject: React.FC<NewProjectProps> = ({
         if (!f) {
             return;
         }
+
+        // check for file size
+        const fileSizeLimit_MB = 4;
+        const uploadFileSize_MB = f.size / (1024 * 1024);
+
+        if (uploadFileSize_MB > fileSizeLimit_MB) {
+            setErrorMessage('File size exceeds limit of 4 MB');
+            event.target.value = ''; // removes user upload from cache
+            return;
+        }
+        setErrorMessage(''); // removes error message
+
         setFile(f);
     };
 
@@ -104,6 +117,17 @@ export const NewProject: React.FC<NewProjectProps> = ({
         columns[index].description = value;
     };
 
+    const handleDropdownChange = (index: number, value: string) => {
+        columns[index].userType = value;
+    };
+
+    // track list of columns to drop from df
+    let colsToDelete: string[] = [];
+    const handleDeleteCol = (colName: string) => {
+        colsToDelete.push(colName);
+        setColumns(columns.filter((item) => item.colName !== colName));
+    };
+
     const handleCreateDashboard = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -112,16 +136,18 @@ export const NewProject: React.FC<NewProjectProps> = ({
         ) as HTMLFormElement;
         setErrorMessage(''); // clears previous messages
         for (let i = 0; i < columns.length; i++) {
-            const description = (
-                document.getElementById(
-                    `projectDescription-${i}`,
-                ) as HTMLInputElement
-            ).value;
-            if (!description) {
-                setErrorMessage('All fields are required');
+            if (columns[i].description == '') {
+                setErrorMessage(
+                    `Description required for ${columns[i].colName}`,
+                );
                 return;
             }
-            columns[i].description = description;
+            if (columns[i].userType == 'DATA TYPE...') {
+                setErrorMessage(
+                    `User defined datatype required for ${columns[i].colName}`,
+                );
+                return;
+            }
         }
 
         setDescriptionLoaded(false); // clear status
@@ -132,6 +158,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
             file as File,
             columns,
             setProjectCreationStatus,
+            colsToDelete,
         )
             .then((projectConfig) => {
                 console.log('response received');
@@ -157,6 +184,8 @@ export const NewProject: React.FC<NewProjectProps> = ({
                 handleDescriptionChange={handleDescriptionChange}
                 handleCreateDashboard={handleCreateDashboard}
                 handleBackButton={handleBackButton}
+                handleDropdownChange={handleDropdownChange}
+                handleDeleteCol={handleDeleteCol}
             />
         );
     }
