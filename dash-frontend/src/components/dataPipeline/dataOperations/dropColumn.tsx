@@ -1,14 +1,11 @@
-import * as dfd from 'danfojs';
+import { DataFrame } from 'danfojs';
 
 // Takes in a danfo dataframe and a list of columns to drop
 // Returns a new dataframe with the columns dropped
 export function dropColumns(
-    dataframe: dfd.DataFrame,
+    dataframe: DataFrame,
     columns_to_drop: string[],
-): dfd.DataFrame {
-    // Try to Drop Col's
-    console.log(dataframe.shape[1]);
-
+): DataFrame {
     if (dataframe.shape[0] === 0) {
         throw new Error('Uploaded Dataframe is empty.');
     }
@@ -20,7 +17,6 @@ export function dropColumns(
             'No Data Left in Dataframe After Performing these Drops',
         );
     } else {
-        console.log(finalClean.shape[1]);
         return finalClean;
     }
 }

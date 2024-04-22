@@ -87,6 +87,14 @@
     height: 25px;
 }
 
+.delete_label {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
 .check {
     width: 35px;
     height: 35px;

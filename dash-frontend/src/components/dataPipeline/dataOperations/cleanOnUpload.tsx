@@ -1,6 +1,6 @@
 import { DataFrame, readCSV } from 'danfojs';
 
-// INTEGRATED!!!
+// cleans csv on initial upload
 export async function cleanOnUpload(file: File): Promise<DataFrame> {
     return new Promise((resolve, reject) => {
         const file_reader = new FileReader();
@@ -15,13 +15,7 @@ export async function cleanOnUpload(file: File): Promise<DataFrame> {
 
             try {
                 const upload_data = await readCSV(file); //Reads in CSV
-                console.log(upload_data.shape[0]);
-                console.log(upload_data.shape[1]);
-
                 const drop_rows_df = upload_data.dropNa(); // Drops Rows w/ NaN's
-
-                console.log(drop_rows_df.shape[0]);
-                console.log(drop_rows_df.shape[1]);
 
                 resolve(drop_rows_df);
             } catch (error) {

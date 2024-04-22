@@ -9,6 +9,7 @@ import { ColumnInfo } from './NewProject/NewProject';
 import * as dfd from 'danfojs';
 import { cleanOnUpload } from '@/components/dataPipeline/dataOperations/cleanOnUpload';
 import pp from 'papaparse';
+import { dropColumns } from '@/components/dataPipeline/dataOperations/dropColumn';
 
 export async function fetchWidgetConfigs(
     projectName: string,
@@ -16,19 +17,19 @@ export async function fetchWidgetConfigs(
     csvFile: File,
     columns: ColumnInfo[],
     setStatus: (status: string) => void,
-    colsToDrop: string[],
+    columnsToDrop: string[],
 ): Promise<ProjectConfig> {
     const columnDescriptions = columns.map(
         (column) =>
-            `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.dataType}`,
+            `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.userType}`,
     );
 
     // clean and parse csv
     setStatus('Parsing CSV...');
     const df = await cleanOnUpload(csvFile);
-    // TODO: Drop columns using dropColumns() function
+    const droppedColsDF = dropColumns(df, columnsToDrop);
 
-    const cleanedCSV = pp.unparse(dfd.toJSON(df) as DataItem[]);
+    const cleanedCSV = pp.unparse(dfd.toJSON(droppedColsDF) as DataItem[]);
     const blob = new Blob([cleanedCSV], { type: 'text/csv' });
     const cleanedFile = new File([blob], csvFile.name, { type: 'text/csv' });
 
