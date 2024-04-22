@@ -122,7 +122,8 @@ public class PasswordServiceImpl implements PasswordService {
             return new ResponseEntity<>("Password Reset Token is invalid or expired..." , HttpStatus.INTERNAL_SERVER_ERROR);
 
         // User entity is linked via @DBRef so it must exist
-        User userRequestingToChangePassword = passwordResetToken.get().getUser();
+        final User userRequestingToChangePassword = passwordResetToken.get().getUser();
+
         Query query = new Query(Criteria.where("id").is(userRequestingToChangePassword.getId()));
         Update update = new Update().set("password", passwordEncoder.encode(newPassword));
 
@@ -179,10 +180,9 @@ public class PasswordServiceImpl implements PasswordService {
      */
     public String sendPasswordResetEmail(String email, String passwordResetKey) {
         try {
-            final String resetPasswordUrl = "www.dash.com/reset-password"; // TODO
+            final String resetPasswordUrl = "https://dash-analytics.solutions/api/v1/password/verify?reset-token=" + passwordResetKey;
 
-            //TODO FIX IN TEMPLATE
-            final Map<String, Object> model = Map.of("passwordResetKey", passwordResetKey, "resetPasswordUrl", resetPasswordUrl);
+            final Map<String, Object> model = Map.of("resetPasswordUrl", resetPasswordUrl);
 
             emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
 

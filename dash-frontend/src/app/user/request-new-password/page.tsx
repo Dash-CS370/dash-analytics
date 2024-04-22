@@ -37,11 +37,9 @@ export default function RequestNewPassword() {
         fetch('https://dash-analytics.solutions/api/v1/password/reset', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'text/plain',
             },
-            body: JSON.stringify({
-                email: email,
-            }),
+            body: email
         })
             .then(() => {
                 window.location.href = '/start';

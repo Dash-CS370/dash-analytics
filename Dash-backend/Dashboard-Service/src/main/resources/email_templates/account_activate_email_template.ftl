@@ -6,7 +6,7 @@
         <style>
             @font-face {
                 font-family: 'Colfax';
-                src: local('Colfax'), url("/css/Colfax.otf") format("truetype");
+                src: url('https://dash-analytics.solutions/css/Colfax.otf') format('opentype');
             }
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -19,24 +19,21 @@
                 margin: 0 auto;
                 background-color: #ffffff;
             }
-            .header,
-            .footer {
+            .header {
                 background-color: #000000;
                 color: #ffffff;
                 text-align: center;
                 padding: 20px;
-            }
-            .header {
                 font-family: 'Colfax', serif;
                 width: 560px;
-                height: 110px;
-                font-size: 48px;
+                height: 90px;
+                font-size: 42px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 background-image: linear-gradient(
                     to right,
-                    rgb(0, 0, 0) 60%,
+                    rgb(0, 0, 0) 70%,
                     rgb(117, 5, 117) 100%
                 );
                 background-blend-mode: screen;
@@ -45,15 +42,6 @@
                 font-family: 'Colfax', monospace;
                 margin: 0;
                 font-weight: lighter;
-            }
-            .footer {
-                font-size: 14px;
-                background-image: linear-gradient(
-                    to right,
-                    rgb(0, 0, 0) 60%,
-                    rgb(117, 5, 117) 100%
-                );
-                background-blend-mode: screen;
             }
             .content {
                 padding: 20px;
@@ -64,41 +52,29 @@
                 color: #000000;
                 text-align: start;
             }
-
             .content hr {
                 margin-top: 50px;
                 margin-bottom: 50px;
             }
-
             .activate-link {
                 display: flex;
                 justify-content: center;
                 padding: 20px 20px;
             }
-
             .activate-link a:hover {
                 font-weight: bolder;
                 color: rgb(168, 1, 168);
                 transition: 0.2s ease-in-out;
             }
-            .highlight {
-                color: #555100;
-                font-size: 24px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
             a {
                 text-decoration: none;
             }
-
             .infoSection {
                 text-align: left;
             }
-
             .infoSection strong {
                 margin-bottom: 3px;
             }
-
         </style>
     </head>
     <body>
@@ -125,9 +101,8 @@
                                 <strong style="font-size: 22px; color: black;">About Us</strong>
                                 <p>
                                     Our platform is crafted to facilitate the efficient creation of comprehensive
-                                    data dashboards and detailed charts. To begin, create an account or log in to access
-                                    our full suite of tools. Discover the methodologies necessary to transform your
-                                    data into compelling visual narratives and start creating impactful visualizations today.
+                                    data dashboards and detailed charts. To begin transforming your data into
+                                    compelling visual narratives, create an account or log in to access our full suite of tools.
                                 </p>
                                 <a href="https://dash-analytics.solutions/create-account"
                                   style="display: inline-block;
@@ -156,7 +131,6 @@
                                     into how GPT enhances data understanding, please visit our information section.
                                 </p>
                                 <a href="https://dash-analytics.solutions/learn-more"
-                                   class="btn"
                                    style="display: inline-block;
                                    text-align: center;
                                    background-color: black;
@@ -174,9 +148,6 @@
                         </tr>
                     </table>
                 </div>
-            </div>
-            <div class="footer">
-                This is an automated message, please do not reply.
             </div>
         </div>
     </body>

@@ -31,8 +31,8 @@ public class PasswordController {
      * @return ResponseEntity indicating the outcome of the operation, with an appropriate message and HTTP status code.
      */
     @ResponseBody
-    @PostMapping(value ="/reset", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> forgotPassword(@RequestPart("email") String userEmail) {
+    @PostMapping(value ="/reset", consumes = {MediaType.TEXT_PLAIN_VALUE})
+    public ResponseEntity<String> forgotPassword(@RequestBody String userEmail) {
         try {
 
             if (userEmail.isEmpty()) {
@@ -54,14 +54,13 @@ public class PasswordController {
      * @param passwordResetToken The token used to verify the password reset request.
      * @return A URL redirect string to the password reset page if the token is valid, to the forgot password page if invalid, or to an error page upon exception.
      */
-    @GetMapping(value ="/")
+    @GetMapping(value ="/verify")
     public String verifyPasswordResetToken(@RequestParam("reset-token") String passwordResetToken) {
         try {
 
-            // No need to check if user email / account exists // TODO PASS TOKEN IN REQUEST
             return passwordService.verifyPasswordResetKey(passwordResetToken).map(
-                    s -> "redirect:https://www.dash-analytics.com/reset-password?token={passwordResetToken}"
-            ).orElseGet(() -> "redirect:https://www.dash-analytics.com/forgot-password");
+                    s -> "redirect:https://dash-analytics.solutions/user/change-password?token=" + passwordResetToken
+            ).orElseGet(() -> "redirect:https://dash-analytics.solutions/user/request-new-password");
 
         } catch (Exception e) {
             log.warn(e.getMessage());
