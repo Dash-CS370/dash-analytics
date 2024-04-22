@@ -2,6 +2,8 @@ import React from 'react';
 import { WidgetConfig } from '../../WidgetTypes';
 import { BarChartThumbnail } from '../../graphWidgets/BarChartWidget/BarChartThumbnail';
 import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraphThumbnail';
+import { AreaChartThumbnail } from '../../graphWidgets/AreaChartWidget/AreaChartThumbnail';
+import { ScatterPlotThumbnail } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotThumbnail';
 
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
     switch (config.graphType) {
@@ -23,7 +25,24 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-
+        case 'AREA_CHART':
+            return (
+                <AreaChartThumbnail
+                    title={config.title}
+                    description={'config.description'} // TODO: add description to config
+                    data={config.data}
+                    handleClick={handleClick}
+                />
+            );
+        case 'SCATTER_PLOT':
+            return (
+                <ScatterPlotThumbnail
+                    title={config.title}
+                    description={'config.description'} // TODO: add description to config
+                    data={config.data}
+                    handleClick={handleClick}
+                />
+            );
         default:
             throw new Error(`${config.graphType} is not a valid graph type`);
     }
