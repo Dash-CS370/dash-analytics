@@ -17,7 +17,7 @@ export default function ChangePassword() {
     let t = searchParams.get('token');
     useEffect(() => {
         if (!t) {
-            window.location.href = '/users/request-new-password';
+            window.location.href = '/user/request-new-password';
             t = '';
         }
         setToken(t);
@@ -41,20 +41,16 @@ export default function ChangePassword() {
         }
 
         // TODO: send request to backend
-        fetch(
-            'https://dash-analytics.solutions/api/v1/password/reset-password',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    token: token,
-                    'new-password': pass,
-                    'confirmed-password': confirmPass,
-                }),
-            },
-        ).then((response) => {
+        const formData = new FormData();
+
+        formData.append('token', token);
+        formData.append('new-password', pass);
+        formData.append('confirmed-password', confirmPass);
+
+        fetch('https://dash-analytics.solutions/api/v1/password/reset-password', {
+            method: 'POST',
+            body: formData,  // Note: No 'Content-Type' header is needed
+        }).then((response) => {
             if (response.ok) {
                 window.location.href = '/signin';
             } else {

@@ -19,39 +19,30 @@
                 margin: 0 auto;
                 background-color: #ffffff;
             }
-            C .header,
-            .footer {
+            .header {
                 background-color: #000000;
                 color: #ffffff;
                 text-align: center;
-                padding: 20px;
-            }
-            .header {
-                color: white;
-                font-family: 'Colfax';
-                font-size: 100px;
+                font-family: 'Colfax', serif;
                 width: 600px;
                 height: 110px;
-                font-size: 48px;
+                font-size: 34px;
                 display: flex;
-                justify-content: center;
-                align-items: center;
-
+                align-items: center !important;
                 background-image: linear-gradient(
-                    to right,
-                    rgb(0, 0, 0) 60%,
-                    rgb(117, 5, 117) 100%
+                        to right,
+                        rgb(0, 0, 0) 70%,
+                        rgb(117, 5, 117) 100%
                 );
                 background-blend-mode: screen;
             }
-            .footer {
-                font-size: 14px;
-                background-image: linear-gradient(
-                    to right,
-                    rgb(0, 0, 0) 60%,
-                    rgb(117, 5, 117) 100%
-                );
-                background-blend-mode: screen;
+            .header h1 {
+                position: absolute !important;
+                font-family: 'Colfax', monospace;
+                margin: auto 0 !important;
+                margin-left: 20px !important;
+                font-weight: lighter;
+                color: white;
             }
             .content {
                 padding: 20px;
@@ -62,41 +53,29 @@
                 color: #000000;
                 text-align: start;
             }
-
             .content hr {
                 margin-top: 50px;
                 margin-bottom: 50px;
             }
-
             .reset-link {
                 display: flex;
                 justify-content: center;
                 padding: 20px 20px;
             }
-
             .reset-link a:hover {
                 font-weight: bolder;
                 color: rgb(168, 1, 168);
                 transition: 0.2s ease-in-out;
             }
-            .highlight {
-                color: #555100;
-                font-size: 24px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
             a {
                 text-decoration: none;
             }
-
             .infoSection {
                 text-align: left;
             }
-
             .infoSection strong {
                 margin-bottom: 3px;
             }
-
         </style>
     </head>
     <body>
@@ -105,7 +84,6 @@
                 <h1>DASH</h1>
             </div>
             <div class="content">
-                <div class="highlight">Password Reset Request</div>
                 <p>Dear User,</p>
                 <p>
                     You have requested to reset your password. Please click on
@@ -118,7 +96,6 @@
                     If you did not request a password reset, please ignore this
                     email.
                 </p>
-                <p>Password Reset Key: <strong>${passwordResetKey}</strong></p>
                 <hr />
                 <div class="infoSection">
                     <table>
@@ -127,9 +104,8 @@
                                 <strong style="font-size: 22px; color: black;">About Us</strong>
                                 <p>
                                     Our platform is crafted to facilitate the efficient creation of comprehensive
-                                    data dashboards and detailed charts. To begin, create an account or log in to access
-                                    our full suite of tools. Discover the methodologies necessary to transform your
-                                    data into compelling visual narratives and start creating impactful visualizations today.
+                                    data dashboards and detailed charts. To begin transforming your data into
+                                    compelling visual narratives, create an account or log in to access our full suite of tools.
                                 </p>
                                 <a href="https://dash-analytics.solutions/create-account"
                                    style="display: inline-block;
@@ -148,7 +124,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="height: 30px;"></td> <!-- Simple empty row for spacing -->
+                            <td style="height: 40px;"></td> <!-- Simple empty row for spacing -->
                         </tr>
                         <tr>
                             <td>
@@ -158,7 +134,6 @@
                                     into how GPT enhances data understanding, please visit our information section.
                                 </p>
                                 <a href="https://dash-analytics.solutions/learn-more"
-                                   class="btn"
                                    style="display: inline-block;
                                    text-align: center;
                                    background-color: black;
@@ -176,8 +151,6 @@
                         </tr>
                     </table>
                 </div>
-            <div class="footer">
-                This is an automated message, please do not reply.
             </div>
         </div>
     </body>
