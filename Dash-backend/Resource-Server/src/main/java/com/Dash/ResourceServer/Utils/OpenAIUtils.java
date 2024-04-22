@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class OpenAIUtils {
 
 
-    private static final Integer PIN_COUNT = 4;
+    private static final Integer PIN_COUNT = 6;
 
 
     // TODO
@@ -32,6 +32,7 @@ public class OpenAIUtils {
         prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
 
         String joinedDescriptions = "";
+
         for (String columnDescription : columnDescriptions) {
             joinedDescriptions += "\n" + columnDescription;
         }

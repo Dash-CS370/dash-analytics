@@ -125,6 +125,7 @@ export const NewProject: React.FC<NewProjectProps> = ({
         }
 
         setDescriptionLoaded(false); // clear status
+
         fetchWidgetConfigs(
             projectName,
             description,

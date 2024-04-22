@@ -102,7 +102,6 @@ public class DashboardServiceImpl implements DashboardService {
         MultipartBodyBuilder csvBuilder = new MultipartBodyBuilder();
         csvBuilder.part("csv-file", csvFile.getResource());
 
-
         // Make HTTP request to upload CSV sheet + create Project JSON (create project folder + project json file)
         return this.webClient.post()
                 .uri(createProjectUrl)
