@@ -2,18 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+    Legend,
     ResponsiveContainer,
-    ScatterChart,
-    CartesianGrid,
+    Tooltip,
     XAxis,
     YAxis,
-    Tooltip,
-    Scatter,
+    AreaChart,
+    Area,
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { BaseGraphProps } from '../../WidgetTypes';
 
-export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
+export const AreaChartWidget: React.FC<BaseGraphProps> = ({
     config,
     isExpanded = false,
     onExpand = () => {},
@@ -21,7 +21,7 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
     onEditTitle = () => {},
 }) => {
     const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
-    console.log(keys);
+    const xDataKey = keys.length > 0 ? keys[0] : '';
 
     const [colors, setColors] = useState<string[]>([]);
 
@@ -46,20 +46,21 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
             onEditTitle={onEditTitle}
         >
             <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: -20,
-                        left: -5,
-                    }}
-                >
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey={keys[0]} />
-                    <YAxis type="number" dataKey={keys[1]} />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter data={config.data} fill={colors[0]} />
-                </ScatterChart>
+                <AreaChart data={config.data} width={500} height={300}>
+                    <XAxis dataKey={xDataKey} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {keys.slice(1).map((key, i) => (
+                        <Area
+                            key={key}
+                            type="monotone"
+                            dataKey={key}
+                            stroke={colors[i % colors.length]}
+                            dot={false}
+                        />
+                    ))}
+                </AreaChart>
             </ResponsiveContainer>
         </WidgetCard>
     );

@@ -1,7 +1,5 @@
 // Based on the Col's the User 'Throws Away' when Labeling Features & any Feature Renaming
-// Drop, Rename, and then Save Final --> Upload to S3
-
-// Takes in DF
+// Drop and then Save Final --> Upload to S3
 
 import * as dfd from 'danfojs';
 
@@ -24,5 +22,3 @@ export async function userClean(
         return finalClean;
     }
 }
-
-// ADD RENAME FUNCTIONALITY - from Label Col Description Screen**

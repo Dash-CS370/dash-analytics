@@ -19,7 +19,7 @@ export async function fetchWidgetConfigs(
 ): Promise<ProjectConfig> {
     const columnDescriptions = columns.map(
         (column) =>
-            `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.dataType}`,
+            `column-name: ${column.colName}, column-dtype: ${column.dataType}, column-description: ${column.description}, category: ${column.userType}`,
     );
 
     setStatus('Parsing CSV...');

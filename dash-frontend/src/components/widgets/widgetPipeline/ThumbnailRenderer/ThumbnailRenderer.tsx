@@ -2,8 +2,8 @@ import React from 'react';
 import { WidgetConfig } from '../../WidgetTypes';
 import { BarChartThumbnail } from '../../graphWidgets/BarChartWidget/BarChartThumbnail';
 import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraphThumbnail';
-import { PieChartThumbnail } from '../../graphWidgets/PieChartWidget/PieChartThumbnail';
 import { ScatterPlotThumbnail } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotThumbnail';
+import { AreaChartThumbnail } from '../../graphWidgets/AreaChartWidget/AreaChartThumbnail';
 
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
     switch (config.graphType) {
@@ -25,9 +25,9 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-        case 'PIE_CHART':
+        case 'AREA_GRAPH':
             return (
-                <PieChartThumbnail
+                <AreaChartThumbnail
                     title={config.title}
                     description={'config.description'} // TODO: add description to config
                     data={config.data}
