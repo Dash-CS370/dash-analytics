@@ -23,25 +23,26 @@
                 background-color: #000000;
                 color: #ffffff;
                 text-align: center;
-                padding: 20px;
                 font-family: 'Colfax', serif;
-                width: 560px;
-                height: 90px;
-                font-size: 42px;
+                width: 600px;
+                height: 110px;
+                font-size: 34px;
                 display: flex;
-                justify-content: center;
-                align-items: center;
+                align-items: center !important;
                 background-image: linear-gradient(
-                    to right,
-                    rgb(0, 0, 0) 70%,
-                    rgb(117, 5, 117) 100%
+                        to right,
+                        rgb(0, 0, 0) 70%,
+                        rgb(117, 5, 117) 100%
                 );
                 background-blend-mode: screen;
             }
             .header h1 {
+                position: absolute !important;
                 font-family: 'Colfax', monospace;
-                margin: 0;
+                margin: auto 0 !important;
+                margin-left: 20px !important;
                 font-weight: lighter;
+                color: white;
             }
             .content {
                 padding: 20px;
@@ -91,7 +92,9 @@
                 <div class="activate-link">
                     <a href=${activateAccountUrl} target=""><strong>Activate Account</strong></a>
                 </div>
-                <p>If you did not request this, please ignore this email.</p>
+                <p>
+                    If you did not request this, please ignore this email.
+                </p>
                 <p>Activation Code: <strong>${activationToken}</strong></p>
                 <hr />
                 <div class="infoSection">
@@ -105,7 +108,7 @@
                                     compelling visual narratives, create an account or log in to access our full suite of tools.
                                 </p>
                                 <a href="https://dash-analytics.solutions/create-account"
-                                  style="display: inline-block;
+                                   style="display: inline-block;
                                   text-align: center;
                                   background-color: black;
                                   color: white;

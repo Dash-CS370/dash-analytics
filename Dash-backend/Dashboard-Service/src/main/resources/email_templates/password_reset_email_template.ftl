@@ -93,8 +93,7 @@
                     <a href=${resetPasswordUrl} target=""><strong>Reset Password</strong></a>
                 </div>
                 <p>
-                    If you did not request a password reset, please ignore this
-                    email.
+                    If you did not request a password reset, please ignore this email.
                 </p>
                 <hr />
                 <div class="infoSection">
