@@ -2,7 +2,9 @@ package com.Dash.Dashboard.Models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Data;
 
+@Deprecated
 public enum DataOperations {
 
     // TODO - THESE DO NOT MODIFY NUMBER OF ROWS IN A COLUMN

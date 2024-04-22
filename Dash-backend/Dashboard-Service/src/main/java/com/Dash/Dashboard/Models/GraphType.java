@@ -11,12 +11,7 @@ public enum GraphType {
 
     BAR_GRAPH("BAR_GRAPH", "A chart that represents categorical data with rectangular bars with heights or lengths proportional to " +
             "the numerical values they represent. Versatile for comparing numerical quantities across different categories, even over time if categories are ordered chronologically. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL.");
-
-    /*
-    PIE_CHART("PIE_CHART", "A circular chart divided into sectors, each representing a proportion of the whole. " +
-            "Primarily used for displaying the relative sizes, ideal for visualizing distribution of categories or percentages. Specifically tailored for categorical data." +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 COLUMNS, ONE CATEGORICAL COLUMN AND AT LEAST ONE NUMERICAL COLUMN."),
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL."),
 
     SCATTER_PLOT("SCATTER_PLOT", "A graph that uses dots to represent values obtained for two different numerical variables, showing " +
             "the relationship between them. It's particularly useful for spotting outliers, and observing distribution trends in numerical data. " +
@@ -24,14 +19,13 @@ public enum GraphType {
 
     AREA_CHART("AREA_CHART", "A line chart where the area between the line and the axis is filled with color or shading, representing " +
             "the cumulative value of numerical data over time. It is used for visualizing how one or more numerical quantities grow or decline over time or another continuous interval. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): SAME AS LINE GRAPH BUT INCLUDE AT LEAST 2 NUMERICAL COLUMNS IN ADDITION TO ONT TEMPORAL COLUMN"),
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): SAME AS LINE GRAPH BUT INCLUDE AT LEAST 2 NUMERICAL COLUMNS IN ADDITION TO ONE TEMPORAL COLUMN");
 
-    STATISTICS_CARD("STATISTICS_CARD", "A compact display including essential statistics for numerical columns. " +
-                    "For every numerical column, the following statistics MUST be included: Mean, Median, Mode, Percentiles. " +
+    /*
+    STATISTICS_CARD("STATISTICS_CARD", "A compact display including essential statistics for columns. " +
                     "This ensures a comprehensive summary of the data's central tendency and dispersion, suitable for quick insights into the dataset's characteristics." +
-                    "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL COLUMN & NO DATA OPERATIONS WITH THE COLUMN, JUST THE COLUMN.");
+                    "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL OR CATEGORICAL COLUMN.");
     */
-
 
     private final String value;
 

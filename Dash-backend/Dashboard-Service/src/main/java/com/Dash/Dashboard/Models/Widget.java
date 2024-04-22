@@ -29,9 +29,6 @@ public class Widget {
     // @JsonProperty("pinned")
     // private boolean pinned;
 
-//    @JsonProperty("column_operations")
-//    private Map<String, List<DataOperations>> columnOperations;
-
     @JsonProperty("columns")
     private List<String> columns;
 }

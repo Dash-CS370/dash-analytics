@@ -3,6 +3,7 @@ package com.Dash.ResourceServer.Models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+@Deprecated
 public enum DataOperations {
 
     // TODO - THESE DO NOT MODIFY NUMBER OF ROWS IN A COLUMN

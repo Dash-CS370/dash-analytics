@@ -1,7 +1,5 @@
 package com.Dash.ResourceServer.Utils;
 
-import com.Dash.ResourceServer.Models.GraphType.ColumnCategory;
-import com.Dash.ResourceServer.Models.DataOperations;
 import com.Dash.ResourceServer.Models.GraphType;
 import com.Dash.ResourceServer.Models.Widget;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,39 +46,17 @@ public class OpenAIUtils {
 
 
     public static String additionalSystemContext() {
-        String additionalContext;
 
-        /*
-        // General context and list of graph types to choose from
-        additionalContext =
-                "Each configuration option (aka Widget) must include 'title', 'graph_type', 'description', and 'column_data_operations'. " +
-                "'title' is a concise string describing the graph. A singular 'graph_type' is chosen from specified options, 'description' provides a brief overview of the visualization in present tense. " +
-                "The 'column_data_operations' maps required columns to their data operations, detailing how each column is processed to generate the graph." +
-                "For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the following options (the string must match spelling and case):";
-        */
-
-        additionalContext =
+        String additionalContext =
                 "Each configuration option (aka Widget) MUST include 'title', 'graph_type', 'description', and 'columns'. " +
-                        "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options," +
-                        "'description' provides an insightful overview of the visualization in present tense. The 'columns' is a list of the required columns needed to " +
-                        "generate a widget of the given graph type. For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the " +
-                        "following options (the string must match spelling and case):";
+                "'title' is a concise string describing the graph (NO MORE THAN 25 CHARACTERS). A singular 'graph_type' is chosen from specified options," +
+                "'description' provides an insightful overview of the visualization in present tense. The 'columns' is a list of the required columns needed to " +
+                "generate a widget of the given graph type. For each widget, the graph_type REQUIREMENTS MUST BE MET and CAN ONLY be chosen from the " +
+                "following options (the string must match spelling and case):";
 
         for (GraphType graphType : GraphType.values()) {
             additionalContext = additionalContext.concat(graphType.getValue() + ": " + graphType.getDescription() + ", ");
         }
-
-
-        /*
-        // List data operations to choose from
-        additionalContext += ". The data operations should be a list of strings that represent operations to perform on a column(s). " +
-                "These operations will manipulate the data to calculate more useful metrics to be graphed. " +
-                "The data operations CAN ONLY be chosen from the following options (THE STRING MUST MATCH SPELLING AND CASE):";
-
-        for (DataOperations dataOperation : DataOperations.values()) {
-            additionalContext = additionalContext.concat(dataOperation.getValue() + ": " + dataOperation.getDescription() + ", ");
-        }
-        */
 
         additionalContext += ". The column descriptions should include a list of strings that represent the category of represented data they fall under, given below"
         + ". Use these descriptions and CATEGORIES for each column to appropriately choose Widget graphs and columns";
@@ -109,7 +85,6 @@ public class OpenAIUtils {
         final ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-
             final List<Widget> widgets;
 
             if (!response.contains("widgets")) {
@@ -130,7 +105,6 @@ public class OpenAIUtils {
             return Optional.of(processedWidgets);
 
         } catch (JsonProcessingException e) {
-            // TODO return preset
             log.warn(e.getMessage());
             return Optional.empty();
         }
@@ -146,16 +120,13 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
-                .filter(widget -> widget.getGraphType() == GraphType.LINE_GRAPH || widget.getGraphType() == GraphType.BAR_GRAPH) // FIXME
-                .filter(widget -> widget.getColumns().size() >= 2)
-                //.filter(widget -> widget.getColumnDataOperations() != null)
-                //.filter(widget -> {
-                    //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
-                    //boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.PIE_CHART).contains(widget.getGraphType()) && widget.getColumnDataOperations().keySet().size() >= 2;
+                .filter(widget -> {
+                    boolean isMultiColumnWidget = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.AREA_CHART).contains(widget.getGraphType()) && widget.getColumns().size() >= 2;
+                    //boolean isSingleColumnWidget = List.of(GraphType.STATISTICS_CARD).contains(widget.getGraphType()) && widget.getColumns().size() >= 2;
                     //return isMultiColumnGraph || isSingleColumnGraph;
-                //})
+                    return isMultiColumnWidget;
+                })
                 .collect(Collectors.toList());
-
 
 
         // Assign each Widget a Unique Identifier
@@ -175,7 +146,6 @@ public class OpenAIUtils {
 
         return widgets;
     }
-
 
 
     public static String widgetSchema() {
@@ -205,40 +175,6 @@ public class OpenAIUtils {
                 + "},"
                 + "\"required\": [\"widgets\"]"
                 + "}";
-    }
-
-
-    // FIXME
-    public static String realWidgetSchema() {
-        return "{"
-                + "   \"type\": \"array\","
-                + "   \"items\": {"
-                + "     \"type\": \"object\","
-                + "     \"properties\": {"
-                + "       \"title\": {"
-                + "         \"type\": \"string\""
-                + "       },"
-                + "       \"graph_type\": {"
-                + "         \"type\": \"string\""
-                + "       },"
-                + "       \"description\": {"
-                + "         \"type\": \"string\""
-                + "       },"
-                + "       \"column_data_operations\": {"
-                + "         \"type\": \"object\","
-                + "         \"additionalProperties\": {"
-                + "           \"type\": \"array\","
-                + "           \"items\": {"
-                + "             \"type\": \"string\""
-                + "           }"
-                + "         }"
-                + "       }"
-                + "     },"
-                + "     \"required\": [\"title\", \"graph_type\", \"description\", \"column_data_operations\"]"
-                + "   }"
-                + "},"
-                + "\"required\": [\"widgets\"]"
-            + "}";
     }
 
 
