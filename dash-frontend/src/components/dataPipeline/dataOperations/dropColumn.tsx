@@ -2,10 +2,10 @@ import * as dfd from 'danfojs';
 
 // Takes in a danfo dataframe and a list of columns to drop
 // Returns a new dataframe with the columns dropped
-export async function userClean(
+export function dropColumns(
     dataframe: dfd.DataFrame,
     columns_to_drop: string[],
-): Promise<dfd.DataFrame> {
+): dfd.DataFrame {
     // Try to Drop Col's
     console.log(dataframe.shape[1]);
 

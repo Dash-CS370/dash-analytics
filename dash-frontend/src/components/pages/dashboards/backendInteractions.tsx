@@ -16,6 +16,7 @@ export async function fetchWidgetConfigs(
     csvFile: File,
     columns: ColumnInfo[],
     setStatus: (status: string) => void,
+    colsToDrop: string[],
 ): Promise<ProjectConfig> {
     const columnDescriptions = columns.map(
         (column) =>
@@ -25,9 +26,11 @@ export async function fetchWidgetConfigs(
     // clean and parse csv
     setStatus('Parsing CSV...');
     const df = await cleanOnUpload(csvFile);
+    // TODO: Drop columns using dropColumns() function
+
     const cleanedCSV = pp.unparse(dfd.toJSON(df) as DataItem[]);
-    const blob = new Blob([cleanedCSV], { type : 'text/csv'});
-    const cleanedFile = new File([blob], csvFile.name, { type : 'text/csv'});
+    const blob = new Blob([cleanedCSV], { type: 'text/csv' });
+    const cleanedFile = new File([blob], csvFile.name, { type: 'text/csv' });
 
     setStatus('Fetching graph configurations...');
     const gptResponse = await fetchGPTResponse(
