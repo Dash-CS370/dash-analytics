@@ -42,8 +42,8 @@ export function processAndSliceDF(
 ): DataItem[] {
     const df = new DataFrame(data);
     const rowCount = determineRowCount(df);
+
     if (rowCount <= threshold) {
-        console.log('Row count is below threshold');
         return data;
     }
     const sliceInterval = calculateSliceInterval(
