@@ -25,7 +25,7 @@ export const AccountDetails: FC = () => {
         creationDate: '',
     });
 
-    fetch('http://dash-analytics.solutions/api/v1/user/profile', {
+    fetch('https://dash-analytics.solutions/api/v1/user/profile', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

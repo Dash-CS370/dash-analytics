@@ -19,7 +19,7 @@ export const ColumnDescription: React.FC<ColumnDescriptionProps> = ({
     handleDropdownChange,
     handleDelete,
 }) => {
-    const options = ['CATEGORICAL', 'NUMERIC', 'TEMPORAL', 'IDENTIFIER'];
+    const options = ['CATEGORICAL', 'NUMERICAL', 'TEMPORAL', 'IDENTIFIER'];
     const [selectedOption, setSelectedOption] =
         useState<string>('DATA TYPE...');
 
