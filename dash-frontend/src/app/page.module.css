@@ -51,7 +51,7 @@
     justify-content: center;
     gap: 2.5rem;
     padding-top: 2rem;
-    transform: translateX(-9em);
+    transform: translateX(-8em);
 }
 
 /* @media (prefers-reduced-motion) {
