@@ -70,9 +70,9 @@ export const AccountDetails: FC = () => {
         <div className={styles.pageContainer}>
             <div className={styles.sidebar}>
                 <div className={styles.sidbarContent}>
-                    <a href="/dashboards">Home</a>
-                    <a href="/about">About</a>
-                    <a href="">Credit</a>
+                    <a href="/">Home</a>
+                    <a href="/dashboards">Projects</a>
+                    <a href="/learn-more">Learn More</a>
                 </div>
             </div>
             <div className={styles.infoContainer}>
