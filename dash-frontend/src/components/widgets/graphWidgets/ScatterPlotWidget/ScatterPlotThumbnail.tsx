@@ -43,7 +43,11 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
             handleClick={handleClick}
         >
             <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart>
+                <ScatterChart
+                    margin={{ top: 15, right: 15, bottom: -15, left: -45 }}
+                >
+                    <XAxis type="number" dataKey={keys[0]} tick={false} />
+                    <YAxis type="number" dataKey={keys[1]} tick={false} />
                     <Scatter data={slicedData} fill={colors[0]} />
                 </ScatterChart>
             </ResponsiveContainer>
