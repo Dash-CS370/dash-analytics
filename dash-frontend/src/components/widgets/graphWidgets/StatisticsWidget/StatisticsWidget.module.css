@@ -1,0 +1,31 @@
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2px;
+    background-color: var(--on-background);
+}
+
+.statsGrid.expanded {
+    margin: auto 0;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    color: var(--on-background);
+    padding: 1rem;
+    background-color: var(--background-contrast);
+}
+
+.stat.expanded {
+    padding: 2rem;
+}
+
+.stat.expanded > p,
+.stat.expanded > h3 {
+    font-size: 1.5rem;
+}

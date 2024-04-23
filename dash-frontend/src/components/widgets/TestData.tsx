@@ -115,7 +115,7 @@ const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Example 4',
         id: '4',
-        graphType: 'SCATTER_PLOT',
+        graphType: 'STATS_CARD',
         pinned: true,
         columns: ['uv', 'pv'],
         data: exampleScatterData,
@@ -124,11 +124,11 @@ const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Example 5',
         id: '5',
-        graphType: 'LINE_GRAPH',
+        graphType: 'SCATTER_PLOT',
         pinned: false,
-        columns: ['name', 'uv', 'pv', 'amt'],
-        data: exampleLineData,
-        description: 'Line graph of example data.',
+        columns: ['uv', 'pv'],
+        data: exampleScatterData,
+        description: 'Scatter plot of example data.',
     },
     {
         title: 'Example 6',
