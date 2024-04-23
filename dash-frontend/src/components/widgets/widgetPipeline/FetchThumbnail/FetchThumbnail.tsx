@@ -9,6 +9,7 @@ export const FetchThumbnail: React.FC<FetchThumbnailProps> = ({ onClick }) => {
     return (
         <div className={styles.thumbnail} onClick={onClick}>
             <IoIosAddCircleOutline className={styles.icon} />
+            <p className={styles.text}>coming soon</p>
         </div>
     );
 };

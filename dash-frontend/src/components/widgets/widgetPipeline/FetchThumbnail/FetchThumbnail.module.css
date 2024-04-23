@@ -8,11 +8,18 @@
     border-color: var(--border);
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .icon {
     width: 30px;
     height: 30px;
+}
+
+.text {
+    font-size: 12px;
+    color: var(--on-background);
 }
