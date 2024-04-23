@@ -9,10 +9,11 @@ import {
     YAxis,
     Tooltip,
     Scatter,
+    ZAxis,
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { BaseGraphProps } from '../../WidgetTypes';
-import {processAndSliceDF} from "@/components/dataPipeline/dataOperations/smoothData";
+import { processAndSliceDF } from '@/components/dataPipeline/dataOperations/smoothData';
 
 export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
     config,
@@ -34,7 +35,7 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
             rootStyle.getPropertyValue('--alternative'),
             'red',
             'blue',
-            'orange'
+            'orange',
         ]);
     }, []);
 
@@ -63,6 +64,7 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
                     <CartesianGrid />
                     <XAxis type="number" dataKey={keys[0]} />
                     <YAxis type="number" dataKey={keys[1]} />
+                    <ZAxis range={[30, 31]} />
                     <Tooltip cursor={{ strokeDasharray: '3 3' }} />
                     <Scatter data={data} fill={colors[0]} />
                 </ScatterChart>
