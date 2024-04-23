@@ -77,8 +77,7 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                // router.push('/start');
-                setProjects(exampleProjects);
+                router.push('/start');
             });
 
         return () => {
