@@ -49,8 +49,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 2.5rem;
     padding-top: 2rem;
+    transform: translateX(-8em);
 }
 
 /* @media (prefers-reduced-motion) {

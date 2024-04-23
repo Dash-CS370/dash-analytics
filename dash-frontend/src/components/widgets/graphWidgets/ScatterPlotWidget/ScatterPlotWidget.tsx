@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { BaseGraphProps } from '../../WidgetTypes';
+import {processAndSliceDF} from "@/components/dataPipeline/dataOperations/smoothData";
 
 export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
     config,
@@ -31,8 +32,13 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
             rootStyle.getPropertyValue('--primary'),
             rootStyle.getPropertyValue('--secondary'),
             rootStyle.getPropertyValue('--alternative'),
+            'red',
+            'blue',
+            'orange'
         ]);
     }, []);
+
+    const data = processAndSliceDF(config.data, 1500, 1);
 
     return (
         <WidgetCard
@@ -50,7 +56,7 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
                     margin={{
                         top: 20,
                         right: 20,
-                        bottom: -20,
+                        bottom: 0,
                         left: -5,
                     }}
                 >
@@ -58,7 +64,7 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
                     <XAxis type="number" dataKey={keys[0]} />
                     <YAxis type="number" dataKey={keys[1]} />
                     <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter data={config.data} fill={colors[0]} />
+                    <Scatter data={data} fill={colors[0]} />
                 </ScatterChart>
             </ResponsiveContainer>
         </WidgetCard>

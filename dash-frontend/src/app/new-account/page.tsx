@@ -108,7 +108,7 @@ export default function NewAccount() {
                     <TextInput
                         id="name"
                         className={styles.textInput}
-                        defText="name"
+                        defText="Name"
                         width="325px"
                     />
                     <TextInput

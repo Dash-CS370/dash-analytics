@@ -31,6 +31,9 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
             rootStyle.getPropertyValue('--primary'),
             rootStyle.getPropertyValue('--secondary'),
             rootStyle.getPropertyValue('--alternative'),
+            'red',
+            'blue',
+            'orange'
         ]);
     }, []);
 

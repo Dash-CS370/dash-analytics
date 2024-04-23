@@ -12,6 +12,8 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { BaseGraphProps } from '../../WidgetTypes';
+import {DataFrame} from 'danfojs';
+import {processAndSliceDF} from "@/components/dataPipeline/dataOperations/smoothData";
 
 export const AreaChartWidget: React.FC<BaseGraphProps> = ({
     config,
@@ -31,8 +33,13 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
             rootStyle.getPropertyValue('--primary'),
             rootStyle.getPropertyValue('--secondary'),
             rootStyle.getPropertyValue('--alternative'),
+            'red',
+            'blue',
+            'orange'
         ]);
     }, []);
+
+    const data = processAndSliceDF(config.data, 1500, 1);
 
     return (
         <WidgetCard
@@ -46,7 +53,7 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
             onEditTitle={onEditTitle}
         >
             <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={config.data} width={500} height={300}>
+                <AreaChart data={data} width={500} height={300}>
                     <XAxis dataKey={xDataKey} />
                     <YAxis />
                     <Tooltip />
@@ -57,6 +64,7 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
                             type="monotone"
                             dataKey={key}
                             stroke={colors[i % colors.length]}
+                            fill={colors[i % colors.length]}
                             dot={false}
                         />
                     ))}

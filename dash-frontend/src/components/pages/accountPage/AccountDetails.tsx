@@ -7,11 +7,10 @@ import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar'
 
 export const AccountDetails: FC = () => {
     const exampleUser = {
-        firstName: 'Kevin',
-        lastName: 'BALABNAL',
-        email: 'abc22323@gmail.com',
-        contact: '12345678',
-        password: '123445',
+        FullName: 'Adam Smith',
+        email: 'adam_smith@gmail.com',
+        contact: '12345',
+        password: '***********',
         credits: '60',
     };
 
@@ -31,10 +30,9 @@ export const AccountDetails: FC = () => {
         <div className={styles.pageContainer}>
             <div className={styles.sidebar}>
                 <div className={styles.sidbarContent}>
-                    <a href="">Home</a>
-                    <a href="">About</a>
+                    <a href="/dashboards">Home</a>
+                    <a href="/about">About</a>
                     <a href="">Credit</a>
-                    <a href="">Signout</a>
                 </div>
             </div>
             <div className={styles.infoContainer}>
@@ -42,10 +40,10 @@ export const AccountDetails: FC = () => {
                     <h1>Account Details</h1>
                     <div className={styles.row}>
                         <div className={styles.title}>
-                            <h5>Full Name</h5>
+                            <h5>Name</h5>
                         </div>
                         <div className={styles.info}>
-                            {exampleUser.firstName} {exampleUser.lastName}
+                            {exampleUser.FullName}
                         </div>
                     </div>
                     <hr />

@@ -1,4 +1,5 @@
-import { DataFrame } from 'danfojs';
+import { DataFrame, toJSON } from 'danfojs';
+import {DataItem } from "@/components/widgets/WidgetTypes";
 
 function determineRowCount(df: DataFrame): number {
     return df.shape[0];
@@ -35,14 +36,15 @@ function sliceDF(df: DataFrame, n: number): DataFrame {
 }
 
 export function processAndSliceDF(
-    df: DataFrame,
+    data: DataItem[],
     threshold: number,
     minInterval: number,
-): DataFrame {
+): DataItem[] {
+    const df = new DataFrame(data);
     const rowCount = determineRowCount(df);
+
     if (rowCount <= threshold) {
-        console.log('Row count is below threshold');
-        return df;
+        return data;
     }
     const sliceInterval = calculateSliceInterval(
         rowCount,
@@ -50,5 +52,6 @@ export function processAndSliceDF(
         minInterval,
     );
 
-    return sliceDF(df, sliceInterval);
+    const slicedDF = sliceDF(df, sliceInterval);
+    return toJSON(slicedDF) as DataItem[];
 }
