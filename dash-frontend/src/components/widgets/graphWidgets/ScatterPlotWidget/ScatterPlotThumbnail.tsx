@@ -18,7 +18,6 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
     handleClick,
 }) => {
     const keys = data.length > 0 ? Object.keys(data[0]) : [];
-    const xDataKey = keys.length > 0 ? keys[0] : '';
 
     const [colors, setColors] = useState<string[]>([]);
 
@@ -46,9 +45,9 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
                         left: 20,
                     }}
                 >
-                    <XAxis type="number" dataKey={xDataKey} />
-                    <YAxis type="number" dataKey={keys[1]} />
-                    <Scatter data={data} fill={colors[0]} />
+                    <XAxis type="number" dataKey={keys[0]} tick={false} />
+                    <YAxis type="number" dataKey={keys[1]} tick={false} />
+                    <Scatter data={data} fill={colors[0]} scale={0.75} />
                 </ScatterChart>
             </ResponsiveContainer>
         </GraphThumbnail>
