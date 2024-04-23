@@ -99,7 +99,11 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
                         />
                     </div>
                 ) : (
-                    <div className={styles.widgetTitle}>
+                    <div
+                        className={`${styles.widgetTitle} ${
+                            expanded ? styles.expandedTitle : ''
+                        }`}
+                    >
                         <h1>{newName}</h1>
                         {!expanded && (
                             <CiEdit

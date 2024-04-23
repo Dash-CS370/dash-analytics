@@ -58,6 +58,10 @@
     overflow-x: auto;
 }
 
+.widgetTitle.expandedTitle h1 {
+    max-width: 400px;
+}
+
 .icon {
     width: 1rem;
     height: 1rem;
