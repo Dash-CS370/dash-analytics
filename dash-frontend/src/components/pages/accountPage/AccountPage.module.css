@@ -10,8 +10,7 @@
     margin-left: 270px;
     background-color: var(--background);
     padding: 30px 20px 10px;
-    width: 80%;
-    overflow-y: auto;
+    width: 70%;
 }
 
 .section {

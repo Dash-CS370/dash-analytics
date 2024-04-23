@@ -4,15 +4,55 @@ import { FC, useEffect, useState } from 'react';
 import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar';
+import { integer } from 'aws-sdk/clients/cloudfront';
+
+export interface UserDetails {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    credits: integer;
+    creationDate: string;
+}
 
 export const AccountDetails: FC = () => {
-    const exampleUser = {
-        FullName: 'Adam Smith',
-        email: 'adam_smith@gmail.com',
-        contact: '12345',
+    const [userDetails, setUserDetails] = useState<UserDetails>({
+        id: '',
+        name: 'John Smith',
+        email: 'johnsmith@gmail.com',
         password: '***********',
-        credits: '60',
-    };
+        credits: 60,
+        creationDate: '',
+    });
+
+    fetch('http://dash-analytics.solutions/api/v1/user/profile', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            credentials: 'include',
+        },
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                response.json().then((data) => {
+                    setUserDetails({
+                        id: data.id,
+                        name: data.name,
+                        email: data.email,
+                        password: data.password,
+                        credits: data.credits,
+                        creationDate: data.creationDate,
+                    });
+                });
+            } else {
+                console.error(
+                    `Error fetching user details. Response status: ${response.status}`,
+                );
+            }
+        })
+        .catch((error) => {
+            console.error(`Error fetching user details: ${error}`);
+        });
 
     const testData = [{ bgcolor: '#6a1b9a', completed: 60 }];
 
@@ -42,23 +82,14 @@ export const AccountDetails: FC = () => {
                         <div className={styles.title}>
                             <h5>Name</h5>
                         </div>
-                        <div className={styles.info}>
-                            {exampleUser.FullName}
-                        </div>
+                        <div className={styles.info}>{userDetails.name}</div>
                     </div>
                     <hr />
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Email</h5>
                         </div>
-                        <div className={styles.info}>{exampleUser.email}</div>
-                    </div>
-                    <hr />
-                    <div className={styles.row}>
-                        <div className={styles.title}>
-                            <h5>Phone</h5>
-                        </div>
-                        <div className={styles.info}>{exampleUser.contact}</div>
+                        <div className={styles.info}>{userDetails.email}</div>
                     </div>
                     <hr />
                     <div className={styles.row}>
@@ -66,7 +97,7 @@ export const AccountDetails: FC = () => {
                             <h5>Password</h5>
                         </div>
                         <div className={styles.info}>
-                            {exampleUser.password}
+                            {userDetails.password}
                         </div>
                     </div>
                     <hr />
@@ -86,7 +117,7 @@ export const AccountDetails: FC = () => {
                             <h5>Credit Usage:</h5>
                         </div>
                         <div className={styles.info}>
-                            {exampleUser.credits} / 100 used
+                            {userDetails.credits} / 100 used
                         </div>
                     </div>
                     <div className={styles.info1}>
