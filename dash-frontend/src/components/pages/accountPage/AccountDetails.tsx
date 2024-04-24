@@ -114,7 +114,7 @@ export const AccountDetails: FC = () => {
                     <h1 className={styles.title}>Credits</h1>
                     <div className={styles.row}>
                         <div className={styles.title}>
-                            <h5>Credit Usage:</h5>
+                            <h5>Credits Remaining:</h5>
                         </div>
                         <div className={styles.info}>
                             {userDetails.credits} / 100 used

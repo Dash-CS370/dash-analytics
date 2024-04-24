@@ -76,7 +76,7 @@ export default function Signin() {
         return <LoadingPage />;
     }
 
-    // signin
+    // sign in
     if (signinState) {
         return (
             <main className={styles.main}>
