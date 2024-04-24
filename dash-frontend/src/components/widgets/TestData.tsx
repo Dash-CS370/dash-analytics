@@ -110,7 +110,7 @@ const exampleStatData = [
 
 const exampleConfigs: WidgetConfig[] = [
     {
-        title: 'Example 1',
+        title: 'Line Graph Example',
         id: '1',
         graphType: 'LINE_GRAPH',
         pinned: true,
@@ -119,7 +119,7 @@ const exampleConfigs: WidgetConfig[] = [
         description: 'Line graph of example data.',
     },
     {
-        title: 'Example 2',
+        title: 'Bar Graph Example',
         id: '2',
         graphType: 'BAR_GRAPH',
         pinned: true,
@@ -128,7 +128,7 @@ const exampleConfigs: WidgetConfig[] = [
         description: 'Bar graph of example data.',
     },
     {
-        title: 'Example 3',
+        title: 'Area Chart Example',
         id: '3',
         graphType: 'AREA_CHART',
         pinned: true,
@@ -137,7 +137,7 @@ const exampleConfigs: WidgetConfig[] = [
         description: 'Area chart of example data.',
     },
     {
-        title: 'Example 4',
+        title: 'Statistics Card for UV',
         id: '4',
         graphType: 'STATS_CARD',
         pinned: true,
@@ -146,7 +146,7 @@ const exampleConfigs: WidgetConfig[] = [
         description: 'Statistics card of example data.',
     },
     {
-        title: 'Example 5',
+        title: 'Scatter Plot Example',
         id: '5',
         graphType: 'SCATTER_PLOT',
         pinned: false,
@@ -155,7 +155,7 @@ const exampleConfigs: WidgetConfig[] = [
         description: 'Scatter plot of example data.',
     },
     {
-        title: 'Example 6',
+        title: 'Bar Graph Example',
         id: '6',
         graphType: 'BAR_GRAPH',
         pinned: false,
