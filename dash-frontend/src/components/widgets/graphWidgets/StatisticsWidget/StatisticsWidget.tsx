@@ -38,6 +38,16 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
         }
     }, [config.data, config.columns]);
 
+    useEffect(() => {
+        const tempCategoricalStats = [
+            ['mean', '-'],
+            ['median', '-'],
+            ['high', '-'],
+            ['low', '-'],
+        ];
+        setStats(tempCategoricalStats);
+    }, []);
+
     if (isNumerical) {
         return (
             <WidgetCard
