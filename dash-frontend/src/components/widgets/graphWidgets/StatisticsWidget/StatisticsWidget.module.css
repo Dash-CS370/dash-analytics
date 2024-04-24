@@ -10,6 +10,14 @@
     margin: auto 0;
 }
 
+.gridContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
 .stat {
     display: flex;
     flex-direction: column;

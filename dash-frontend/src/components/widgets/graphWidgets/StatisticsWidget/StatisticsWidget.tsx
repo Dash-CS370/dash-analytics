@@ -49,42 +49,44 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
                 onExpand={onExpand}
                 onTogglePin={onTogglePin}
             >
-                <div
-                    className={`${styles.statsGrid} ${
-                        isExpanded ? styles.expanded : ''
-                    }`}
-                >
+                <div className={styles.gridContainer}>
                     <div
-                        className={`${styles.stat} ${
+                        className={`${styles.statsGrid} ${
                             isExpanded ? styles.expanded : ''
                         }`}
                     >
-                        <h3>Mean</h3>
-                        <p>{stats[0][1]}</p>
-                    </div>
-                    <div
-                        className={`${styles.stat} ${
-                            isExpanded ? styles.expanded : ''
-                        }`}
-                    >
-                        <h3>Median</h3>
-                        <p>{stats[1][1]}</p>
-                    </div>
-                    <div
-                        className={`${styles.stat} ${
-                            isExpanded ? styles.expanded : ''
-                        }`}
-                    >
-                        <h3>High</h3>
-                        <p>{stats[2][1]}</p>
-                    </div>
-                    <div
-                        className={`${styles.stat} ${
-                            isExpanded ? styles.expanded : ''
-                        }`}
-                    >
-                        <h3>Low</h3>
-                        <p>{stats[3][1]}</p>
+                        <div
+                            className={`${styles.stat} ${
+                                isExpanded ? styles.expanded : ''
+                            }`}
+                        >
+                            <h3>Mean</h3>
+                            <p>{stats[0][1]}</p>
+                        </div>
+                        <div
+                            className={`${styles.stat} ${
+                                isExpanded ? styles.expanded : ''
+                            }`}
+                        >
+                            <h3>Median</h3>
+                            <p>{stats[1][1]}</p>
+                        </div>
+                        <div
+                            className={`${styles.stat} ${
+                                isExpanded ? styles.expanded : ''
+                            }`}
+                        >
+                            <h3>High</h3>
+                            <p>{stats[2][1]}</p>
+                        </div>
+                        <div
+                            className={`${styles.stat} ${
+                                isExpanded ? styles.expanded : ''
+                            }`}
+                        >
+                            <h3>Low</h3>
+                            <p>{stats[3][1]}</p>
+                        </div>
                     </div>
                 </div>
             </WidgetCard>
@@ -100,13 +102,15 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
                 onExpand={onExpand}
                 onTogglePin={onTogglePin}
             >
-                <div className={styles.categoricalGrid}>
-                    {stats.map((stat, index) => (
-                        <div key={index} className={styles.categoricalStat}>
-                            <h3>{stat[0]}</h3>
-                            <p>{stat[1]}</p>
-                        </div>
-                    ))}
+                <div className={styles.gridContainer}>
+                    <div className={styles.categoricalGrid}>
+                        {stats.map((stat, index) => (
+                            <div key={index} className={styles.categoricalStat}>
+                                <h3>{stat[0]}</h3>
+                                <p>{stat[1]}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </WidgetCard>
         );
