@@ -19,7 +19,8 @@ public enum GraphType {
 
     AREA_CHART("AREA_CHART", "A line chart where the area between the line and the axis is filled with color or shading, representing " +
             "the cumulative value of numerical data over time. It is used for visualizing how one or more numerical quantities grow or decline over time or another continuous interval. " +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): SAME AS LINE GRAPH BUT INCLUDE AT LEAST 2 NUMERICAL COLUMNS IN ADDITION TO ONE TEMPORAL COLUMN");
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE AT LEAST 2 COLUMNS consisting of 1 OR MORE NUMERICAL COLUMNS AND ALWAYS 1 TEMPORAL COLUMN." +
+            "AVOID USING OVER LINE GRAPH IF ACCUMULATION OF THE VARIABLE(S) IS NOT MEANINGFUL");
 
     /*
     STATISTICS_CARD("STATISTICS_CARD", "A compact display including essential statistics for columns. " +
