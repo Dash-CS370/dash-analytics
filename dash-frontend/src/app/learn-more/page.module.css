@@ -1,0 +1,57 @@
+.container {
+    font-family: 'Colfax';
+    width: 88%;
+    height: 100vh;
+    display: flex;
+    background-color: var(--background);
+    justify-content: space-between;
+    margin-left: 12%;
+}
+
+.section1 {
+    color: var(--on-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23%;
+    margin-bottom: 60px;
+}
+.section2 {
+    color: var(--on-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 21%;
+    margin-right: -120px;
+}
+
+.section3 {
+    color: var(--on-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 23%;
+    margin-left: 90px;
+    margin-bottom: 60px;
+}
+
+.section4 {
+    color: var(--on-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 22%;
+    margin-right: 28px;
+}
+
+.firstImage {
+    margin-left: 70px;
+    height: 80%;
+    width: 110%;
+    margin-top: 40px;
+}
+
+.secondImage {
+    height: 70%;
+    width: 80%;
+}

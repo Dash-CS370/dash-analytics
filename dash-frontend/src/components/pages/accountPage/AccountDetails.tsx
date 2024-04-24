@@ -25,6 +25,7 @@ export const AccountDetails: FC = () => {
         creationDate: '',
     });
 
+    // fetch account details
     fetch('https://dash-analytics.solutions/api/v1/user/profile', {
         method: 'GET',
         headers: {
@@ -54,11 +55,18 @@ export const AccountDetails: FC = () => {
             console.error(`Error fetching user details: ${error}`);
         });
 
-    const testData = [{ bgcolor: '#6a1b9a', completed: 60 }];
+    // handle editing password
+    const [isEditingPass, stIsEditingPass] = useState(false);
+    const editPassword = () => {
+        // toggle to true, which triggers a popup that accepts new pass & confirm
+    };
 
     const [completed, setCompleted] = useState(0);
-
+    const [primary, setPrimary] = useState('');
     useEffect(() => {
+        const rootStyle = getComputedStyle(document.documentElement);
+        setPrimary(rootStyle.getPropertyValue('--primary'));
+
         const interval = setInterval(() => {
             setCompleted(Math.floor(Math.random() * 100) + 1);
         }, 2000);
@@ -78,6 +86,7 @@ export const AccountDetails: FC = () => {
             <div className={styles.infoContainer}>
                 <div className={styles.section}>
                     <h1>Account Details</h1>
+                    {/* Add Edit Icon */}
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Name</h5>
@@ -117,20 +126,16 @@ export const AccountDetails: FC = () => {
                             <h5>Credit Usage:</h5>
                         </div>
                         <div className={styles.info}>
-                            {userDetails.credits} / 100 used
+                            {userDetails.credits} / 100 remaining
                         </div>
                     </div>
                     <div className={styles.info1}>
                         <div className={styles.BarWrapperContainer}>
                             <div className={styles.BarWrapper}>
-                                {testData.map((item, index) => (
-                                    <ProgressBar
-                                        // className={styles.bar}
-                                        key={index}
-                                        bgcolor={item.bgcolor}
-                                        completed={item.completed}
-                                    />
-                                ))}
+                                <ProgressBar
+                                    bgcolor={primary}
+                                    completed={userDetails.credits}
+                                />
                             </div>
                             <div className={styles.creditRequestContainer}>
                                 <textarea
