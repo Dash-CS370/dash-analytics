@@ -16,7 +16,6 @@ interface WidgetCardProps {
     expanded?: boolean;
     onExpand: () => void;
     onTogglePin: () => void;
-    onEditTitle: (id: string, newTitle: string) => void;
     children: React.ReactNode;
 }
 
@@ -28,12 +27,8 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     expanded = false,
     onExpand,
     onTogglePin,
-    onEditTitle,
     children,
 }) => {
-    const [editingName, setEditingName] = React.useState(false);
-    const [newName, setNewName] = React.useState(title);
-
     const [info, setInfo] = React.useState(false);
     const handleInfoClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -46,34 +41,6 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
         onTogglePin();
     };
 
-    const handleEditClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setEditingName(true);
-    };
-
-    const handleCheckClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-
-        console.log('id:', id);
-        console.log('newName:', newName);
-
-        onEditTitle(id, newName);
-        setEditingName(false);
-    };
-
-    const handleEnterForWidgetTitle = (
-        e: React.KeyboardEvent<HTMLInputElement>,
-    ) => {
-        e.stopPropagation();
-        if (e.key === 'Enter') {
-            console.log('id:', id);
-            console.log('newName:', newName);
-
-            onEditTitle(id, newName);
-            setEditingName(false);
-        }
-    };
-
     const cardClassName = `${styles.widgetCard} ${
         expanded ? styles.expanded : styles.default
     }`;
@@ -81,38 +48,13 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     return (
         <div className={cardClassName}>
             <div className={styles.widgetCardHeader}>
-                {editingName ? (
-                    <div className={styles.widgetTitle}>
-                        <input
-                            type="text"
-                            value={newName}
-                            onKeyDown={handleEnterForWidgetTitle}
-                            onChange={(e) => setNewName(e.target.value)}
-                            className={styles.editInput}
-                            onClick={(e: React.MouseEvent) =>
-                                e.stopPropagation()
-                            }
-                        />
-                        <FiCheck
-                            className={styles.icon}
-                            onClick={handleCheckClick}
-                        />
-                    </div>
-                ) : (
-                    <div
-                        className={`${styles.widgetTitle} ${
-                            expanded ? styles.expandedTitle : ''
-                        }`}
-                    >
-                        <h1>{newName}</h1>
-                        {!expanded && (
-                            <CiEdit
-                                className={styles.icon}
-                                // onClick={handleEditClick}
-                            />
-                        )}
-                    </div>
-                )}
+                <div
+                    className={`${styles.widgetTitle} ${
+                        expanded ? styles.expandedTitle : ''
+                    }`}
+                >
+                    <h1>{title}</h1>
+                </div>
                 <div className={styles.widgetHeaderButtons}>
                     <IoMdInformationCircleOutline
                         className={styles.icon}
