@@ -50,7 +50,6 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
             expanded={isExpanded}
             onExpand={onExpand}
             onTogglePin={onTogglePin}
-            onEditTitle={onEditTitle}
         >
             <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart

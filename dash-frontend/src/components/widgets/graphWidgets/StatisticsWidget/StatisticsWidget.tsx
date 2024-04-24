@@ -10,7 +10,6 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
     isExpanded = false,
     onExpand = () => {},
     onTogglePin = () => {},
-    onEditTitle = () => {},
 }) => {
     const tempStats = {
         mean: 0,
@@ -28,7 +27,6 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
             expanded={isExpanded}
             onExpand={onExpand}
             onTogglePin={onTogglePin}
-            onEditTitle={onEditTitle}
         >
             <div
                 className={`${styles.statsGrid} ${
