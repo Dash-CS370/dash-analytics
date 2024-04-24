@@ -19,6 +19,7 @@
     color: var(--on-background);
     padding: 1rem;
     background-color: var(--background-contrast);
+    overflow: hidden;
 }
 
 .stat.expanded {
@@ -28,4 +29,34 @@
 .stat.expanded > p,
 .stat.expanded > h3 {
     font-size: 1.5rem;
+}
+
+.categoricalGrid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: auto;
+}
+
+.categoricalStat {
+    width: 100%;
+    height: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0.25rem 0;
+}
+
+.categoricalStat > h3 {
+    font-size: 1.2em;
+    color: var(--on-background);
+    justify-self: center;
+}
+
+.categoricalStat > p {
+    font-size: 1em;
+    color: var(--on-background);
+    justify-self: center;
 }

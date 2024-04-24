@@ -84,6 +84,30 @@ const exampleScatterData = [
     },
 ];
 
+const exampleStatData = [
+    {
+        uv: 4000,
+    },
+    {
+        uv: 3000,
+    },
+    {
+        uv: 2000,
+    },
+    {
+        uv: 2780,
+    },
+    {
+        uv: 1890,
+    },
+    {
+        uv: 2390,
+    },
+    {
+        uv: 3490,
+    },
+];
+
 const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Example 1',
@@ -110,16 +134,16 @@ const exampleConfigs: WidgetConfig[] = [
         pinned: true,
         columns: ['name', 'uv', 'pv', 'amt'],
         data: exampleLineData,
-        description: 'Line graph of example data.',
+        description: 'Area chart of example data.',
     },
     {
         title: 'Example 4',
         id: '4',
         graphType: 'STATS_CARD',
         pinned: true,
-        columns: ['uv', 'pv'],
-        data: exampleScatterData,
-        description: 'Bar graph of example data.',
+        columns: ['uv'],
+        data: exampleStatData,
+        description: 'Statistics card of example data.',
     },
     {
         title: 'Example 5',
