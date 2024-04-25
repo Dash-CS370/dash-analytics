@@ -44,8 +44,13 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
             ['median', '-'],
             ['high', '-'],
             ['low', '-'],
+            ['mean', '-'],
+            ['median', '-'],
+            ['high', '-'],
+            ['low', '-'],
         ];
         setStats(tempCategoricalStats);
+        setIsNumerical(false);
     }, []);
 
     if (isNumerical) {
@@ -117,6 +122,9 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
                         {stats.map((stat, index) => (
                             <div key={index} className={styles.categoricalStat}>
                                 <h3>{stat[0]}</h3>
+                                <div
+                                    className={styles.categoricalStatDivider}
+                                />
                                 <p>{stat[1]}</p>
                             </div>
                         ))}
