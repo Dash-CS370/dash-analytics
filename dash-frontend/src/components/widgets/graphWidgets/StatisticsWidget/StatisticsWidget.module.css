@@ -87,7 +87,8 @@
 }
 
 .thumbnailContainer > h3 {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    text-align: center;
     transform: translateY(-0.5rem);
     color: var(--on-background);
 }
