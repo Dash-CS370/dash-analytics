@@ -10,7 +10,7 @@ public enum GraphType {
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE AT LEAST 2 COLUMNS consisting of 1 OR MORE NUMERICAL COLUMNS AND ALWAYS 1 TEMPORAL COLUMN."),
 
     BAR_GRAPH("BAR_GRAPH", "A chart that represents categorical data with rectangular bars with heights or lengths proportional to " +
-            "the numerical values they represent. Versatile for comparing numerical quantities across different categories, even over time if categories are ordered chronologically. " +
+            "the numerical values they represent. Versatile for comparing numerical quantities across different categories." +
             "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL."),
 
     SCATTER_PLOT("SCATTER_PLOT", "A graph that uses dots to represent values obtained for two different numerical variables, showing " +
