@@ -7,7 +7,6 @@ import com.Dash.Dashboard.Services.PasswordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -37,7 +36,6 @@ public class PasswordServiceImpl implements PasswordService {
                                @Qualifier("userMongoTemplate") MongoTemplate userDAO,
                                PasswordEncoder passwordEncoder,
                                EmailService emailService) {
-
         this.passwordResetTokenDAO = passwordResetTokenDAO;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
@@ -90,7 +88,6 @@ public class PasswordServiceImpl implements PasswordService {
 
 
 
-
     /**
      *
      * @param resetPasswordKey
@@ -103,7 +100,6 @@ public class PasswordServiceImpl implements PasswordService {
 
         return passwordResetToken.isPresent() && !hasExpired(passwordResetToken.get()) ? passwordResetToken : Optional.empty();
     }
-
 
 
 
@@ -128,8 +124,7 @@ public class PasswordServiceImpl implements PasswordService {
         Update update = new Update().set("password", passwordEncoder.encode(newPassword));
 
         if (userDAO.updateFirst(query, update, User.class).wasAcknowledged()) {
-            return new ResponseEntity<>(
-                    "Password reset successfully, redirecting to www.dash-analytics.com/home...", HttpStatus.OK);
+            return new ResponseEntity<>("Password reset successfully, redirecting to www.dash-analytics.com/home...", HttpStatus.OK);
         }
 
         return new ResponseEntity<>("Request could not be complete at this time... " , HttpStatus.INTERNAL_SERVER_ERROR);
@@ -139,9 +134,7 @@ public class PasswordServiceImpl implements PasswordService {
 
 
     /**
-     *
-     *  Utility methods (blocking)
-     *
+     *  Utility methods
      */
     private String regeneratePasswordResetToken(String userId) {
 
@@ -161,30 +154,13 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
 
-
-    /**
-     * @param passwordResetToken
-     * @return
-     */
-    private boolean hasExpired(PasswordResetToken passwordResetToken) {
-        final Calendar cal = Calendar.getInstance();
-        return (passwordResetToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0;
-    }
-
-
-
-    /**
-     * @param email
-     * @param passwordResetKey
-     * @return
-     */
     public String sendPasswordResetEmail(String email, String passwordResetKey) {
         try {
             final String resetPasswordUrl = "https://dash-analytics.solutions/api/v1/password/verify?reset-token=" + passwordResetKey;
 
             final Map<String, Object> model = Map.of("resetPasswordUrl", resetPasswordUrl);
 
-            emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3); // TODO FIX IN TEMPLATE
+            emailService.sendEmailWithRetries(email, model, "password_reset_email_template.ftl", 3);
 
             log.info("Password reset key was successfully sent to " + email);
 
@@ -194,6 +170,12 @@ public class PasswordServiceImpl implements PasswordService {
             log.warn("Password reset key could not be sent at the moment to " + email, e);
             return "";
         }
+    }
+
+
+    private boolean hasExpired(PasswordResetToken passwordResetToken) {
+        final Calendar cal = Calendar.getInstance();
+        return (passwordResetToken.getExpirationDate().getTime() - cal.getTime().getTime()) <= 0;
     }
 
 

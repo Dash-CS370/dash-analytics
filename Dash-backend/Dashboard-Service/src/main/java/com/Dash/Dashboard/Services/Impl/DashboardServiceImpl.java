@@ -53,7 +53,8 @@ public class DashboardServiceImpl implements DashboardService {
         final String userAccount = extractUserDetails(oauth2User);
 
         // Encode url with username
-        final String resourceUrl = UriComponentsBuilder.fromUriString("http://dash-resource-server:8081/api/v1/resources/projects/{userAccount}")
+        final String resourceUrl = UriComponentsBuilder.
+                fromUriString("http://dash-resource-server:8081/api/v1/resources/projects/{userAccount}")
                 .buildAndExpand(userAccount).toUriString();
 
         // Hit Resource Server
@@ -91,7 +92,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .projectConfigLink(projectKey.concat("/").concat(projectId.concat(".json")))
                 .projectCsvLink(projectKey.concat("/").concat(projectId.concat(".csv")))
                 .datasetDescription(datasetDescription).widgets(new ArrayList<>())
-                .columnDescriptions(Arrays.asList(columnDescriptions.split(">"))) // FIXME
+                .columnDescriptions(Arrays.asList(columnDescriptions.split(">")))
                 .creationDate(getCurrentDate())
                 .build();
 
@@ -155,7 +156,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         final String deleteProjectUrl = UriComponentsBuilder
                 .fromUriString("http://dash-resource-server:8081/api/v1/resources/project")
-                .queryParam("user-id", userAccount)
+                .queryParam("user-account", userAccount)
                 .queryParam("project-id", projectId)
                 .toUriString();
 
@@ -171,7 +172,9 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     /**
+     *
      *  Utility methods
+     *
      */
 
     public void verifyUserCreditCount(String userEmail) throws NotEnoughCreditsException {

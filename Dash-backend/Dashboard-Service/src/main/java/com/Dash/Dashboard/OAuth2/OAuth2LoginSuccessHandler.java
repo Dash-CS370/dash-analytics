@@ -28,18 +28,16 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     }
 
 
-
-
     /**
      * This method is called when authentication succeeds, allowing for additional actions
-     * such as event triggering and redirection to a default success URL to capture the authenticated session and related cookies.
+     * such as event triggering and redirection to a default success URL, persisting the authenticated session.
      *
      * @param request The HTTP request during authentication.
      * @param response The HTTP response for redirection.
      * @param authentication The successful authentication object.
      * @throws ServletException If an error occurs during the servlet operation.
      * @throws IOException If an I/O error occurs during redirection.
-     * @throws UserAlreadyExistsException If the user attempting to authenticate already exists in a conflicting manner.
+     * @throws UserAlreadyExistsException If the user's account email is already associated with another account
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

@@ -24,7 +24,6 @@ public class SecurityConfig {
             .cors().disable()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/swagger-ui/**").permitAll() // TODO REMOVE
             .antMatchers("/auth/**").permitAll() // Public access
             .antMatchers("/api/v1/password/**").permitAll()
             .antMatchers("/api/v1/user/**").authenticated()

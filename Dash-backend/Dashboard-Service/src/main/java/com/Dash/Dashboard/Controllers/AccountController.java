@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
@@ -57,17 +59,17 @@ public class AccountController {
     /**
      * Reset password logic for user after authentication and session initialization.
      *
-     * @param userId The ID of the user whose password is being updated.
+     * @param oauth2User The user whose password is being updated.
      * @param passwordMap A map containing the old and new passwords.
      * @return ResponseEntity indicating the success or failure of the password update.
      */
-    @PostMapping("/update-password/{userId}")
-    public ResponseEntity<String> updatePassword(@PathVariable String userId, @RequestBody Map<String, String> passwordMap) {
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@AuthenticationPrincipal OAuth2User oauth2User, @RequestBody Map<String, String> passwordMap) {
         try {
             final String oldPassword = passwordMap.get("old-password");
             final String newPassword = passwordMap.get("new-password");
 
-            if (accountService.updateUserPassword(userId, oldPassword, newPassword)) {
+            if (accountService.updateUserPassword(oauth2User, oldPassword, newPassword)) {
                 return ResponseEntity.ok("Password updated successfully");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update password");
@@ -84,13 +86,15 @@ public class AccountController {
     /**
      * Deletes a user account from a signed-in context / authenticated session.
      *
-     * @param id The ID of the user to be deleted.
+     * @param oauth2User The account email of the user to be deleted.
      * @return ResponseEntity indicating the success or failure of the account deletion.
      */
     @DeleteMapping("/account")
-    public ResponseEntity<String> deleteUserAccount(@RequestParam String id) {
+    public ResponseEntity<String> deleteUserAccount(@RegisteredOAuth2AuthorizedClient("resource-access-client")
+                                                    OAuth2AuthorizedClient authorizedClient,
+                                                    @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            Optional<String> deletionConfirmation = accountService.deleteUserById(id);
+            Optional<String> deletionConfirmation = accountService.deleteUserById(authorizedClient, oauth2User);
 
             return deletionConfirmation.map(projects -> ResponseEntity.ok().body("Successfully deleted"))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));

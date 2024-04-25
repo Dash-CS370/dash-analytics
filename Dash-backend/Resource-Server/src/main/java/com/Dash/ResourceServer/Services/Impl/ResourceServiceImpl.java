@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,7 +97,7 @@ public class ResourceServiceImpl implements ResourceService {
             csvMetaData.setContentLength(csvByteArray.length);
             amazonS3Client.putObject(new PutObjectRequest(BUCKET, csvFileLocation, csvStream, csvMetaData));
 
-            // Upload Json
+            // Upload JSON
             final String jsonFileLocation = projectConfig.getProjectConfigLink();
             ObjectMetadata jsonMetaData = new ObjectMetadata();
             jsonMetaData.setContentLength(jsonString.getBytes().length);
@@ -136,15 +135,15 @@ public class ResourceServiceImpl implements ResourceService {
 
 
 
-
     /**
      *
+     * @param userAccount
      * @param projectId
      * @return
      * @throws SdkClientException
      */
-    public Optional<String> deleteProject(String userId, String projectId) throws SdkClientException {
-        final String projectKey = userId.concat("/project-").concat(projectId).concat("/");
+    public Optional<String> deleteProject(String userAccount, String projectId) throws SdkClientException {
+        final String projectKey = userAccount.concat("/project-").concat(projectId).concat("/");
         final String configKey = projectKey.concat(projectId + ".json");
         final String csvKey = projectKey.concat(projectId + ".csv");
 
@@ -164,11 +163,11 @@ public class ResourceServiceImpl implements ResourceService {
 
     /**
      *
-     * @param userId
+     * @param userAccount
      * @throws SdkClientException
      */
-    public Optional<String> deleteAllUserResources(String userId) throws SdkClientException {
-        ListObjectsV2Request listReq = new ListObjectsV2Request().withBucketName(BUCKET).withPrefix(userId + "/");
+    public Optional<String> deleteAllUserResources(String userAccount) throws SdkClientException {
+        ListObjectsV2Request listReq = new ListObjectsV2Request().withBucketName(BUCKET).withPrefix(userAccount + "/");
         ListObjectsV2Result listRes;
 
         do {
@@ -182,9 +181,9 @@ public class ResourceServiceImpl implements ResourceService {
 
         } while (listRes.isTruncated());
 
-        log.warn("Deleted all files in directory: " + userId + "/");
+        log.warn("Deleted all files in directory: " + userAccount + "/");
 
-        return Optional.of(userId);
+        return Optional.of(userAccount);
     }
 
 

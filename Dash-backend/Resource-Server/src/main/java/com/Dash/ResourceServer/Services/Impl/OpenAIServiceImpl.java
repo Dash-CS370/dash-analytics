@@ -29,7 +29,6 @@ public class OpenAIServiceImpl implements OpenAIService {
     @Value("${openai.model.version}")
     private String MODEL;
 
-
     public Optional<List<Widget>> generateWidgetConfigs(String datasetDescription, List<String> columnDescriptions) {
 
         final OpenAIClient openAIClient = new OpenAIClientBuilder().credential(new KeyCredential(secretKey)).buildClient();
@@ -46,7 +45,7 @@ public class OpenAIServiceImpl implements OpenAIService {
         chatMessages.add(new ChatRequestSystemMessage("When crafting widgets, carefully select graph types and data operations that" +
                 " match your dataset's column categories: NUMERICAL, TEMPORAL, CATEGORICAL, and IDENTIFIER. For 'LINE_GRAPH', ensure there's at" +
                 " least one TEMPORAL and ONE OR MORE NUMERICAL columns to depict time-based changes or relationships. Avoid using 'LINE_GRAPH' without TEMPORAL" +
-                " data. 'BAR_GRAPH' REQUIRES 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and AT LEAST 1 NUMERICAL column for values. Avoid using 'BAR_GRAPH' WITHOUT CATEGORICAL data." +
+                " data. 'BAR_GRAPH' REQUIRES 2 COLUMNS AT LEAST, 1 CATEGORICAL column for labels and AT LEAST 1 or MORE NUMERICAL column for values. Avoid using 'BAR_GRAPH' WITHOUT CATEGORICAL data." +
                 " Lastly, avoid nonsensical widgets by ensuring column types align with the graph's intended analysis, such as not using 'LINE_GRAPH' for non-temporal data." +
                 " Always align your data with the graph type and operations for insightful visualizations. DO NOT GENERATE YOUR OWN GRAPH TYPES OR DATA OPERATIONS AND" +
                 " ONLY ADD GRAPHS THAT MAKE SENSE GIVEN THE USER CONTEXT, IT IS BETTER TO HAVE FEWER GRAPHS THAN GRAPHS THAT AREN'T USEFUL."));
