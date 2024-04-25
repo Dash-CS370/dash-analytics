@@ -39,6 +39,8 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
 
     const data = processAndSliceDF(config.data, 1500, 1);
 
+    const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
     return (
         <WidgetCard
             title={config.title}
@@ -60,7 +62,7 @@ export const LineGraphWidget: React.FC<BaseGraphProps> = ({
                             key={key}
                             type="monotone"
                             dataKey={key}
-                            stroke={colors[i % colors.length]}
+                            stroke={randomColor()}
                             dot={false}
                         />
                     ))}
