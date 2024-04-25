@@ -30,6 +30,7 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
         let series = df.column(config.columns[0]);
         let stats = generateStatsCard(series);
         setStats(stats);
+        console.log(stats); // remove
 
         if (stats.length == 4) {
             setIsNumerical(true);
