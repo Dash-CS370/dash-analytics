@@ -1,7 +1,6 @@
 import * as dfd from 'danfojs';
 
 // When a Bar Graph widget is to be generated, this is called to prepare the data
-
 export function generateBarChart(dataframe: dfd.DataFrame): any {
 
     // Find index of the one (only) categorical column
