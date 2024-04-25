@@ -1,57 +1,131 @@
-.container {
-    font-family: 'Colfax';
-    width: 88%;
-    height: 100vh;
+.main {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
     background-color: var(--background);
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    padding: 1rem 1.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    margin-left: 12%;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.section1 {
-    color: var(--on-background);
+.dash {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navLink {
+    font-size: 1.1em;
+}
+
+.navLink:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-underline-offset: 0.5em;
+}
+
+.body {
+    width: 100%;
+    height: calc(100% - var(--navbar-height));
+    top: var(--navbar-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+}
+
+.splitSection {
+    width: 100%;
+    height: 300px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background-color: var(--on-background);
+    color: var(--background);
+}
+
+.textSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcomeText {
+    font-size: 50px;
+    font-weight: bold;
+    align-self: center;
+}
+
+.subText {
+    margin: 1rem 0;
+    font-size: 19px;
+    font-style: italic;
+}
+
+.imageContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 23%;
-    margin-bottom: 60px;
+    width: 100%;
+    height: 100%;
 }
-.section2 {
-    color: var(--on-background);
+
+.image {
+    width: 250px;
+    height: 250px;
+}
+
+.divider {
+    width: 100%;
+    height: 20px;
+    background-color: var(--primary);
+}
+
+/* What is DASH - Explanation */
+
+.whatIs {
+    margin-top: 2rem;
+    background-color: var(--primary);
+    width: 58%;
+    height: 150px;
+    border-radius: 24px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    width: 21%;
-    margin-right: -120px;
 }
 
-.section3 {
-    color: var(--on-background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 23%;
-    margin-left: 90px;
-    margin-bottom: 60px;
+.whatIsText {
+    margin-top: 0.75rem;
+    font-size: 25px;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
 }
 
-.section4 {
-    color: var(--on-background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 22%;
-    margin-right: 28px;
+.whatIsSubText {
+    margin-top: 1rem;
+    text-align: center;
+    width: 90%;
+    height: 90%;
 }
 
-.firstImage {
-    margin-left: 70px;
-    height: 80%;
-    width: 110%;
-    margin-top: 40px;
-}
+/* How to Guide */
 
-.secondImage {
-    height: 70%;
-    width: 80%;
+.howToBox {
 }

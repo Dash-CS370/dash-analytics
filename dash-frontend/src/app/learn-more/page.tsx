@@ -1,47 +1,67 @@
-import styles from './page.module.css';
-import { NavBar } from '@/components/common/NavBar';
+import styles from '@/app/learn-more/page.module.css';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // Change Default NavBar?
 
 export default function LearnMore() {
     return (
-        <div className={styles.container}>
-            <NavBar connected={true} />
-            <section className={`${styles.section} ${styles.section1}`}>
-                <img
-                    src="/images/image4.jpg"
-                    className={`${styles.image} ${styles.firstImage}`}
-                    alt="Image 1"
-                ></img>
-            </section>
-            <section className={`${styles.section} ${styles.section2}`}>
-                In the first section, upload your CSV file by either dragging
-                and dropping it into the designated area or using the
-                traditional file upload method to select your dataset from your
-                device. Next, assign a name to your project that reflects its
-                content or purpose. In the third section, describe your project
-                with a brief narrative, such as "a dataset about air quality,"
-                to provide context and insights into the nature of your data.
-                These simple steps will set the foundation for your data
-                analysis journey with Dash Analytics, streamlining the process
-                from data upload to insightful visualization.
-            </section>
-            <section className={`${styles.section} ${styles.section3}`}>
-                <img
-                    src="/images/image5.jpg"
-                    className={`${styles.image} ${styles.secondImage}`}
-                    alt="Image 2"
-                ></img>
-            </section>
-            <section className={`${styles.section} ${styles.section4}`}>
-                By clicking next, you will enter a section where we have each
-                column and their datatype of your dataset prepared for you, and
-                you need to describe them. In the example provided here, you can
-                type "date", "daily PM10 level range 0.001 - 0.3mm","Humidity of
-                the day range from 20% - 93%", "daily temperature range 65 - 93
-                Fahrenheit" respectively into these input boxes to help our
-                model better interpret your data for a more accurate result.
-            </section>
-        </div>
+        <main className={styles.main}>
+            {/* <NavBar> */}
+            <div className={styles.nav}>
+                <Link className={styles.dash} href="/">
+                    <Image
+                        src="/assets/Dash.svg"
+                        alt="Dash"
+                        width="85"
+                        height="40"
+                    />
+                </Link>
+                <Link className={styles.navLink} href="/start">
+                    Get Started
+                </Link>
+            </div>
+
+            {/* Header Box - Welcome Text */}
+            <div className={styles.body}>
+                <div className={styles.divider} />
+                <div className={styles.splitSection}>
+                    <div className={styles.textSide}>
+                        <h1 className={styles.welcomeText}>
+                            Welcome to DASH Analytics
+                        </h1>
+                        <p className={styles.subText}>
+                            Data Visualization Made Easy Harnessing the Power of
+                            AI
+                        </p>
+                    </div>
+                    <div className={styles.imageContainer}>
+                        <Image
+                            src="/assets/DashLogo.svg"
+                            className={styles.image}
+                            alt="Dash"
+                            width={100}
+                            height={100}
+                        />
+                    </div>
+                </div>
+                <div className={styles.divider} />
+                {/* What is DASH - Explanation */}
+                <div className={styles.whatIs}>
+                    <div className={styles.whatIsText}>
+                        What is DASH Analytics?
+                    </div>
+                    <div className={styles.whatIsSubText}>
+                        DASH Analytics is a platform that allows users to
+                        harness the power of Artificial Intelligence for precise
+                        data analysis. Our solution effortlessly creates
+                        relevant graphs, providing profound insights into your
+                        data at the click of a button.
+                    </div>
+                </div>
+                {/* How To Guide */}
+                <div className={styles.howTo}></div>
+            </div>
+        </main>
     );
 }

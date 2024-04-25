@@ -24,7 +24,7 @@ export default function Home() {
                     </PrimaryButton>
 
                     <PrimaryButton
-                        /* add href */
+                        href="/learn-more"
                         className={styles.btns}
                         width="200px"
                         height="50px"
