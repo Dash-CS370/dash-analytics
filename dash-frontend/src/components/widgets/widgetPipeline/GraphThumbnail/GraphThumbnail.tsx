@@ -32,7 +32,7 @@ export const GraphThumbnail: React.FC<GraphThumbnailProps> = ({
                 />
                 <div className={styles.infoContainer}>
                     <h3>{title}</h3>
-                    <p>{description}</p>
+                    {/* <p>{description}</p> */}
                 </div>
             </div>
         );

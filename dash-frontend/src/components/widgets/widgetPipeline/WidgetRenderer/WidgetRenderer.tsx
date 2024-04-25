@@ -54,7 +54,7 @@ const renderWidget = (
                     onEditTitle={() => {}}
                 />
             );
-        case 'STATS_CARD':
+        case 'STATISTICS_CARD':
             return (
                 <StatisticsWidget
                     config={config}

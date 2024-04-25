@@ -9,6 +9,7 @@ import {
     ScatterChart,
     XAxis,
     YAxis,
+    ZAxis,
 } from 'recharts';
 import { processAndSliceDF } from '@/components/dataPipeline/dataOperations/smoothData';
 
@@ -48,7 +49,12 @@ export const ScatterPlotThumbnail: React.FC<BaseThumbnailProps> = ({
                 >
                     <XAxis type="number" dataKey={keys[0]} tick={false} />
                     <YAxis type="number" dataKey={keys[1]} tick={false} />
-                    <Scatter data={slicedData} fill={colors[0]} />
+                    <ZAxis range={[30, 31]} />
+                    <Scatter
+                        data={slicedData}
+                        fill={colors[0]}
+                        strokeWidth={1}
+                    />
                 </ScatterChart>
             </ResponsiveContainer>
         </GraphThumbnail>

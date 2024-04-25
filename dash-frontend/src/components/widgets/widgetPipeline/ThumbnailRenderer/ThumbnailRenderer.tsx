@@ -4,6 +4,7 @@ import { BarChartThumbnail } from '../../graphWidgets/BarChartWidget/BarChartThu
 import { LineGraphThumbnail } from '../../graphWidgets/LineGraphWidget/LineGraphThumbnail';
 import { AreaChartThumbnail } from '../../graphWidgets/AreaChartWidget/AreaChartThumbnail';
 import { ScatterPlotThumbnail } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotThumbnail';
+import { StatisticsThumbnail } from '../../graphWidgets/StatisticsWidget/StatisticsThumbnail';
 
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
     switch (config.graphType) {
@@ -37,6 +38,15 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
         case 'SCATTER_PLOT':
             return (
                 <ScatterPlotThumbnail
+                    title={config.title}
+                    description={'config.description'} // TODO: add description to config
+                    data={config.data}
+                    handleClick={handleClick}
+                />
+            );
+        case 'STATISTICS_CARD':
+            return (
+                <StatisticsThumbnail
                     title={config.title}
                     description={'config.description'} // TODO: add description to config
                     data={config.data}

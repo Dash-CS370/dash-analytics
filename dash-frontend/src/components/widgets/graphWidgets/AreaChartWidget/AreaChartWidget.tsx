@@ -12,15 +12,13 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { BaseGraphProps } from '../../WidgetTypes';
-import {DataFrame} from 'danfojs';
-import {processAndSliceDF} from "@/components/dataPipeline/dataOperations/smoothData";
+import { processAndSliceDF } from '@/components/dataPipeline/dataOperations/smoothData';
 
 export const AreaChartWidget: React.FC<BaseGraphProps> = ({
     config,
     isExpanded = false,
     onExpand = () => {},
     onTogglePin = () => {},
-    onEditTitle = () => {},
 }) => {
     const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
     const xDataKey = keys.length > 0 ? keys[0] : '';
@@ -35,7 +33,7 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
             rootStyle.getPropertyValue('--alternative'),
             'red',
             'blue',
-            'orange'
+            'orange',
         ]);
     }, []);
 
@@ -50,7 +48,6 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
             expanded={isExpanded}
             onExpand={onExpand}
             onTogglePin={onTogglePin}
-            onEditTitle={onEditTitle}
         >
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data} width={500} height={300}>

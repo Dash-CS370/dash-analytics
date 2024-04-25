@@ -55,6 +55,13 @@
 .buttonFormatTwo {
     border: var(--background) 1px solid !important;
     color: var(--background) !important;
+    background-color: white !important;
+}
+
+.buttonFormatTwo:hover {
+    background-color: transparent !important;
+    color: var(--background) !important;
+    transition: all 0.3s ease;
 }
 
 .createAccountOptsFormat {

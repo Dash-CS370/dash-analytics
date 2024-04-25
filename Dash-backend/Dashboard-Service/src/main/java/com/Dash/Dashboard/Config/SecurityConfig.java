@@ -22,11 +22,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf().disable()
             .cors().disable()
+            .csrf().disable()
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Public access
-            .antMatchers("/swagger-ui/**").permitAll() // TODO - REMOVE IN THE FUTURE
+            //.antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/api/v1/password/**").permitAll()
             .antMatchers("/api/v1/user/**").authenticated()
             .antMatchers("/api/v1/dashboards/**").authenticated()

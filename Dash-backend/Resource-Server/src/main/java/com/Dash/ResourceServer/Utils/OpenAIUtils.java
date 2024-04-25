@@ -122,10 +122,9 @@ public class OpenAIUtils {
                 .filter(widget -> widget.getDescription() != null && !widget.getDescription().isEmpty())
                 .filter(widget -> widget.getColumns() != null)
                 .filter(widget -> {
-                    boolean isMultiColumnWidget = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.AREA_CHART).contains(widget.getGraphType()) && widget.getColumns().size() >= 2;
-                    //boolean isSingleColumnWidget = List.of(GraphType.STATISTICS_CARD).contains(widget.getGraphType()) && widget.getColumns().size() >= 2;
-                    //return isMultiColumnGraph || isSingleColumnGraph;
-                    return isMultiColumnWidget;
+                    boolean isMultiColumnGraph = List.of(GraphType.LINE_GRAPH, GraphType.BAR_GRAPH, GraphType.SCATTER_PLOT, GraphType.AREA_CHART).contains(widget.getGraphType()) && widget.getColumns().size() >= 2;
+                    boolean isSingleColumnGraph = List.of(GraphType.STATISTICS_CARD).contains(widget.getGraphType()) && widget.getColumns().size() == 1;
+                    return isMultiColumnGraph || isSingleColumnGraph;
                 })
                 .collect(Collectors.toList());
 
