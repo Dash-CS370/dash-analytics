@@ -33,8 +33,10 @@ public class AccountController {
 
 
     /**
-     * @param oauth2User
-     * @return
+     * Retrieves user profile information after authentication and session initialization.
+     *
+     * @param oauth2User The authenticated OAuth2 user.
+     * @return ResponseEntity containing the user profile or an internal server error status.
      */
     @GetMapping("/profile")
     public ResponseEntity<User> getUserProfile(@AuthenticationPrincipal OAuth2User oauth2User) {
@@ -53,10 +55,11 @@ public class AccountController {
 
 
     /**
+     * Reset password logic for user after authentication and session initialization.
      *
-     * @param userId
-     * @param passwordMap
-     * @return
+     * @param userId The ID of the user whose password is being updated.
+     * @param passwordMap A map containing the old and new passwords.
+     * @return ResponseEntity indicating the success or failure of the password update.
      */
     @PostMapping("/update-password/{userId}")
     public ResponseEntity<String> updatePassword(@PathVariable String userId, @RequestBody Map<String, String> passwordMap) {
@@ -77,10 +80,12 @@ public class AccountController {
 
 
 
+
     /**
+     * Deletes a user account from a signed-in context / authenticated session.
      *
-     * @param id
-     * @return
+     * @param id The ID of the user to be deleted.
+     * @return ResponseEntity indicating the success or failure of the account deletion.
      */
     @DeleteMapping("/account")
     public ResponseEntity<String> deleteUserAccount(@RequestParam String id) {
@@ -97,14 +102,16 @@ public class AccountController {
 
 
 
+
     /**
+     * Logs the user out and clears the session and authentication context.
      *
-     * @param session
-     * @param request
-     * @param response
+     * @param session The current HTTP session.
+     * @param request The current HTTP request.
+     * @param response The HTTP response for redirecting or sending cookies.
      */
     @GetMapping("/logout")
-    public void testLogout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public void logUserOut(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         try {
 
             session.invalidate();
@@ -126,13 +133,12 @@ public class AccountController {
                 SecurityContextHolder.getContext().setAuthentication(null);
             }
 
-            response.sendRedirect("https://auth.dash-analytics.solutions/user/logout"); //FIXME
+            response.sendRedirect("https://auth.dash-analytics.solutions/user/logout");
 
         } catch (Exception e) {
             log.warn(e.getMessage());
         }
     }
-
 
 
 }

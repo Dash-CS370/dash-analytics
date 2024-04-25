@@ -20,13 +20,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
             .cors().disable()
             .csrf().disable()
             .authorizeRequests()
+            .antMatchers("/swagger-ui/**").permitAll() // TODO REMOVE
             .antMatchers("/auth/**").permitAll() // Public access
-            //.antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/api/v1/password/**").permitAll()
             .antMatchers("/api/v1/user/**").authenticated()
             .antMatchers("/api/v1/dashboards/**").authenticated()
@@ -39,7 +38,6 @@ public class SecurityConfig {
             .oauth2Client(Customizer.withDefaults())
             .logout().disable();
 
-
         return http.build();
     }
 
@@ -47,6 +45,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }

@@ -73,11 +73,10 @@ public class DashboardController {
 
 
     /**
-     * Handles the creation of a new project by processing provided project details and an optional CSV file.
+     * Handles the creation of a new project by processing provided project details and context referencing a CSV file.
      *
      * @param projectTitle The name of the project to be created.
      * @param datasetDescription A description of the project.
-     /
      * @param csvFile An optional CSV file containing project data.
      * @return ResponseEntity containing a {@link Project} object, or an appropriate HTTP status code in case of errors or empty data.
      */
@@ -96,7 +95,7 @@ public class DashboardController {
                                                                                       datasetDescription, columnDescriptions, csvFile);
 
             if (generatedProject.isPresent() && !generatedProject.get().getWidgets().isEmpty()) {
-                log.warn("New Project created AND returned...");
+                log.warn("New Project created and returned...");
                 return new ResponseEntity<>(generatedProject.get(), HttpStatus.CREATED);
             }
 
@@ -110,7 +109,6 @@ public class DashboardController {
            return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 
         } catch (JsonProcessingException e) {
-           // return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -119,6 +117,7 @@ public class DashboardController {
 
 
     /**
+     * Updates user's projects.
      *
      * @param projects List of projects that have been altered
      * @return ResponseEntity containing confirmation of request success
@@ -129,7 +128,7 @@ public class DashboardController {
                                                  OAuth2AuthorizedClient authorizedClient) {
         try {
 
-            log.info("Projects to be updated...");
+            log.info("Projects will be updated...");
 
             final Optional<Object> updateProjectsConfirmation = dashboardService.updateProjects(authorizedClient, projects);
 
@@ -149,6 +148,7 @@ public class DashboardController {
 
 
     /**
+     * Deletes a specified project.
      *
      * @param projectId Project identifier used to query and remove Object from S3
      * @return Object confirming deletion

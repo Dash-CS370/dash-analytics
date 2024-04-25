@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 
 @Configuration
-public class WebClientConfig  {
+public class WebClientConfig {
 
     @Bean
     @LoadBalanced
@@ -39,6 +39,5 @@ public class WebClientConfig  {
 
         return authorizedClientManager;
     }
-
 
 }

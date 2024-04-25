@@ -138,7 +138,7 @@ export default function NewAccount() {
                         Create Account
                     </PrimaryButton>
                     <p className={styles.warningFormat}>
-                        **By Creating an Account your are Agreeing to our{' '}
+                        By Creating an Account your are Agreeing to our{' '}
                         <a href="/terms-and-conditions">
                             Terms of Services & Privacy Policy
                         </a>
