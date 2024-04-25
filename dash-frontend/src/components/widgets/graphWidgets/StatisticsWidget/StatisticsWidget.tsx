@@ -25,7 +25,7 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
         React.useState<(string | number)[][]>(tempNumericalStats);
 
     useEffect(() => {
-        // assuming config.data is json with a signle col in each row
+        // assuming config.data is json with a single col in each row
         let df = new DataFrame(config.data);
         let series = df.column(config.columns[0]);
         let stats = generateStatsCard(series);
