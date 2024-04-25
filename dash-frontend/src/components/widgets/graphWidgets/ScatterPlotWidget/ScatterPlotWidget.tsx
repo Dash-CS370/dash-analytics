@@ -23,7 +23,6 @@ export const ScatterPlotWidget: React.FC<BaseGraphProps> = ({
     onEditTitle = () => {},
 }) => {
     const keys = config.data.length > 0 ? Object.keys(config.data[0]) : [];
-    console.log(keys);
 
     const [colors, setColors] = useState<string[]>([]);
 

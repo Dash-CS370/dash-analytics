@@ -3,7 +3,6 @@ import { Series } from 'danfojs';
 export function generateStatsCard(
     dataframe_column: Series,
 ): [string, string | number][] {
-
     // Categorical column
     if (dataframe_column.dtype == 'string') {
         try {
@@ -55,11 +54,6 @@ function analyzeCategoricalColumn(
 
 // takes in Series of numerical data, outputs dictionary of stats
 function analyzeNumericalColumn(numerical_column: Series): [string, number][] {
-    // Sort the numerical column to calculate quartiles
-    const sortedValues = numerical_column.sortValues({
-        ascending: true,
-    }).values;
-
     const mean = numerical_column.mean();
     const median = numerical_column.median();
     const min = numerical_column.min();
