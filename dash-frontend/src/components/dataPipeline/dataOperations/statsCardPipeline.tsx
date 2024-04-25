@@ -8,14 +8,14 @@ export function generateStatsCard(
         try {
             return analyzeCategoricalColumn(dataframe_column);
         } catch (error) {
-            console.error('Error calculating mean price:', error);
+            console.error('Error calculating numerical stats:', error);
         }
     } else {
         // Numerical column
         try {
             return analyzeNumericalColumn(dataframe_column);
         } catch (error) {
-            console.error('Error calculating:', error);
+            console.error('Error calculating categorical stats:', error);
             return [];
         }
     }
