@@ -37,9 +37,12 @@ export default function RequestAccess() {
         }
         setErrorMessage('');
 
-        fetch(`https://dash-analytics.solutions/auth/request-access?email=${email}`, {
-            method: 'GET',
-        })
+        fetch(
+            `https://dash-analytics.solutions/auth/request-access?email=${email}`,
+            {
+                method: 'GET',
+            },
+        )
             .then((response) => {
                 setAccessRequested(true);
             })
@@ -67,7 +70,11 @@ export default function RequestAccess() {
                                 an email with an activation key upon approval.
                             </p>
                         </div>
-                        <PrimaryButton href="/signin?activate=true" width="180px">
+                        <PrimaryButton
+                            href="/signin?activate=true"
+                            width="180px"
+                            className={styles.activateBtn}
+                        >
                             Activate Account
                         </PrimaryButton>
                     </BaseForm>
