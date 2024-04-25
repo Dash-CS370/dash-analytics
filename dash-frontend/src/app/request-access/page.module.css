@@ -81,3 +81,14 @@
     width: 80%;
     text-align: center;
 }
+
+.activateBtn {
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
+}
+
+.activateBtn:hover {
+    background-color: var(--form-color) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+}
