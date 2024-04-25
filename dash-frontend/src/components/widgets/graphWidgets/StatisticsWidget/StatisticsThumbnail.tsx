@@ -15,7 +15,7 @@ export const StatisticsThumbnail: React.FC<BaseThumbnailProps> = ({
             handleClick={handleClick}
         >
             <div className={styles.thumbnailContainer}>
-                <h3>{title}</h3>
+                <h3>Statistics Card</h3>
             </div>
         </GraphThumbnail>
     );
