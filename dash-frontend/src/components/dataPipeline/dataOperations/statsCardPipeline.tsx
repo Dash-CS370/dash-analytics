@@ -1,9 +1,9 @@
-import { DataItem } from '@/components/widgets/WidgetTypes';
 import { Series } from 'danfojs';
 
 export function generateStatsCard(
     dataframe_column: Series,
 ): [string, string | number][] {
+
     // Categorical column
     if (dataframe_column.dtype == 'string') {
         try {
@@ -24,7 +24,7 @@ export function generateStatsCard(
     return [];
 }
 
-// takes in Series of categorical data, outputs dictionary of percentages of whole
+// Takes in Series of categorical data, outputs dictionary of percentages of whole
 function analyzeCategoricalColumn(
     categorical_column: Series,
 ): [string, string][] {
@@ -64,17 +64,6 @@ function analyzeNumericalColumn(numerical_column: Series): [string, number][] {
     const median = numerical_column.median();
     const min = numerical_column.min();
     const max = numerical_column.max();
-
-    // Calculate quartiles
-    /*
-    const q1 = Number(sortedValues[Math.floor(sortedValues.length / 4)]); // First quartile
-    const q3 = Number(sortedValues[Math.ceil((sortedValues.length * 3) / 4)]); // Third quartile
-    const IQR : number = q3 - q1; // Interquartile range
-    const lowerBound = q1 - 1.5 * IQR; // Lower bound for outliers
-    const upperBound = q3 + 1.5 * IQR; // Upper bound for outliers
-    // @ts-ignore
-    const outliers = sortedValues.filter((v: number) => v < lowerBound || v > upperBound);
-    */
 
     return truncateNumbers([
         ['Mean', mean], //number
