@@ -25,12 +25,11 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
         React.useState<(string | number)[][]>(tempNumericalStats);
 
     useEffect(() => {
-        // assuming config.data is json with a signle col in each row
+        // assuming config.data is json with a single col in each row
         let df = new DataFrame(config.data);
         let series = df.column(config.columns[0]);
         let stats = generateStatsCard(series);
         setStats(stats);
-        console.log(stats); // TODO: remove
 
         if (stats.length == 4) {
             setIsNumerical(true);
@@ -78,7 +77,7 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
                             }`}
                         >
                             <h3>High</h3>
-                            <p>{stats[2][1]}</p>
+                            <p>{stats[3][1]}</p>
                         </div>
                         <div
                             className={`${styles.stat} ${
@@ -86,7 +85,7 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
                             }`}
                         >
                             <h3>Low</h3>
-                            <p>{stats[3][1]}</p>
+                            <p>{stats[2][1]}</p>
                         </div>
                     </div>
                 </div>

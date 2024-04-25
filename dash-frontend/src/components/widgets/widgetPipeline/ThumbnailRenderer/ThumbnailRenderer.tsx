@@ -44,7 +44,7 @@ const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
                     handleClick={handleClick}
                 />
             );
-        case 'STATS_CARD':
+        case 'STATISTICS_CARD':
             return (
                 <StatisticsThumbnail
                     title={config.title}

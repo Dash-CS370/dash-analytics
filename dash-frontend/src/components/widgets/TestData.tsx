@@ -1,4 +1,3 @@
-import { get } from 'http';
 import { ProjectConfig, WidgetConfig } from './WidgetTypes';
 
 const exampleLineData = [
@@ -139,7 +138,7 @@ const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Statistics Card for UV',
         id: '4',
-        graphType: 'STATS_CARD',
+        graphType: 'STATISTICS_CARD',
         pinned: true,
         columns: ['uv'],
         data: exampleStatData,

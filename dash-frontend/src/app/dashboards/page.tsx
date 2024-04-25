@@ -72,12 +72,11 @@ export default function Dashboards() {
                             }),
                         };
                     });
-
                     setProjects(localProjects);
                 }
             })
             .catch((error) => {
-                router.push('/start');
+                router.push("/start")
             });
 
         return () => {
