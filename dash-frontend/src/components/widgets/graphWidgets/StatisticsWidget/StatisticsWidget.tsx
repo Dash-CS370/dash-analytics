@@ -30,7 +30,7 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
         let series = df.column(config.columns[0]);
         let stats = generateStatsCard(series);
         setStats(stats);
-        console.log(stats); // remove
+        console.log(stats); // TODO: remove
 
         if (stats.length == 4) {
             setIsNumerical(true);
@@ -38,21 +38,6 @@ export const StatisticsWidget: React.FC<BaseGraphProps> = ({
             setIsNumerical(false);
         }
     }, [config.data, config.columns]);
-
-    useEffect(() => {
-        const tempCategoricalStats = [
-            ['mean', '-'],
-            ['median', '-'],
-            ['high', '-'],
-            ['low', '-'],
-            ['mean', '-'],
-            ['median', '-'],
-            ['high', '-'],
-            ['low', '-'],
-        ];
-        setStats(tempCategoricalStats);
-        setIsNumerical(false);
-    }, []);
 
     if (isNumerical) {
         return (
