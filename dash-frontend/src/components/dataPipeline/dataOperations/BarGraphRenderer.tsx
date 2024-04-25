@@ -6,7 +6,12 @@ import * as dfd from 'danfojs';
 // When a Bar Graph widget is to be generated, this is called to prepare the data
 export function generateBarChart(dataframe: dfd.DataFrame): any {
     try {
+
         const ctypes = (dataframe.ctypes as any) as { [key: string]: string };
+
+        for (let ctypesKey in ctypes) {
+            console.log(ctypesKey)
+        }
 
         // TODO - under construction
         // assert the DF has 2 columns
@@ -37,7 +42,7 @@ function mixedBarGraphDf(dataframe: dfd.DataFrame) {
 
 function homogenousBarGraph(dataframe: dfd.DataFrame) {
     const grouped = dataframe.groupby(["brand"]); // group by categorical column
-    // Choose operation to be performed (mean)
+    // Choose operation to be performed ()
     const averagesByCategories = grouped.col(["displacement"]).mean(); // select numerical col
     console.log(averagesByCategories);
 }
