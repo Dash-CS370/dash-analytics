@@ -1,4 +1,3 @@
-import { get } from 'http';
 import { ProjectConfig, WidgetConfig } from './WidgetTypes';
 
 const exampleLineData = [

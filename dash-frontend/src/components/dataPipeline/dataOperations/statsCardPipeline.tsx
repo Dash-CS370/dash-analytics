@@ -54,10 +54,18 @@ function analyzeCategoricalColumn(
 
 // takes in Series of numerical data, outputs dictionary of stats
 function analyzeNumericalColumn(numerical_column: Series): [string, number][] {
-    const mean = numerical_column.mean();
+    numerical_column.asType("float32", {inplace : true}  );
+    const mean = numerical_column.mean()
     const median = numerical_column.median();
     const min = numerical_column.min();
     const max = numerical_column.max();
+
+    console.log(truncateNumbers([
+        ['Mean', mean], //number
+        ['Median', median], //number
+        ['Min', min], //number
+        ['Max', max], //number
+    ]));
 
     return truncateNumbers([
         ['Mean', mean], //number
@@ -72,10 +80,10 @@ function truncateNumbers(numbers: [string, number][]): [string, number][] {
     return numbers.map((pair) => {
         const [label, num] = pair;
         let numStr = num.toString();
-        if (numStr.length > 8) {
+        if (numStr.length > 6) {
             // Truncate the number to the first six digits
             const offset = numStr[0] === '-' ? 1 : 0;
-            numStr = numStr.slice(0, 8 + offset);
+            numStr = numStr.slice(0, 6 + offset);
         }
         const truncatedNum = parseFloat(numStr);
         return [label, truncatedNum];
