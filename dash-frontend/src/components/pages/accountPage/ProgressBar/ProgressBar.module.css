@@ -18,7 +18,7 @@
 }
 
 .progressBarLabel {
-    padding: 90 90px;
+    padding-right: 15px;
     color: white;
     font-weight: bold;
 }

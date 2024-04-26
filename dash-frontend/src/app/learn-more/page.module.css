@@ -87,14 +87,20 @@
     height: 100%;
 }
 
+.dashImage {
+    width: 225px;
+    height: 225px;
+    margin: 25px 0;
+}
+
 .image {
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    height: auto;
 }
 
 .divider {
     width: 100%;
-    height: 20px;
+    height: 30px;
     background-color: var(--primary);
 }
 
@@ -104,7 +110,7 @@
     margin-top: 2rem;
     background-color: var(--primary);
     width: 58%;
-    height: 150px;
+    min-height: 32%;
     border-radius: 24px;
     display: flex;
     flex-direction: column;
@@ -127,5 +133,57 @@
 
 /* How to Guide */
 
-.howToBox {
+.guideText {
+    margin-top: 2rem;
+    font-size: 25px;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+}
+
+.splitSection.doubleSection {
+    height: 600px;
+}
+
+.splitSectionHowTo {
+    margin-top: 2rem;
+    width: 80%;
+    min-height: 60%;
+    border-radius: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--on-background);
+    color: var(--background);
+    gap: 5rem;
+}
+
+.textSideGuide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.imageContainerGuide {
+    gap: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.guideHeaderText {
+    margin-top: 1rem;
+    font-size: 30px;
+    font-weight: bold;
+    align-self: center;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+}
+
+.guideSubText {
+    margin-top: 1rem;
+    align-self: center;
+    justify-content: flex-start;
 }

@@ -2,7 +2,7 @@
 import React from 'react';
 import Styles from './ProgressBar.module.css';
 
-const ProgressBar = (props: { bgcolor: any; completed: any }) => {
+const ProgressBar = (props: { bgcolor: any; completed: number }) => {
     const { bgcolor, completed } = props;
 
     return (
@@ -11,9 +11,11 @@ const ProgressBar = (props: { bgcolor: any; completed: any }) => {
                 className={Styles.progressBarFiller}
                 style={{ width: `${completed}%`, backgroundColor: bgcolor }}
             >
-                <span className={Styles.progressBarLabel}>
-                    {`${completed}%`}
-                </span>
+                {completed > 9 && (
+                    <span className={Styles.progressBarLabel}>
+                        {`${completed}%`}
+                    </span>
+                )}
             </div>
         </div>
     );

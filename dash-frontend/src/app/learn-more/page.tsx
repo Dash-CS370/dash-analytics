@@ -38,7 +38,7 @@ export default function LearnMore() {
                     <div className={styles.imageContainer}>
                         <Image
                             src="/assets/DashLogo.svg"
-                            className={styles.image}
+                            className={styles.dashImage}
                             alt="Dash"
                             width={100}
                             height={100}
@@ -52,15 +52,77 @@ export default function LearnMore() {
                         What is DASH Analytics?
                     </div>
                     <div className={styles.whatIsSubText}>
-                        DASH Analytics is a platform that allows users to
-                        harness the power of Artificial Intelligence for precise
-                        data analysis. Our solution effortlessly creates
-                        relevant graphs, providing profound insights into your
-                        data at the click of a button.
+                        DASH Analytics is an innovative platform designed to
+                        streamline the data analysis process. Users can simply
+                        upload a CSV dataset along with brief descriptive
+                        narratives, and then sit back while our platform
+                        analyzes your data. Leveraging the power of GPT, our
+                        platform swiftly identifies data types and context,
+                        empowering advanced algorithms to produce insightful
+                        charts and visuals. This transformation of our users
+                        data into understandable insights facilitates informed
+                        decision-making for a diverse range of individuals, from
+                        everyday data enthusiasts all the way to business
+                        executives.
                     </div>
                 </div>
                 {/* How To Guide */}
-                <div className={styles.howTo}></div>
+                <div className={styles.guideText}>How To Use It</div>
+                <div className={styles.splitSectionHowTo}>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Getting Started
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
+                    <div className={styles.imageContainerGuide}>
+                        <Image
+                            src="/images/start-page.jpg"
+                            className={styles.image}
+                            alt="Start-Page"
+                            width={500}
+                            height={300}
+                        />
+                    </div>
+                </div>
+                <div className={styles.splitSectionHowTo}>
+                    <div className={styles.doubleImage}>
+                        <Image
+                            src="/images/new-dash.jpg"
+                            alt="Start-Page"
+                            width={500}
+                            height={300}
+                        />
+                        <Image
+                            src="/images/describe-data.jpg"
+                            alt="Start-Page"
+                            width={525}
+                            height={325}
+                        />
+                    </div>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Creating A New Dashboard
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
+                </div>
+                <div className={styles.splitSectionHowTo}>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Getting Started
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
+                    <div className={styles.imageContainerGuide}>
+                        <Image
+                            src="/images/ex-dash.jpg"
+                            alt="Start-Page"
+                            width={525}
+                            height={325}
+                        />
+                    </div>
+                </div>
             </div>
         </main>
     );
