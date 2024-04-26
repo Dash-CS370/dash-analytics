@@ -48,6 +48,27 @@ function preparedBarGraphDf(
     categorical_column: string,
     numerical_columns: string[],
 ) {
-    const grouped = dataframe.groupby([categorical_column]); // group by categorical column
-    return grouped.col(numerical_columns).mean(); // select numerical columns
+
+    console.log(dataframe.head(5));
+    for (const numerical_column of numerical_columns) {
+        dataframe.column(numerical_column).asType("float32", { inplace: true });
+    }
+    console.log(dataframe.head(5));
+
+    // Group by the categorical column and calculate the mean for the specified numerical columns
+    const grouped = dataframe.groupby([categorical_column]);
+    const mean_df = grouped.col(numerical_columns).mean();
+    mean_df.print()
+
+    // Rename the columns to remove the '_mean' suffix
+    const new_column_names: { [key: string]: string } = {}; // Explicit type declaration
+    console.log(mean_df.columns)
+    mean_df.columns.forEach(col => {
+        new_column_names[col] = col.replace("_mean", ""); // remove '_mean' suffix
+    });
+    console.log(mean_df.columns)
+
+    mean_df.rename(new_column_names, { inplace: true }); // apply the new names
+
+    return mean_df; // return the modified DataFrame
 }

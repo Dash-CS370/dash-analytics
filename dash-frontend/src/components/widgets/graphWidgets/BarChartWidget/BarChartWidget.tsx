@@ -14,6 +14,7 @@ import {
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { DataFrame, toJSON } from 'danfojs';
 import { generateBarChart } from '@/components/dataPipeline/dataOperations/BarChartRenderer';
+import {compileNonPath} from "next/dist/shared/lib/router/utils/prepare-destination";
 
 export const BarChartWidget: React.FC<BaseGraphProps> = ({
     config,
