@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { BaseThumbnailProps, DataItem } from '../../WidgetTypes';
 import { GraphThumbnail } from '../../widgetPipeline/GraphThumbnail/GraphThumbnail';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { generateBarChart } from '@/components/dataPipeline/dataOperations/BarChartRenderer';
+import {convertDataItems, generateBarChart} from '@/components/dataPipeline/dataOperations/barChartRenderer';
 import { DataFrame, toJSON } from 'danfojs';
+import {exampleConfigs, exampleProjects} from "@/components/widgets/TestData";
 
 export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
     title,
@@ -28,7 +29,7 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
     }, []);
 
     // group data by xDataKey
-    let df = new DataFrame(data);
+    let df = new DataFrame(exampleConfigs[0].data);
     const groupedDataDF = generateBarChart(df);
     const groupedData = toJSON(groupedDataDF) as DataItem[];
 

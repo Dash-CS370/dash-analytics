@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { DataFrame, toJSON } from 'danfojs';
-import {convertDataItems, generateBarChart} from '@/components/dataPipeline/dataOperations/BarChartRenderer';
+import {convertDataItems, generateBarChart} from '@/components/dataPipeline/dataOperations/barChartRenderer';
 import {compileNonPath} from "next/dist/shared/lib/router/utils/prepare-destination";
 
 export const BarChartWidget: React.FC<BaseGraphProps> = ({
@@ -40,9 +40,7 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
     }, []);
 
     // group data by xDataKey
-    const prepped_config : DataItem[] = convertDataItems(config.data)
-    let df = new DataFrame(prepped_config);
-    console.log(df.head(5))
+    let df = new DataFrame(convertDataItems(config.data));
     const groupedDataDF = generateBarChart(df);
     const groupedData = toJSON(groupedDataDF) as DataItem[];
 

@@ -59,10 +59,6 @@ function preparedBarGraphDf(
     for (const col of mean_df.columns) {
         if (col.endsWith('_mean')) mean_df = mean_df.rename({ [col]: col.split('_')[0] });
     }
-    console.log("Grouped DataFrame Count:", grouped.count());
-    console.log("Grouped DataFrame Sum:", grouped.sum());
-    console.log("Mean DataFrame:", mean_df.head(5));
-
     return mean_df; // return the modified DataFrame
 }
 
