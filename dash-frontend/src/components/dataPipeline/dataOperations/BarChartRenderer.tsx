@@ -1,5 +1,6 @@
 import * as dfd from 'danfojs';
 import {DataFrame, Series} from "danfojs";
+import {DataItem} from "@/components/widgets/WidgetTypes";
 
 // When a Bar Graph widget is to be generated, this is called to prepare the data
 export function generateBarChart(dataframe: dfd.DataFrame): dfd.DataFrame {
@@ -63,4 +64,19 @@ function preparedBarGraphDf(
     console.log("Mean DataFrame:", mean_df.head(5));
 
     return mean_df; // return the modified DataFrame
+}
+
+export function convertDataItems(dataItems : DataItem[]) {
+    return dataItems.map((item) => {
+        const newItem = { ...item }; // Create a copy to avoid mutation
+        // Iterate over each key in the DataItem
+        Object.keys(newItem).forEach((key) => {
+            const originalValue = newItem[key];
+            // Convert only if the value is a string representing a valid number
+            if (typeof originalValue === 'string' && !isNaN(Number(originalValue))) {
+                newItem[key] = Number(originalValue); // Convert to a number
+            }
+        });
+        return newItem; // Return the modified DataItem
+    });
 }
