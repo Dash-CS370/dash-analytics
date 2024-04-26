@@ -43,7 +43,6 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
     let df = new DataFrame(config.data);
     const groupedDataDF = generateBarChart(df);
     const groupedData = toJSON(groupedDataDF) as DataItem[];
-    console.log(groupedData);
 
     return (
         <WidgetCard

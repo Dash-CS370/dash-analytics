@@ -1,7 +1,8 @@
 import * as dfd from 'danfojs';
+import {DataFrame, Series} from "danfojs";
 
 // When a Bar Graph widget is to be generated, this is called to prepare the data
-export function generateBarChart(dataframe: dfd.DataFrame): any {
+export function generateBarChart(dataframe: dfd.DataFrame): dfd.DataFrame {
     // Find index of the one (only) categorical column
     // Make a list of the other cols (should all be numerical)
 
@@ -44,31 +45,29 @@ export function generateBarChart(dataframe: dfd.DataFrame): any {
 
 // Choose operation to be performed (mean)
 function preparedBarGraphDf(
-    dataframe: dfd.DataFrame,
+    dataframe: DataFrame,
     categorical_column: string,
     numerical_columns: string[],
 ) {
 
-    console.log(dataframe.head(5));
-    for (const numerical_column of numerical_columns) {
-        dataframe.column(numerical_column).asType("float32", { inplace: true });
-    }
-    console.log(dataframe.head(5));
-
     // Group by the categorical column and calculate the mean for the specified numerical columns
-    const grouped = dataframe.groupby([categorical_column]);
-    const mean_df = grouped.col(numerical_columns).mean();
-    mean_df.print()
+    let cleaned_df = dataframe.copy();
+
+    for (const numerical_column of numerical_columns) {
+        cleaned_df.column(numerical_column).asType('float32', { inplace: true });
+    }
+
+    const grouped = cleaned_df.groupby([categorical_column]);
+    let mean_df = grouped.col(numerical_columns).mean();
 
     // Rename the columns to remove the '_mean' suffix
-    const new_column_names: { [key: string]: string } = {}; // Explicit type declaration
-    console.log(mean_df.columns)
-    mean_df.columns.forEach(col => {
-        new_column_names[col] = col.replace("_mean", ""); // remove '_mean' suffix
-    });
-    console.log(mean_df.columns)
+    for (const col of mean_df.columns) {
+        if (col.endsWith('_mean')) mean_df = mean_df.rename({ [col]: col.split('_')[0] });
+    }
 
-    mean_df.rename(new_column_names, { inplace: true }); // apply the new names
+    console.log("Grouped DataFrame Count:", grouped.count());
+    console.log("Grouped DataFrame Sum:", grouped.sum());
+    console.log("Mean DataFrame:", mean_df.head(5));
 
     return mean_df; // return the modified DataFrame
 }
