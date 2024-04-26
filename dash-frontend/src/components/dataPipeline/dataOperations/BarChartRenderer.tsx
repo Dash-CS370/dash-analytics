@@ -51,20 +51,13 @@ function preparedBarGraphDf(
 ) {
 
     // Group by the categorical column and calculate the mean for the specified numerical columns
-    let cleaned_df = dataframe.copy();
-
-    for (const numerical_column of numerical_columns) {
-        cleaned_df.column(numerical_column).asType('float32', { inplace: true });
-    }
-
-    const grouped = cleaned_df.groupby([categorical_column]);
+    const grouped = dataframe.groupby([categorical_column]);
     let mean_df = grouped.col(numerical_columns).mean();
 
     // Rename the columns to remove the '_mean' suffix
     for (const col of mean_df.columns) {
         if (col.endsWith('_mean')) mean_df = mean_df.rename({ [col]: col.split('_')[0] });
     }
-
     console.log("Grouped DataFrame Count:", grouped.count());
     console.log("Grouped DataFrame Sum:", grouped.sum());
     console.log("Mean DataFrame:", mean_df.head(5));
