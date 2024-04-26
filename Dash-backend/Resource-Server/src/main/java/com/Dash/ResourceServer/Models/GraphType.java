@@ -26,6 +26,7 @@ public enum GraphType {
                     "This ensures a comprehensive summary of the data's central tendency and dispersion, suitable for quick insights into the dataset's characteristics." +
                     "REQUIREMENT (IF APPLICABLE TO THE COLUMN USED BY THE WIDGET): MUST INCLUDE ONLY 1 NUMERICAL OR CATEGORICAL COLUMN.");
 
+
     private final String value;
 
     private final String description;

@@ -12,12 +12,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
+
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
+
 
 @Slf4j
 @Service
@@ -38,50 +42,32 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
+    /**
+     *
+     * @param oauth2User
+     * @return Optional containing User DTO
+     */
     public Optional<User> pullUserProfile(OAuth2User oauth2User) {
         final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
         return Optional.ofNullable(userDAO.findOne(Query.query(Criteria.where("email").is(userEmail)), User.class));
     }
 
 
-    // FIXME
-    public Optional<String> deleteUserById(String id) {
+
+    /**
+     *
+     * @param oauth2User
+     * @param oldPassword
+     * @param newPassword
+     * @return boolean
+     */
+    public boolean updateUserPassword(OAuth2User oauth2User, String oldPassword, String newPassword) {
         try {
-            // TODO -> 2 steps -> remove from mongo AND delete resources from S3
-            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("id").is(id)), User.class);
-
-            // MAKE HTTP request to Resource Server
-            // call resource-server/delete-user/{userId} where userId is the email
-            final String deleteUserUrl = UriComponentsBuilder // FIXME
-                    .fromUriString("http://dash-resource-server:8081/api/v1/resources/user")
-                    .queryParam("userId", id)
-                    .buildAndExpand().toUriString();
-
-            log.warn(deleteUserUrl);
-
-            log.info("Deleted count: {}", deleteResult.getDeletedCount());
-
-            return this.webClient.delete()
-                    .uri(deleteUserUrl)
-                    //.attributes(oauth2AuthorizedClient(client))
-                    .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
-                    .block();
-
-        } catch (Exception e) {
-            log.error("Error deleting user with ID " + id, e);
-            return Optional.empty();
-        }
-    }
-
-
-
-    public boolean updateUserPassword(String id, String oldPassword, String newPassword) {
-        try {
-            Optional<User> queriedUser = Optional.ofNullable(userDAO.findById(id, User.class));
+            final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
+            Optional<User> queriedUser = Optional.ofNullable(userDAO.findById(userEmail, User.class));
 
             if (queriedUser.isEmpty()) {
-                log.info("User with ID: {} not found", id);
+                log.info("User with account: {} not found", userEmail);
                 return false;
             }
 
@@ -98,8 +84,39 @@ public class AccountServiceImpl implements AccountService {
             return false;
 
         } catch (Exception e) {
-            log.error("Error updating password for user with ID " + id, e);
+            log.error("Error updating password for user", e);
             return false;
+        }
+    }
+
+
+
+    // FIXME
+    public Optional<String> deleteUserById(OAuth2AuthorizedClient client, OAuth2User oauth2User) {
+        try {
+            final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
+            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("email").is(oauth2User)), User.class);
+
+            // MAKE HTTP request to Resource Server to delete users S3 dir
+            final String deleteUserUrl = UriComponentsBuilder
+                    .fromUriString("http://dash-resource-server:8081/api/v1/resources/user")
+                    .queryParam("user-account", userEmail)
+                    .buildAndExpand().toUriString();
+
+            log.warn(deleteUserUrl);
+
+            log.info("Deleted count: {}", deleteResult.getDeletedCount());
+
+            return this.webClient.delete()
+                    .uri(deleteUserUrl)
+                    .attributes(oauth2AuthorizedClient(client))
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<Optional<String>>() {})
+                    .block();
+
+        } catch (Exception e) {
+            log.error("Error deleting account belonging to" + oauth2User.getName(), e);
+            return Optional.empty();
         }
     }
 

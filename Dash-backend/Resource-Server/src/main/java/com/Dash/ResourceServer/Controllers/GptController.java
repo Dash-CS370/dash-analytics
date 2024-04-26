@@ -35,7 +35,6 @@ public class GptController {
     public Optional<List<Widget>> generateMoreWidgets(@RequestBody Project currentProject) {
         try {
 
-            // LOGIC -> Passing in List of Previous Widgets (JUST THE TITLES) and WARN GPT NOT TO GENERATE IDENTICAL ONES
             return openAIService.attemptWidgetGenerationWithRetry(
                         currentProject.getDatasetDescription(), currentProject.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
 

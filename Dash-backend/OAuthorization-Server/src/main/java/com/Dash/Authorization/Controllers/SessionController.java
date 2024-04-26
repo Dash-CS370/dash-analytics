@@ -13,7 +13,13 @@ import java.io.IOException;
 
 @Slf4j
 @Controller
-public class AuthController {
+public class SessionController {
+
+    @GetMapping("/login")
+    public String doLogin() {
+        return "login";
+    }
+
 
     @GetMapping("/user/logout")
     public void doLogout(HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
@@ -38,11 +44,6 @@ public class AuthController {
         response.addCookie(cookieWithSlash);
 
         response.sendRedirect("https://dash-analytics.solutions/signin");
-    }
-
-    @GetMapping("/login")
-    public String doLogin() {
-        return "login";
     }
 
 }

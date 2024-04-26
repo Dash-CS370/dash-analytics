@@ -41,7 +41,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthorizationServerConfig {
 
-
     private final PasswordEncoder passwordEncoder;
 
     @Bean
@@ -61,6 +60,7 @@ public class AuthorizationServerConfig {
 
         return http.build();
     }
+
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {

@@ -28,9 +28,15 @@ public class UserCleanUpScheduler {
     }
 
 
+    /**
+     * Scheduled job that deletes users who have not been enabled.
+     *
+     * This job runs every Monday at 12:00 PM and removes users who were created at
+     * least 7 days ago and have activated their accounts.
+     */
     @Scheduled(cron = "0 0 12 * * MON")
     public void deleteNotEnabledUsers() {
-        final Instant SevenDaysAgo = Instant.now().minus(1, ChronoUnit.MINUTES);
+        final Instant SevenDaysAgo = Instant.now().minus(7, ChronoUnit.DAYS);
 
         Query query = new Query(Criteria.where("enabled").is(false)
                 .andOperator(Criteria.where("creationDate").lte(SevenDaysAgo)));

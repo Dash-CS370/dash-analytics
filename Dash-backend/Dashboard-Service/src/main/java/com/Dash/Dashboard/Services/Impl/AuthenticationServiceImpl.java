@@ -54,7 +54,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     /**
-     *
      * @param email
      * @return
      */
@@ -77,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // Otherwise this is a completely new User (email has not been used)
         final User tempUser = User.builder().
                 email(email).
-                enabled(false). // FIXME -> must be false
+                enabled(false).
                 creationDate(getCurrentDate()).
                 build();
 
@@ -97,7 +96,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     /**
-     *
      * @param activationKey
      * @return
      */
@@ -126,7 +124,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (activateAccount(linkedUser.getId()))
             return new ResponseEntity<>(linkedUser.getEmail(), HttpStatus.OK);
 
-
         return new ResponseEntity<>("Account could not be activated at the moment", HttpStatus.BAD_GATEWAY);
     }
 
@@ -134,7 +131,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     /**
-     *
      * @param registrationRequest
      * @return
      */
@@ -209,12 +205,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private ResponseEntity<String> sendVerificationEmail(String email, String activationToken) {
         try {
-            // TODO FIXME
             final String activateAccountUrl = "https://dash-analytics.solutions/signin?activate=true";
 
             final Map<String, Object> model = Map.of("activationToken", activationToken, "activateAccountUrl", activateAccountUrl);
 
-            emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3); // TODO
+            emailService.sendEmailWithRetries(email, model, "account_activate_email_template.ftl", 3);
 
             return new ResponseEntity<>("Activation key was successfully sent to " + email, HttpStatus.CREATED);
 

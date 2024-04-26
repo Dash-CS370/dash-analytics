@@ -8,14 +8,14 @@ export function generateStatsCard(
         try {
             return analyzeCategoricalColumn(dataframe_column);
         } catch (error) {
-            console.error('Error calculating mean price:', error);
+            console.error('Error calculating numerical stats:', error);
         }
     } else {
         // Numerical column
         try {
             return analyzeNumericalColumn(dataframe_column);
         } catch (error) {
-            console.error('Error calculating:', error);
+            console.error('Error calculating categorical stats:', error);
             return [];
         }
     }
@@ -54,18 +54,11 @@ function analyzeCategoricalColumn(
 
 // takes in Series of numerical data, outputs dictionary of stats
 function analyzeNumericalColumn(numerical_column: Series): [string, number][] {
-    numerical_column.asType("float32", {inplace : true}  );
-    const mean = numerical_column.mean()
+    numerical_column.asType('float32', { inplace: true });
+    const mean = numerical_column.mean();
     const median = numerical_column.median();
     const min = numerical_column.min();
     const max = numerical_column.max();
-
-    console.log(truncateNumbers([
-        ['Mean', mean], //number
-        ['Median', median], //number
-        ['Min', min], //number
-        ['Max', max], //number
-    ]));
 
     return truncateNumbers([
         ['Mean', mean], //number

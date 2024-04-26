@@ -17,35 +17,6 @@ import java.util.stream.Collectors;
 public class OpenAIUtils {
 
 
-    private static final Integer PIN_COUNT = 6;
-
-
-    // TODO
-    public static String generatePrompt(String datasetDescription, List<String> columnDescriptions) {
-
-        final String BASE_PROMPT = "\nUsing the GenerateWidgetList function, generate UP TO 12 DISTINCT configuration options for graph " +
-                                   "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
-
-        String prompt = BASE_PROMPT + datasetDescription;
-
-        // Add column descriptions to prompt
-        prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
-
-        String joinedDescriptions = "";
-
-        for (String columnDescription : columnDescriptions) {
-            joinedDescriptions += "\n" + columnDescription;
-        }
-
-        prompt += joinedDescriptions;
-
-        log.warn(prompt);
-
-        return prompt;
-    }
-
-
-
     public static String additionalSystemContext() {
 
         String additionalContext =
@@ -68,6 +39,32 @@ public class OpenAIUtils {
         }
 
         return additionalContext;
+    }
+
+
+
+    public static String generatePrompt(String datasetDescription, List<String> columnDescriptions) {
+
+        final String BASE_PROMPT =
+                "\nUsing the GenerateWidgetList function, generate UP TO 12 DISTINCT configuration options for graph " +
+                        "widgets BASED ON THE FOLLOWING DATASET & COLUMN DESCRIPTIONS (ONLY RETURN A JSON OBJECT CALLED \"widgets\"):\n";
+
+        String prompt = BASE_PROMPT + datasetDescription;
+
+        // Add column descriptions to prompt
+        prompt += "\n\nThe following is information on each column. Be considerate of the column category and type of data that each column holds: ";
+
+        String joinedDescriptions = "";
+
+        for (String columnDescription : columnDescriptions) {
+            joinedDescriptions += "\n" + columnDescription;
+        }
+
+        prompt += joinedDescriptions;
+
+        log.warn(prompt);
+
+        return prompt;
     }
 
 
@@ -113,9 +110,8 @@ public class OpenAIUtils {
 
 
 
-
     public static List<Widget> processWidgetList(List<Widget> unprocessedWidgets) {
-        // TODO
+
         final List<Widget> widgets = unprocessedWidgets.stream()
                 .filter(widget -> widget.getTitle() != null && !widget.getTitle().isEmpty())
                 .filter(widget -> widget.getGraphType() != null && Arrays.asList(GraphType.values()).contains(widget.getGraphType()))
@@ -128,9 +124,8 @@ public class OpenAIUtils {
                 })
                 .collect(Collectors.toList());
 
-
-        // Assign each Widget a Unique Identifier
         /*
+        // Assign each Widget a Unique Identifier
         widgets.forEach(widget -> {
             widget.setId(UUID.randomUUID().toString().substring(0, 8));
         });
@@ -138,11 +133,10 @@ public class OpenAIUtils {
         // Enable pinning for the first N random widgets
         Collections.shuffle(widgets);
 
-        for (int i = 0; i < PIN_COUNT; i++) {
+        for (int i = 0; i < 6; i++) {
             widgets.get(i).setPinned(true);
         }
         */
-
 
         return widgets;
     }

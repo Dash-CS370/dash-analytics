@@ -87,9 +87,11 @@ public class ResourceController {
 
 
     /**
+     * Updates dashboard projects
+     *
      * @return
      */
-    @PutMapping(value = "/projects") // TODO -> ATTEMPT WITH RETRIES
+    @PutMapping(value = "/projects")
     public Optional<Object> updateProjects(@RequestBody List<Project> projects) {
         try {
 
@@ -106,18 +108,19 @@ public class ResourceController {
 
 
     /**
+     * Deletes project files for a specified dashboard
      *
      * @param projectId
      * @return
      */
-    @DeleteMapping(value = "/project") // TODO -> ATTEMPT WITH RETRIES
-    public Optional<String> deleteProject(@RequestParam("user-id") String userId,
+    @DeleteMapping(value = "/project")
+    public Optional<String> deleteProject(@RequestParam("user-account") String userAccount,
                                           @RequestParam("project-id") String projectId) {
         try {
 
             log.warn("Finished deletion ... ");
 
-            return resourceService.deleteProject(userId, projectId);
+            return resourceService.deleteProject(userAccount, projectId);
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -128,13 +131,16 @@ public class ResourceController {
 
 
     /**
-     * Delete the user ids directory Or everything inside the project (csv files and json config files)
+     * Deletes the given user's account directory, including all csv files and json config files
+     *
+     * @param userAccount
+     * @return
      */
     @DeleteMapping("/user")
-    public Optional<String> deleteAllUserResources(@RequestParam String userId) {
+    public Optional<String> deleteAllUserResources(@RequestParam("user-account") String userAccount) {
         try {
 
-            return resourceService.deleteAllUserResources(userId);
+            return resourceService.deleteAllUserResources(userAccount);
 
         } catch (Exception e) {
             log.error(e.getMessage());

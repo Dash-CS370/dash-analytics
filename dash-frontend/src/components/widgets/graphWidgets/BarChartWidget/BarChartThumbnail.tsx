@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { BaseThumbnailProps } from '../../WidgetTypes';
+import { BaseThumbnailProps, DataItem } from '../../WidgetTypes';
 import { GraphThumbnail } from '../../widgetPipeline/GraphThumbnail/GraphThumbnail';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { generateBarChart } from '@/components/dataPipeline/dataOperations/BarChartRenderer';
+import { DataFrame, toJSON } from 'danfojs';
 
 export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
     title,
@@ -11,9 +13,6 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
     data,
     handleClick,
 }) => {
-    const keys = data.length > 0 ? Object.keys(data[0]) : [];
-    const xDataKey = keys.length > 0 ? keys[0] : '';
-
     const [colors, setColors] = useState<string[]>([]);
 
     useEffect(() => {
@@ -24,9 +23,17 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
             rootStyle.getPropertyValue('--alternative'),
             'red',
             'blue',
-            'orange'
+            'orange',
         ]);
     }, []);
+
+    // group data by xDataKey
+    let df = new DataFrame(data);
+    const groupedDataDF = generateBarChart(df);
+    const groupedData = toJSON(groupedDataDF) as DataItem[];
+
+    const keys = groupedData.length > 0 ? Object.keys(groupedData[0]) : [];
+    const xDataKey = keys.length > 0 ? keys[0] : '';
 
     return (
         <GraphThumbnail
@@ -36,7 +43,7 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
         >
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                    data={data}
+                    data={groupedData}
                     width={500}
                     height={300}
                     margin={{ left: -45, bottom: -15, top: 15, right: 15 }}
