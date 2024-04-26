@@ -31,7 +31,6 @@ export const BarChartThumbnail: React.FC<BaseThumbnailProps> = ({
     let df = new DataFrame(data);
     const groupedDataDF = generateBarChart(df);
     const groupedData = toJSON(groupedDataDF) as DataItem[];
-    console.log(groupedData);
 
     const keys = groupedData.length > 0 ? Object.keys(groupedData[0]) : [];
     const xDataKey = keys.length > 0 ? keys[0] : '';
