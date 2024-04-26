@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { BaseGraphProps } from '../../WidgetTypes';
+import { BaseGraphProps, DataItem } from '../../WidgetTypes';
 import {
     ResponsiveContainer,
     BarChart,
@@ -12,6 +12,8 @@ import {
     Bar,
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
+import { DataFrame, toJSON } from 'danfojs';
+import { generateBarChart } from '@/components/dataPipeline/dataOperations/BarChartRenderer';
 
 export const BarChartWidget: React.FC<BaseGraphProps> = ({
     config,
@@ -36,6 +38,12 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
         ]);
     }, []);
 
+    // group data by xDataKey
+    let df = new DataFrame(config.data);
+    const groupedDataDF = generateBarChart(df);
+    const groupedData = toJSON(groupedDataDF) as DataItem[];
+    console.log(groupedData);
+
     return (
         <WidgetCard
             title={config.title}
@@ -47,7 +55,7 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
             onTogglePin={onTogglePin}
         >
             <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={config.data} width={500} height={300}>
+                <BarChart data={groupedData} width={500} height={300}>
                     <XAxis dataKey={xDataKey} />
                     <YAxis />
                     <Tooltip />
