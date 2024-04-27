@@ -39,9 +39,14 @@ export const BarChartWidget: React.FC<BaseGraphProps> = ({
     }, []);
 
     // group data by xDataKey
-    let df = new DataFrame(convertDataItems(config.data));
-    const groupedDataDF = generateBarChart(df);
-    const groupedData = toJSON(groupedDataDF) as DataItem[];
+    let groupedData;
+    try {
+        let df = new DataFrame(convertDataItems(config.data));
+        const groupedDataDF = generateBarChart(df);
+        groupedData = toJSON(groupedDataDF) as DataItem[];
+    } catch (error) {
+        config.title = "DO_NOT_RENDER";
+    }
 
     return (
         <WidgetCard
