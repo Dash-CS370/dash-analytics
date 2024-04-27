@@ -1,7 +1,9 @@
 import * as dfd from 'danfojs';
+import {DataFrame, Series} from "danfojs";
+import {DataItem} from "@/components/widgets/WidgetTypes";
 
 // When a Bar Graph widget is to be generated, this is called to prepare the data
-export function generateBarChart(dataframe: dfd.DataFrame): any {
+export function generateBarChart(dataframe: dfd.DataFrame): dfd.DataFrame {
     // Find index of the one (only) categorical column
     // Make a list of the other cols (should all be numerical)
 
@@ -44,10 +46,33 @@ export function generateBarChart(dataframe: dfd.DataFrame): any {
 
 // Choose operation to be performed (mean)
 function preparedBarGraphDf(
-    dataframe: dfd.DataFrame,
+    dataframe: DataFrame,
     categorical_column: string,
     numerical_columns: string[],
 ) {
-    const grouped = dataframe.groupby([categorical_column]); // group by categorical column
-    return grouped.col(numerical_columns).mean(); // select numerical columns
+
+    // Group by the categorical column and calculate the mean for the specified numerical columns
+    const grouped = dataframe.groupby([categorical_column]);
+    let mean_df = grouped.col(numerical_columns).mean();
+
+    // Rename the columns to remove the '_mean' suffix
+    for (const col of mean_df.columns) {
+        if (col.endsWith('_mean')) mean_df = mean_df.rename({ [col]: col.split('_')[0] });
+    }
+    return mean_df; // return the modified DataFrame
+}
+
+export function convertDataItems(dataItems : DataItem[]) {
+    return dataItems.map((item) => {
+        const newItem = { ...item }; // Create a copy to avoid mutation
+        // Iterate over each key in the DataItem
+        Object.keys(newItem).forEach((key) => {
+            const originalValue = newItem[key];
+            // Convert only if the value is a string representing a valid number
+            if (typeof originalValue === 'string' && !isNaN(Number(originalValue))) {
+                newItem[key] = Number(originalValue); // Convert to a number
+            }
+        });
+        return newItem; // Return the modified DataItem
+    });
 }

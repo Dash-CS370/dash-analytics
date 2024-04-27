@@ -27,6 +27,7 @@ export function generateStatsCard(
 function analyzeCategoricalColumn(
     categorical_column: Series,
 ): [string, string][] {
+
     const totalCount = categorical_column.size;
     const categoryCounts = categorical_column.valueCounts();
     const categoryPercentages: number[] = categoryCounts
@@ -55,6 +56,7 @@ function analyzeCategoricalColumn(
 // takes in Series of numerical data, outputs dictionary of stats
 function analyzeNumericalColumn(numerical_column: Series): [string, number][] {
     numerical_column.asType('float32', { inplace: true });
+
     const mean = numerical_column.mean();
     const median = numerical_column.median();
     const min = numerical_column.min();

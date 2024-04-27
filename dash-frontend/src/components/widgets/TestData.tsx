@@ -131,7 +131,7 @@ const exampleStatData = [
     },
 ];
 
-const exampleConfigs: WidgetConfig[] = [
+export const exampleConfigs: WidgetConfig[] = [
     {
         title: 'Line Graph Example',
         id: '1',
