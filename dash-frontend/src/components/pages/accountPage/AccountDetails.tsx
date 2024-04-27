@@ -5,6 +5,7 @@ import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar';
 import { integer } from 'aws-sdk/clients/cloudfront';
+import { FiEdit2 } from 'react-icons/fi';
 
 export interface UserDetails {
     id: string;
@@ -86,19 +87,31 @@ export const AccountDetails: FC = () => {
             <div className={styles.infoContainer}>
                 <div className={styles.section}>
                     <h1>Account Details</h1>
-                    {/* Add Edit Icon */}
+                    {/* Add Edit Icon - ADD ON CLICK FUNCTIONALITY*/}
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Name</h5>
                         </div>
-                        <div className={styles.info}>{userDetails.name}</div>
+                        <div className={styles.info}>
+                            {userDetails.name}
+                            <FiEdit2
+                                className={styles.editIcon}
+                                // onClick={handleEditClick}
+                            />
+                        </div>
                     </div>
                     <hr />
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Email</h5>
                         </div>
-                        <div className={styles.info}>{userDetails.email}</div>
+                        <div className={styles.info}>
+                            {userDetails.email}{' '}
+                            <FiEdit2
+                                className={styles.editIcon}
+                                // onClick={handleEditClick}
+                            />
+                        </div>
                     </div>
                     <hr />
                     <div className={styles.row}>
@@ -107,6 +120,10 @@ export const AccountDetails: FC = () => {
                         </div>
                         <div className={styles.info}>
                             {userDetails.password}
+                            <FiEdit2
+                                className={styles.editIcon}
+                                // onClick={handleEditClick}
+                            />
                         </div>
                     </div>
                     <hr />

@@ -128,3 +128,10 @@
     height: 75px;
     color: black;
 }
+
+.editIcon {
+    flex: 0 0 50%;
+    display: flex;
+    align-items: center;
+    margin-left: 90%;
+}
