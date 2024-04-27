@@ -1,10 +1,13 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar';
 import { integer } from 'aws-sdk/clients/cloudfront';
+import { FiEdit2 } from 'react-icons/fi';
+import { CiCircleCheck } from 'react-icons/ci';
+import { IoIosArrowRoundBack } from 'react-icons/io';
 
 export interface UserDetails {
     id: string;
@@ -24,7 +27,11 @@ export const AccountDetails: FC = () => {
         credits: 60,
         creationDate: '',
     });
+    const oldPass = useRef(null);
+    const newPass = useRef(null);
+    const confirmPass = useRef(null);
 
+    // fetch account details
     fetch('https://dash-analytics.solutions/api/v1/user/profile', {
         method: 'GET',
         headers: {
@@ -54,20 +61,48 @@ export const AccountDetails: FC = () => {
             console.error(`Error fetching user details: ${error}`);
         });
 
-    const testData = [{ bgcolor: '#6a1b9a', completed: 60 }];
+    // handle editing password
+    const [confirmReset, setConfirmReset] = useState(false);
+    const [resetPassSent, setResetPassSent] = useState(false);
+    const editPassword = () => {
+        // fetch to backend to send password reset email
+        // setResetPassSent(true);
+    };
 
     const [completed, setCompleted] = useState(0);
-
+    const [primary, setPrimary] = useState('');
     useEffect(() => {
+        const rootStyle = getComputedStyle(document.documentElement);
+        setPrimary(rootStyle.getPropertyValue('--primary'));
+
         const interval = setInterval(() => {
             setCompleted(Math.floor(Math.random() * 100) + 1);
         }, 2000);
 
-        return () => clearInterval(interval); // 清除定时器
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div className={styles.pageContainer}>
+            {resetPassSent && <div className={styles.focusBlur} />}
+            {resetPassSent && (
+                <div className={styles.passwordChangeContainer}>
+                    <IoIosArrowRoundBack
+                        className={styles.backButton}
+                        onClick={() => {
+                            setResetPassSent(false);
+                            setConfirmReset(false);
+                        }}
+                    />
+                    <div className={styles.successContent}>
+                        <CiCircleCheck className={styles.check} />
+                        <p className={styles.successMessage}>
+                            An email has been sent to change your password.
+                        </p>
+                    </div>
+                </div>
+            )}
+
             <div className={styles.sidebar}>
                 <div className={styles.sidbarContent}>
                     <a href="/">Home</a>
@@ -78,6 +113,7 @@ export const AccountDetails: FC = () => {
             <div className={styles.infoContainer}>
                 <div className={styles.section}>
                     <h1>Account Details</h1>
+                    {/* Add Edit Icon - ADD ON CLICK FUNCTIONALITY*/}
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Name</h5>
@@ -89,15 +125,30 @@ export const AccountDetails: FC = () => {
                         <div className={styles.title}>
                             <h5>Email</h5>
                         </div>
-                        <div className={styles.info}>{userDetails.email}</div>
+                        <div className={styles.info}>{userDetails.email} </div>
                     </div>
                     <hr />
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Password</h5>
                         </div>
-                        <div className={styles.info}>
+                        <div className={`${styles.pass}`}>
                             {userDetails.password}
+                            {confirmReset ? (
+                                <PrimaryButton
+                                    width="120"
+                                    height="50"
+                                    className={styles.confirmReset}
+                                    onClick={() => setResetPassSent(true)}
+                                >
+                                    Confirm Reset
+                                </PrimaryButton>
+                            ) : (
+                                <FiEdit2
+                                    className={styles.editIcon}
+                                    onClick={() => setConfirmReset(true)}
+                                />
+                            )}
                         </div>
                     </div>
                     <hr />
@@ -117,20 +168,16 @@ export const AccountDetails: FC = () => {
                             <h5>Credits Remaining:</h5>
                         </div>
                         <div className={styles.info}>
-                            {userDetails.credits} / 100 used
+                            {userDetails.credits} / 100 remaining
                         </div>
                     </div>
                     <div className={styles.info1}>
                         <div className={styles.BarWrapperContainer}>
                             <div className={styles.BarWrapper}>
-                                {testData.map((item, index) => (
-                                    <ProgressBar
-                                        // className={styles.bar}
-                                        key={index}
-                                        bgcolor={item.bgcolor}
-                                        completed={item.completed}
-                                    />
-                                ))}
+                                <ProgressBar
+                                    bgcolor={primary}
+                                    completed={userDetails.credits}
+                                />
                             </div>
                             <div className={styles.creditRequestContainer}>
                                 <textarea
