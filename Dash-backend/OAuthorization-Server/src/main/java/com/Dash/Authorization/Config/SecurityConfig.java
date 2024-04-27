@@ -38,9 +38,7 @@ public class SecurityConfig {
                     .antMatchers("/user/logout").permitAll()
                     .anyRequest().authenticated()
             )
-            .formLogin(login -> login
-                    .loginPage("/login").permitAll()
-            )
+            .formLogin(login -> login.loginPage("/login").permitAll())
             .logout().disable();
 
         return http.build();

@@ -19,7 +19,7 @@ export const ConnectedNavBar: FC = () => {
                 </Link>
             </div>
             <div className={styles.right}>
-                <Link className={styles.navLink} href="/">
+                <Link className={styles.navLink} href="/learn-more">
                     Learn More
                 </Link>
                 <IoLogOutOutline className={styles.icon} onClick={handleLogout} />
