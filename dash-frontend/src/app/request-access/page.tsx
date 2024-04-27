@@ -13,6 +13,7 @@ export default function RequestAccess() {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [accessRequested, setAccessRequested] = useState<boolean>(false);
 
+    // handle hitting enter for email input
     const handleEnterForEmail = (
         event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
@@ -21,6 +22,7 @@ export default function RequestAccess() {
         }
     };
 
+    // handle form submission for requesting access
     const handleRequestAccess = (event: React.FormEvent) => {
         event.preventDefault();
 

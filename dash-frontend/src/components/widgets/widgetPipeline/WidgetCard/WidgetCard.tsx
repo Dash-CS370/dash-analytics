@@ -29,12 +29,14 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({
     onTogglePin,
     children,
 }) => {
+    // handle showing information about the widget
     const [info, setInfo] = React.useState(false);
     const handleInfoClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         setInfo(!info);
     };
 
+    // handle pinning the widget
     const [isPinned, setIsPinned] = React.useState(pinned);
     const togglePinned = () => {
         setIsPinned(!isPinned);

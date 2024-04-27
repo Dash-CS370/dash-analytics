@@ -13,6 +13,7 @@ export default function ChangePassword() {
     const [confirmPass, setConfirmPass] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    // get token from URL
     const searchParams = useSearchParams();
     let t = searchParams.get('token');
     useEffect(() => {
@@ -23,6 +24,7 @@ export default function ChangePassword() {
         setToken(t);
     }, [t]);
 
+    // handle form submission for changing password
     const handleChangePassword = (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -47,10 +49,13 @@ export default function ChangePassword() {
         formData.append('new-password', pass);
         formData.append('confirmed-password', confirmPass);
 
-        fetch('https://dash-analytics.solutions/api/v1/password/reset-password', {
-            method: 'POST',
-            body: formData,  // Note: No 'Content-Type' header is needed
-        }).then((response) => {
+        fetch(
+            'https://dash-analytics.solutions/api/v1/password/reset-password',
+            {
+                method: 'POST',
+                body: formData, // Note: No 'Content-Type' header is needed
+            },
+        ).then((response) => {
             if (response.ok) {
                 window.location.href = '/signin';
             } else {

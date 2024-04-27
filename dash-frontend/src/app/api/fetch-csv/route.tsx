@@ -4,11 +4,13 @@ import * as csv from 'csv-parser';
 const baseS3Url = 's3://dash-analytics-test/';
 
 AWS.config.update({
-    region: 'us-east-2'
+    region: 'us-east-2',
 });
 
 const s3 = new AWS.S3();
 
+// fetches CSV file from S3 and returns the data as JSON
+// must be a next api route - keeps aws credentials secure on the server
 export async function GET(request: Request): Promise<Response> {
     const searchParams = new URL(request.url).searchParams;
     const csvLink = searchParams.get('link');

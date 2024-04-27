@@ -16,6 +16,7 @@ export default function Signin() {
     const [errorMessage, setErrorMessage] = useState<string>(''); // handles form input errors
     const [activationKey, setActivationKey] = useState<string>(''); // activation key input
 
+    // Set the state of the page to signin or activate
     const setSigninState = (state: boolean) => {
         const searchParams = new URL(window.location.href).searchParams;
         if (!state) {
@@ -36,6 +37,7 @@ export default function Signin() {
         toggleSigninState(state);
     };
 
+    // Check if the page is being loaded to activate state
     const searchParams = useSearchParams();
     const activate = searchParams.get('activate');
     useEffect(() => {
@@ -52,6 +54,7 @@ export default function Signin() {
         setSigninState(!signinState);
     };
 
+    // handle form submission for activating account
     const handleActivation = () => {
         // handle empty activation key
         if (activationKey === '') {
@@ -59,9 +62,12 @@ export default function Signin() {
             return;
         }
 
-        fetch(`https://dash-analytics.solutions/auth/activate-account?key=${activationKey}`, {
-            method: 'GET',
-        }).then((response) => {
+        fetch(
+            `https://dash-analytics.solutions/auth/activate-account?key=${activationKey}`,
+            {
+                method: 'GET',
+            },
+        ).then((response) => {
             if (response.status == 200) {
                 response.text().then((email) => {
                     window.location.href = `/new-account?email=${email}`; // Redirect to new-account page with email

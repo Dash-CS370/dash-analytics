@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import styles from '@/app/create-account/page.module.css';
 import { BaseForm } from '@/components/common/BaseForm/BaseForm';
@@ -8,6 +8,7 @@ import { SecondaryButton } from '@/components/common/buttons/SecondaryButton/Sec
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
+// create account options page - user can create an account with dash or with google, microsoft, etc
 export default function CreateAccount() {
     const searchParams = useSearchParams();
     const email = searchParams.get('email');

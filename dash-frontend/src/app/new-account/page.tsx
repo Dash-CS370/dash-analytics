@@ -14,6 +14,7 @@ export default function NewAccount() {
     const searchParams = useSearchParams();
     const emailParam = searchParams.get('email');
 
+    // handle form submission for creating a new account
     const router = useRouter();
     const handleCreateAccount = (event: React.FormEvent) => {
         event.preventDefault();

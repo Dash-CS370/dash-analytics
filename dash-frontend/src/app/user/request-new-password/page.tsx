@@ -10,6 +10,7 @@ export default function RequestNewPassword() {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    // handle hitting enter for email input
     const handleEnterForEmail = (
         event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
@@ -18,6 +19,7 @@ export default function RequestNewPassword() {
         }
     };
 
+    // handle form submission for requesting a new password
     const handleRequestChange = (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -39,7 +41,7 @@ export default function RequestNewPassword() {
             headers: {
                 'Content-Type': 'text/plain',
             },
-            body: email
+            body: email,
         })
             .then(() => {
                 window.location.href = '/start';

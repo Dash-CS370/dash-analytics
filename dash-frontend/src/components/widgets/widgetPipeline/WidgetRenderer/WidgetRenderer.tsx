@@ -6,6 +6,7 @@ import { AreaChartWidget } from '../../graphWidgets/AreaChartWidget/AreaChartWid
 import { ScatterPlotWidget } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotWidget';
 import { StatisticsWidget } from '../../graphWidgets/StatisticsWidget/StatisticsWidget';
 
+// Renders the appropriate widget based on the graph type
 const renderWidget = (
     config: WidgetConfig,
     isExpanded: boolean,

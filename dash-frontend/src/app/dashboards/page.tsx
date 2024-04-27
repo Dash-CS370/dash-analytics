@@ -21,6 +21,7 @@ export default function Dashboards() {
     const [pageLoaded, setPageLoaded] = useState<boolean>(false);
     const [newProject, setNewProject] = useState<boolean>(true);
 
+    // initialize state with placeholders
     const [projects, setProjects] = useState<ProjectConfig[]>([]);
     const [activeProject, setActiveProjectConfig] = useState<ProjectConfig>({
         project_name: '',
@@ -76,7 +77,7 @@ export default function Dashboards() {
                 }
             })
             .catch((error) => {
-                router.push("/start")
+                router.push('/start');
             });
 
         return () => {
@@ -105,10 +106,10 @@ export default function Dashboards() {
         };
     });
 
+    // set active project from URL on load
     const searchParams = useSearchParams();
     const activeProjectId = searchParams.get('activeProjectId');
     useEffect(() => {
-        // set active project from URL
         if (activeProjectId) {
             setNewProject(false);
             const project = projects.find(
@@ -121,10 +122,12 @@ export default function Dashboards() {
         setPageLoaded(true);
     }, [projects, activeProjectId]);
 
+    // redirect to restricted access page if on mobile (dashboard not supported on mobile yet)
     if (isMobile) {
         return <RestrictedAccess />;
     }
 
+    // set active project and fetch its csv data
     const setActiveProject = (project: ProjectConfig) => {
         const searchParams = new URLSearchParams();
         if (!searchParams.has('activeProjectId')) {
@@ -184,6 +187,7 @@ export default function Dashboards() {
             });
     };
 
+    // update pinned status of widget
     const togglePinned = (id: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
             if (config.id === id) {
@@ -202,6 +206,7 @@ export default function Dashboards() {
         setProjects(updatedProjects);
     };
 
+    // update project name in state
     const editProjectName = (id: string, newTitle: string) => {
         const updatedProjects = projects.map((projectConfig) =>
             projectConfig.project_id === id
@@ -214,6 +219,7 @@ export default function Dashboards() {
         }
     };
 
+    // update widget title in state
     const editWidgetTitle = (id: string, newTitle: string) => {
         const newWidgets = activeProject.widgets.map((config) => {
             if (config.id === id) {
@@ -232,6 +238,7 @@ export default function Dashboards() {
         setProjects(updatedProjects);
     };
 
+    // delete project from state and backend
     const deleteProject = (id: string) => {
         fetch(
             `https://dash-analytics.solutions/api/v1/dashboards/project?project-id=${id}`,
@@ -275,6 +282,7 @@ export default function Dashboards() {
         }
     };
 
+    // handle project selection from sidebar
     const handleProjectSelection = (id: string) => {
         const selectedProject = projects.find(
             (projectConfig) => projectConfig.project_id === id,
@@ -286,6 +294,7 @@ export default function Dashboards() {
         setNewProject(false);
     };
 
+    // handle new project creation
     const handleNewProject = () => {
         setNewProject(true);
         setActiveProjectConfig({

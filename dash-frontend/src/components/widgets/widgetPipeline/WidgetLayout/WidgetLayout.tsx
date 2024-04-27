@@ -19,11 +19,13 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
     editWidgetTitle,
     fetchMoreWidgets,
 }) => {
+    // track state of expanded widget
     const [expandedWidgetId, setExpandedWidgetId] = useState('');
     const handleExpand = (id: string) => {
         setExpandedWidgetId(expandedWidgetId === id ? '' : id);
     };
 
+    // separate pinned and unpinned widgets lists to render from
     const pinnedConfigs = projectConfig.widgets.filter(
         (config) => config.pinned,
     );
@@ -43,8 +45,7 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
             </h1>
             <div className={styles.widgetGrid}>
                 {pinnedConfigs.map((config: WidgetConfig) => {
-
-                    if (config.title === "DO_NOT_RENDER") return null;
+                    if (config.title === 'DO_NOT_RENDER') return null;
 
                     return (
                         <>

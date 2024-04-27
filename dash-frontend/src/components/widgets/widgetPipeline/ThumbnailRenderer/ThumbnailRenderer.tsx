@@ -6,6 +6,7 @@ import { AreaChartThumbnail } from '../../graphWidgets/AreaChartWidget/AreaChart
 import { ScatterPlotThumbnail } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotThumbnail';
 import { StatisticsThumbnail } from '../../graphWidgets/StatisticsWidget/StatisticsThumbnail';
 
+// Renders the appropriate thumbnail based on the graph type
 const renderThumbnail = (config: WidgetConfig, handleClick: () => void) => {
     switch (config.graphType) {
         case 'BAR_GRAPH':
