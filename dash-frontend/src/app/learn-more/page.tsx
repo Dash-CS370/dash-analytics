@@ -24,7 +24,6 @@ export default function LearnMore() {
 
             {/* Header Box - Welcome Text */}
             <div className={styles.body}>
-                <div className={styles.divider} />
                 <div className={styles.splitSection}>
                     <div className={styles.textSide}>
                         <h1 className={styles.welcomeText}>
@@ -45,7 +44,7 @@ export default function LearnMore() {
                         />
                     </div>
                 </div>
-                <div className={styles.divider} />
+
                 {/* What is DASH - Explanation */}
                 <div className={styles.whatIs}>
                     <div className={styles.whatIsText}>
@@ -80,19 +79,35 @@ export default function LearnMore() {
                             src="/images/start-page.jpg"
                             className={styles.image}
                             alt="Start-Page"
-                            width={500}
-                            height={300}
+                            width={600}
+                            height={450}
                         />
                     </div>
                 </div>
                 <div className={styles.splitSectionHowTo}>
-                    <div className={styles.doubleImage}>
+                    <div className={styles.imageContainerGuide}>
                         <Image
                             src="/images/new-dash.jpg"
                             alt="Start-Page"
                             width={500}
                             height={300}
                         />
+                    </div>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Creating A New Dashboard [Part 1]
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
+                </div>
+                <div className={styles.splitSectionHowTo}>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Creating A New Dashboard [Part 2]
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
+                    <div className={styles.imageContainerGuide}>
                         <Image
                             src="/images/describe-data.jpg"
                             alt="Start-Page"
@@ -100,20 +115,8 @@ export default function LearnMore() {
                             height={325}
                         />
                     </div>
-                    <div className={styles.textSideGuide}>
-                        <h1 className={styles.guideHeaderText}>
-                            Creating A New Dashboard
-                        </h1>
-                        <p className={styles.guideSubText}>x</p>
-                    </div>
                 </div>
                 <div className={styles.splitSectionHowTo}>
-                    <div className={styles.textSideGuide}>
-                        <h1 className={styles.guideHeaderText}>
-                            Getting Started
-                        </h1>
-                        <p className={styles.guideSubText}>x</p>
-                    </div>
                     <div className={styles.imageContainerGuide}>
                         <Image
                             src="/images/ex-dash.jpg"
@@ -122,8 +125,17 @@ export default function LearnMore() {
                             height={325}
                         />
                     </div>
+                    <div className={styles.textSideGuide}>
+                        <h1 className={styles.guideHeaderText}>
+                            Your New Dashboard
+                        </h1>
+                        <p className={styles.guideSubText}>x</p>
+                    </div>
                 </div>
             </div>
         </main>
     );
+}
+
+{
 }

@@ -1,11 +1,13 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar';
 import { integer } from 'aws-sdk/clients/cloudfront';
 import { FiEdit2 } from 'react-icons/fi';
+import { CiCircleCheck } from 'react-icons/ci';
+import { IoIosArrowRoundBack } from 'react-icons/io';
 
 export interface UserDetails {
     id: string;
@@ -25,6 +27,9 @@ export const AccountDetails: FC = () => {
         credits: 60,
         creationDate: '',
     });
+    const oldPass = useRef(null);
+    const newPass = useRef(null);
+    const confirmPass = useRef(null);
 
     // fetch account details
     fetch('https://dash-analytics.solutions/api/v1/user/profile', {
@@ -57,9 +62,11 @@ export const AccountDetails: FC = () => {
         });
 
     // handle editing password
-    const [isEditingPass, stIsEditingPass] = useState(false);
+    const [confirmReset, setConfirmReset] = useState(false);
+    const [resetPassSent, setResetPassSent] = useState(false);
     const editPassword = () => {
-        // toggle to true, which triggers a popup that accepts new pass & confirm
+        // fetch to backend to send password reset email
+        // setResetPassSent(true);
     };
 
     const [completed, setCompleted] = useState(0);
@@ -72,11 +79,30 @@ export const AccountDetails: FC = () => {
             setCompleted(Math.floor(Math.random() * 100) + 1);
         }, 2000);
 
-        return () => clearInterval(interval); // 清除定时器
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div className={styles.pageContainer}>
+            {resetPassSent && <div className={styles.focusBlur} />}
+            {resetPassSent && (
+                <div className={styles.passwordChangeContainer}>
+                    <IoIosArrowRoundBack
+                        className={styles.backButton}
+                        onClick={() => {
+                            setResetPassSent(false);
+                            setConfirmReset(false);
+                        }}
+                    />
+                    <div className={styles.successContent}>
+                        <CiCircleCheck className={styles.check} />
+                        <p className={styles.successMessage}>
+                            An email has been sent to change your password.
+                        </p>
+                    </div>
+                </div>
+            )}
+
             <div className={styles.sidebar}>
                 <div className={styles.sidbarContent}>
                     <a href="/">Home</a>
@@ -92,38 +118,37 @@ export const AccountDetails: FC = () => {
                         <div className={styles.title}>
                             <h5>Name</h5>
                         </div>
-                        <div className={styles.info}>
-                            {userDetails.name}
-                            <FiEdit2
-                                className={styles.editIcon}
-                                // onClick={handleEditClick}
-                            />
-                        </div>
+                        <div className={styles.info}>{userDetails.name}</div>
                     </div>
                     <hr />
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Email</h5>
                         </div>
-                        <div className={styles.info}>
-                            {userDetails.email}{' '}
-                            <FiEdit2
-                                className={styles.editIcon}
-                                // onClick={handleEditClick}
-                            />
-                        </div>
+                        <div className={styles.info}>{userDetails.email} </div>
                     </div>
                     <hr />
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Password</h5>
                         </div>
-                        <div className={styles.info}>
+                        <div className={`${styles.pass}`}>
                             {userDetails.password}
-                            <FiEdit2
-                                className={styles.editIcon}
-                                // onClick={handleEditClick}
-                            />
+                            {confirmReset ? (
+                                <PrimaryButton
+                                    width="120"
+                                    height="50"
+                                    className={styles.confirmReset}
+                                    onClick={() => setResetPassSent(true)}
+                                >
+                                    Confirm Reset
+                                </PrimaryButton>
+                            ) : (
+                                <FiEdit2
+                                    className={styles.editIcon}
+                                    onClick={() => setConfirmReset(true)}
+                                />
+                            )}
                         </div>
                     </div>
                     <hr />
