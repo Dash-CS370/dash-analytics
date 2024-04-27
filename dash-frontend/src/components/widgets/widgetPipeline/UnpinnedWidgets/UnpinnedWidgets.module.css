@@ -1,0 +1,16 @@
+.carousel {
+    display: flex;
+    position: fixed;
+    bottom: 1rem;
+    overflow: auto;
+    width: 65%;
+    align-self: center;
+    padding: 0.5rem 0;
+    background-color: var(--project-background);
+    border-radius: 12px;
+}
+
+.carousel > * {
+    margin: 0 1rem;
+    flex-shrink: 0;
+}

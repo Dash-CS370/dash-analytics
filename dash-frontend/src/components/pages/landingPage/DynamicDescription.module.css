@@ -1,0 +1,53 @@
+.description {
+    display: flex;
+    flex-direction: column;
+    color: var(--on-background);
+    transform: translateX(0.8rem);
+}
+
+.constantDescription {
+    font-family: var(--secondary-font), sans-serif;
+    font-size: 33px;
+}
+
+.dynamicContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+}
+
+.dynamicText {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--primary);
+    font-family: var(--secondary-font), serif;
+    font-size: 34px;
+    font-weight: bold;
+    position: relative;
+}
+
+.dynamicCover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: var(--background);
+    border-left: 2px solid var(--primary);
+    animation: animate 5s steps(120) infinite; /* Extended to 5s for a better-timed pause */
+}
+
+@keyframes animate {
+    0%, 20% {
+        transform: translateX(0%); /* Start and pause with text covered */
+    }
+    50% {
+        transform: translateX(100%); /* Slide to the right to reveal the text */
+    }
+    80% {
+        transform: translateX(100%); /* Pause with text fully revealed */
+    }
+    100% {
+        transform: translateX(0%); /* Slide back to left and pause with text covered */
+    }
+}

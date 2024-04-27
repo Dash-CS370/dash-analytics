@@ -1,0 +1,10 @@
+.inputField {
+    border-radius: 24px;
+    border-style: solid;
+    background-color: var(--on-background);
+    color: var(--background);
+}
+
+.inputField::placeholder {
+    color: var(--background);
+}

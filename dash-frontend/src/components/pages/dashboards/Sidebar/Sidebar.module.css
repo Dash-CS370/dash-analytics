@@ -1,0 +1,77 @@
+.sidebarOpen,
+.sidebarClosed {
+    display: flex;
+    height: calc(100% - var(--navbar-height));
+    position: relative;
+    left: 0;
+    top: var(--navbar-height);
+    background-color: var(--background);
+}
+
+.sidebarOpen {
+    margin-left: 0.75rem;
+    width: 250px;
+}
+
+
+.projectsContainer h1 {
+    font-weight: lighter;  /* Optionally make the font bold */
+    font-family: var(--secondary-font);
+    transform: translateX(0.25em) translateY(-0.1em);
+}
+
+
+.sidebarClosed {
+    width: 30px;
+    overflow: hidden;
+}
+
+.sidebarContent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.projectsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 225px;
+    height: 100%;
+}
+
+.projectList {
+    background-color: var(--project-background);
+    border-radius: 12px;
+    flex: 1;
+    padding: 0.2rem;
+    overflow-y: auto;
+}
+
+.createProjectButton {
+    background-color: var(--primary);
+    color: var(--on-background);
+    border: none;
+    margin: 0.75rem 0;
+    align-self: center;
+}
+
+.createProjectButton:hover {
+    border: 1px solid var(--primary);
+    transition: background-color 0.3s ease;
+}
+
+.toggleIcon {
+    align-self: center;
+    margin: auto auto;
+    width: 30px;
+    height: 30px;
+    color: var(--on-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .toggleIcon:hover {
+        color: var(--border);
+        transition: color 0.3s ease;
+    }
+}

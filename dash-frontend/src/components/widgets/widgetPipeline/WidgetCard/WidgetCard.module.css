@@ -1,0 +1,90 @@
+.widgetCard {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background: var(--background-contrast);
+    border-radius: 24px;
+    border: 1px solid;
+    border-color: var(--border);
+}
+
+.default {
+    width: 350px;
+    height: 250px;
+    transition: width 0.5s, height 0.5s;
+}
+
+.expanded {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 650px;
+    height: 500px;
+    transition: width 0.5s, height 0.5s;
+    z-index: 1001;
+    animation: expanded 0.3s ease-out;
+}
+
+@keyframes expanded {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.widgetCardHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.25rem;
+    padding-top: 1rem;
+    border-color: var(--border);
+    border-radius: 24px 24px 0 0;
+}
+
+.widgetTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.widgetTitle h1 {
+    font-size: 1.2rem;
+    max-width: 225px;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.widgetTitle.expandedTitle h1 {
+    max-width: 400px;
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+.editInput {
+    flex-grow: 1;
+    padding: 0.25rem 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.widgetHeaderButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.widgetCardContent {
+    padding: 1.25rem;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+}

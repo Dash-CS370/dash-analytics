@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <title>Dash Log In</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="https://dash-analytics.solutions">
+        <img src="/css/Dash.svg" alt="Dash" />
+      </a>
+      <a class="navLink" href="https://dash-analytics.solutions/learn-more">
+        Learn More
+      </a>
+    </div>
+
+    <div class="login-page">
+      <div class="form">
+        <img src="/css/DashLogo.svg" alt="Dash Logo" />
+        <h1>Sign In</h1>
+        <div class="error" th:if="${param.logout}">
+          You have been logged out.
+        </div>
+        <form class="login-form" th:action="@{/login}" method="post">
+          <div>
+            <input type="text" name="username" placeholder="Email" />
+          </div>
+          <div>
+            <input type="password" name="password" placeholder="Password" />
+          </div>
+          <div class="error">
+            <span th:if="${param.error}"
+              >Invalid username and/or password.</span
+            >
+          </div>
+          <a
+            href="https://dash-analytics.solutions/user/request-new-password"
+            class="forgotPass"
+            >forgot password?</a
+          >
+          <button class="button" type="submit">Log In</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

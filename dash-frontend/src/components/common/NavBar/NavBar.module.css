@@ -1,0 +1,49 @@
+.main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    padding: 1rem 1.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.dash {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.accountIcon {
+    width: 25px;
+    height: 25px;
+}
+
+.icon {
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    transform: translateX(-0.55em);
+}
+
+.right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2.25rem;
+}
+
+.navLink {
+    font-size: 1.1em;
+}
+
+.navLink:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-underline-offset: 0.5em;
+}

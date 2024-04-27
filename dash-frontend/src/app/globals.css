@@ -1,47 +1,61 @@
 @font-face {
+    font-family: 'TestSöhne-Buch';
+    src: local('TestSöhne-Buch'), url('/fonts/TestSöhne-Buch.otf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
     font-family: 'Colfax';
-    src: local('Colfax'), url('/fonts/Colfax.otf') format('truetype');
+    src: local('Colfax'), url("/fonts/Colfax.otf") format("truetype");
     font-weight: 400;
 }
 
 :root {
     --max-width: 1100px;
     --border-radius: 12px;
-    --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-        'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-        'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+    --default-font: 'TestSöhne-Buch', sans-serif;
+    --secondary-font: 'Colfax', sans-serif;
 
     --background: #000;
+    --background-contrast: #212121;
     --on-background: #fff;
+    --project-background: #393939;
 
-    --primary: #5e0eb5;
+    --form-color: #d9d9d9;
+    --primary: #6434af;
+    --secondary: #048c6a;
+    --alternative: #1ae1af;
 
     --border: #9b9b9b;
+
+    --navbar-height: 4.5rem;
 }
 
+/* 
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #fff;
         --on-background: #000;
     }
-}
+} */
 
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: var(--default-font);
 }
 
 html,
 body {
     max-width: 100vw;
-    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
 }
 
 body {
     color: var(--on-background);
-    background: var(--primary);
-    font-family: 'Colfax', sans-serif;
+    background: var(--background);
 }
 
 a {

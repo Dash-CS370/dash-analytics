@@ -15,6 +15,15 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Dash-Backend" target="1.5" />
+      <module name="Dash-backend" target="17" />
+      <module name="Dash-backend (1)" target="17" />
+      <module name="Dash-backend (2)" target="17" />
+      <module name="Dashboard-Service (1)" target="17" />
+      <module name="Eureka-Server (1)" target="17" />
+      <module name="OAuthorization-Server (1)" target="17" />
+      <module name="OAuthorization-Server (2)" target="17" />
+      <module name="Resource-Server (1)" target="17" />
+      <module name="Resource-Server (2)" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

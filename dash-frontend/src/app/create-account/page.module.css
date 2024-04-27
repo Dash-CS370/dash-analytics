@@ -1,0 +1,74 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.lineFormat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 7px 0;
+    color: black;
+    width: 100%;
+    gap: 0.25rem;
+}
+
+.linePos {
+    width: 30%;
+    height: 1px;
+    background-color: var(--background);
+}
+
+.signinOpts {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0;
+    gap: 0.75rem;
+}
+
+.buttonFormatOne {
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
+    margin: 0.75rem;
+    font-size: 0.9em;
+}
+
+.buttonFormatOne:hover {
+    background-color: transparent !important;
+    color: var(--primary) !important;
+    border: var(--primary) 1px solid !important;
+    transition: all 0.3s ease;
+}
+
+.buttonFormatTwo {
+    border: var(--background) 1px solid !important;
+    color: var(--background) !important;
+    background-color: white !important;
+}
+
+.buttonFormatTwo:hover {
+    background-color: transparent !important;
+    color: var(--background) !important;
+    transition: all 0.3s ease;
+}
+
+.createAccountOptsFormat {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    gap: 1rem;
+}

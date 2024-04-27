@@ -1,0 +1,46 @@
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.item.active {
+    background-color: var(--background-contrast);
+}
+
+.name {
+    flex-grow: 1;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon {
+    cursor: pointer;
+    color: var(--on-background);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .icon:hover {
+        color: var(--border);
+    }
+}
+
+.editContainer {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.editInput {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}

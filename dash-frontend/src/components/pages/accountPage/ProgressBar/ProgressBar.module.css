@@ -1,0 +1,24 @@
+.progressBarContainer {
+    height: 40px;
+    width: 75%;
+    background-color: #e0e0de;
+    border-radius: 50px;
+    margin: 50px;
+    overflow: hidden;
+}
+
+.progressBarFiller {
+    height: 100%;
+    border-radius: inherit;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transition: width 1s ease-in-out;
+}
+
+.progressBarLabel {
+    padding-right: 15px;
+    color: white;
+    font-weight: bold;
+}

@@ -1,0 +1,68 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 15px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.textInput {
+    margin: 1rem 0;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 11px;
+    height: 20px;
+    width: 80%;
+    text-align: center;
+}
+
+.subtext {
+    gap: 2rem;
+    font-size: small;
+    margin: 1rem 0;
+}
+
+.subtext_top {
+    gap: 2rem;
+    font-size: small;
+    margin: 1rem 1.5rem;
+}
+
+.line {
+    width: 80%;
+    height: 1px;
+    background-color: var(--background);
+    margin-top: 2rem;
+}
+
+.buttonFormat {
+    background-color: var(--primary) !important;
+    color: var(--on-background) !important;
+}
+
+.buttonFormat:hover {
+    background-color: var(--form-color) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+}
+
+.textFields {
+    margin: 0.25rem;
+    margin-top: 1rem;
+}
