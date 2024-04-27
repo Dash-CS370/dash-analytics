@@ -2,7 +2,7 @@ package com.Dash.ResourceServer.Controllers;
 
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
-import com.Dash.ResourceServer.Services.OpenAIService;
+import com.Dash.ResourceServer.Services.GptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +18,11 @@ public class GptController {
 
     private final Integer DEFAULT_RETRY_COUNT = 1;
 
-    private final OpenAIService openAIService;
+    private final GptService gptService;
 
     @Autowired
-    GptController(OpenAIService openAIService) {
-        this.openAIService = openAIService;
+    GptController(GptService gptService) {
+        this.gptService = gptService;
     }
 
 
@@ -35,7 +35,7 @@ public class GptController {
     public Optional<List<Widget>> generateMoreWidgets(@RequestBody Project currentProject) {
         try {
 
-            return openAIService.attemptWidgetGenerationWithRetry(
+            return gptService.attemptWidgetGenerationWithRetry(
                         currentProject.getDatasetDescription(), currentProject.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
 
         } catch (Exception e) {
