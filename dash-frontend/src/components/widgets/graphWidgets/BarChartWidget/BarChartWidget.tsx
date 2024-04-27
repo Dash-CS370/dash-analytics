@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { WidgetCard } from '../../widgetPipeline/WidgetCard/WidgetCard';
 import { DataFrame, toJSON } from 'danfojs';
-import { convertDataItems, generateBarChart } from '@/components/dataPipeline/dataOperations/barChartRenderer';
+import { convertDataItems, generateBarChart } from '@/components/dataPipeline/dataOperations/BarChartRenderer';
 
 export const BarChartWidget: React.FC<BaseGraphProps> = ({
     config,

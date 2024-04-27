@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { BaseThumbnailProps, DataItem } from '../../WidgetTypes';
 import { GraphThumbnail } from '../../widgetPipeline/GraphThumbnail/GraphThumbnail';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { generateBarChart} from '@/components/dataPipeline/dataOperations/barChartRenderer';
+import { generateBarChart} from '@/components/dataPipeline/dataOperations/BarChartRenderer';
 import { DataFrame, toJSON } from 'danfojs';
 import {exampleConfigs, exampleProjects} from "@/components/widgets/TestData";
 
