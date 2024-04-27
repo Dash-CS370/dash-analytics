@@ -225,6 +225,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new Date(calendar.getTime().getTime());
     }
 
-
 }
-

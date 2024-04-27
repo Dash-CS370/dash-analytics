@@ -91,7 +91,6 @@ public class AccountServiceImpl implements AccountService {
 
 
 
-    // FIXME
     public Optional<String> deleteUserById(OAuth2AuthorizedClient client, OAuth2User oauth2User) {
         try {
             final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();

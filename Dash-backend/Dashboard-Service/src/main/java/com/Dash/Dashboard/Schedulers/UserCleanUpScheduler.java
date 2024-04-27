@@ -31,10 +31,10 @@ public class UserCleanUpScheduler {
     /**
      * Scheduled job that deletes users who have not been enabled.
      *
-     * This job runs every Monday at 12:00 PM and removes users who were created at
-     * least 7 days ago and have activated their accounts.
+     * This job runs every 7 days and removes users who were created at
+     * least 7 days ago and have not activated their accounts.
      */
-    @Scheduled(cron = "0 0 12 * * MON")
+    @Scheduled(fixedRate= 1000 * 60 * 60 * 24 * 7)
     public void deleteNotEnabledUsers() {
         final Instant SevenDaysAgo = Instant.now().minus(7, ChronoUnit.DAYS);
 
