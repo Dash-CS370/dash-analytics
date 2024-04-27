@@ -11,7 +11,7 @@ public enum GraphType {
 
     BAR_GRAPH("BAR_GRAPH", "A chart that represents categorical data with rectangular bars with heights or lengths proportional to " +
             "the numerical values they represent. Versatile for comparing numerical quantities across different categories." +
-            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 MUST BE CATEGORICAL AND THE OTHER NUMERICAL."),
+            "REQUIREMENT (IF APPLICABLE TO THE COLUMN(S) USED BY THE WIDGET): MUST INCLUDE 2 OR MORE COLUMNS, WHERE 1 & ONLY ONE MUST BE CATEGORICAL AND THE OTHER(S) NUMERICAL."),
 
     SCATTER_PLOT("SCATTER_PLOT", "A graph that uses dots to represent values obtained for two different numerical variables, showing " +
             "the relationship between them. It's particularly useful for spotting outliers, and observing distribution trends in numerical data. " +

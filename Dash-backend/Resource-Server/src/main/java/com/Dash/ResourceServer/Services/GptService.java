@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface OpenAIService {
+public interface GptService {
 
     Optional<List<Widget>> attemptWidgetGenerationWithRetry(String description, List<String> columnDescriptions, int retryCount) throws InterruptedException;
 

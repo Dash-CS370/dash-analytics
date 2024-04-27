@@ -2,7 +2,7 @@ package com.Dash.ResourceServer.Controllers;
 
 import com.Dash.ResourceServer.Models.Project;
 import com.Dash.ResourceServer.Models.Widget;
-import com.Dash.ResourceServer.Services.OpenAIService;
+import com.Dash.ResourceServer.Services.GptService;
 import com.Dash.ResourceServer.Services.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,12 @@ public class ResourceController {
 
     private final ResourceService resourceService;
 
-    private final OpenAIService openAIService;
+    private final GptService gptService;
 
     @Autowired
-    ResourceController(ResourceService resourceService, OpenAIService openAIService) {
+    ResourceController(ResourceService resourceService, GptService gptService) {
         this.resourceService = resourceService;
-        this.openAIService = openAIService;
+        this.gptService = gptService;
     }
 
 
@@ -69,8 +69,8 @@ public class ResourceController {
             log.info("Uploading new project...");
 
             // Create Config with GPT API
-            Optional<List<Widget>> widgets = openAIService.attemptWidgetGenerationWithRetry(
-                                                                project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
+            Optional<List<Widget>> widgets = gptService.attemptWidgetGenerationWithRetry(
+                                        project.getDatasetDescription(), project.getColumnDescriptions(), DEFAULT_RETRY_COUNT);
 
             return widgets.map(widgetList -> {
                 project.setWidgets(widgetList);
