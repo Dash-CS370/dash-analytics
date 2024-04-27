@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineGraphWidget } from '../../graphWidgets/LineGraphWidget/LineGraphWidget';
-import { BaseGraphProps, WidgetConfig } from '../../WidgetTypes';
+import { WidgetConfig } from '../../WidgetTypes';
 import { BarChartWidget } from '../../graphWidgets/BarChartWidget/BarChartWidget';
 import { AreaChartWidget } from '../../graphWidgets/AreaChartWidget/AreaChartWidget';
 import { ScatterPlotWidget } from '../../graphWidgets/ScatterPlotWidget/ScatterPlotWidget';
