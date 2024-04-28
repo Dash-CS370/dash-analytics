@@ -37,7 +37,8 @@ yarn dev
 npm run dev
 ```
 
-4. To view your local front end, visit [http://localhost:3000](http://localhost:3000).\
+4. To view your local front end, visit [http://localhost:3000](http://localhost:3000).
+<br>
 
 ## Backend Architecture
 ![Project Architecture](./Dash-Analytics-Architecture.png)
