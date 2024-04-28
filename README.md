@@ -47,11 +47,11 @@ Before you start, ensure you've run the Maven build process to create these JAR 
 using the following command:
 
 ```bash
-   cd /Dash-backend/Eureka-Server
+   cd /Dash-backend/Eureka-Server/
    mvn clean install
 ```
 ```bash
-   cd /Dash-backend/OAuthorization-Server
+   cd /Dash-backend/OAuthorization-Server/
    mvn clean install
 ```
 ```bash
@@ -59,7 +59,7 @@ using the following command:
    mvn clean install
 ```
 ```bash
-   cd /Dash-backend/Dashboard-Service/target
+   cd /Dash-backend/Dashboard-Service/
    mvn clean install
 ```
 
