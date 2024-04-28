@@ -7,7 +7,6 @@
     <groupId>com.Dash</groupId>
     <version>1.0-SNAPSHOT</version>
     <artifactId>Resource-Server</artifactId>
-
     <packaging>jar</packaging>
 
     <properties>
