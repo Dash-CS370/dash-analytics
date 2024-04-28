@@ -40,7 +40,7 @@ npm run dev
 4. To view your local front end, visit [http://localhost:3000](http://localhost:3000).
 
 ## Backend Architecture
-![Project Architecture](./Dash-Analytics-Architecture.png)
+![Project Architecture](./Dash-Architecture.png)
 
 ## Learn More
 
