@@ -73,12 +73,14 @@
     font-size: 50px;
     font-weight: bold;
     align-self: center;
+    transform: translateY(0.4rem) translateX(18rem);
 }
 
 .subText {
     margin: 1rem 0;
     font-size: 19px;
     font-style: italic;
+    transform: translateX(18rem);
 }
 
 .imageContainer {
@@ -90,9 +92,10 @@
 }
 
 .dashImage {
-    width: 225px;
-    height: 225px;
-    margin: 25px 0;
+    width: 155px;
+    height: 155px;
+    margin: 20px 0;
+    transform: translateY(0.5rem) translateX(-1rem);
 }
 
 .image {
