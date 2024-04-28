@@ -41,12 +41,22 @@ npm run dev
 
 ## Backend Installation
 To run the backend, we need to start 4 different Springboot Microservices in the order given below:
-These four microservices can be found in the Dash-Backend folder in the root directory of the project.
+These microservices are found in the `/Dash-backend/Microservice/` directory at the root of the project. 
+Since this is a Maven-based project, the JAR files are typically generated in each microservice's `target` folder. 
+Before you start, ensure you've run the Maven build process to create these JAR files inside each Microservice directory under /Dash-backend
+using the following command:
+
+```bash
+   cd /Dash-backend/Service
+   mvn clean install
+```
+
 
 1. **Eureka Server**
    - **Description**: Eureka is a service discovery server. It helps other microservices discover each other and maintain their registration.
-   - **Startup Command**:
+   - **Startup Command**: 
      ```bash
+     cd /Dash-backend/Eureka-Server/target
      java -jar Eureka-Server.jar
      ```
 
@@ -54,6 +64,7 @@ These four microservices can be found in the Dash-Backend folder in the root dir
    - **Description**: This service handles user authentication and issues OAuth tokens for authorized access to other services.
    - **Startup Command**:
      ```bash
+     cd /Dash-backend/OAuthorization-Server/target
      java -jar OAuthorization-Server.jar
      ```
 
@@ -61,6 +72,7 @@ These four microservices can be found in the Dash-Backend folder in the root dir
    - **Description**: The resource server provides protected resources to authenticated clients based on OAuth tokens.
    - **Startup Command**:
      ```bash
+     cd /Dash-backend/Resource-Server/target
      java -jar Resource-Server.jar
      ```
 
@@ -68,6 +80,7 @@ These four microservices can be found in the Dash-Backend folder in the root dir
    - **Description**: The dashboard service is the central service for which the resources and authentication is handled through in this ecosystem.
    - **Startup Command**:
      ```bash
+     cd /Dash-backend/Dashboard-Service/target
      java -jar Dashboard-Service.jar
      ```
 
