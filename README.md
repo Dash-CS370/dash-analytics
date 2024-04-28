@@ -78,7 +78,7 @@ These four microservices can be found in the Dash-Backend folder in the root dir
   echo "127.0.0.1 auth-server" | sudo tee -a /etc/hosts
 <br>
 
-## Backend Architecture
+## Project Architecture
 ![Project Architecture](./Dash-Analytics-Architecture.png)
 
 <br>
