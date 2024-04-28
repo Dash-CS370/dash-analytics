@@ -41,7 +41,7 @@ npm run dev
 
 ## Backend Installation
 To run the backend, we need to start 4 different Springboot Microservices in the order given below:
-These microservices are found in the `/Dash-backend/Microservice/` directory at the root of the project. 
+These microservices are found in the `/Dash-backend/` directory at the root of the project. 
 Since this is a Maven-based project, the JAR files are typically generated in each microservice's `target` folder. 
 Before you start, ensure you've run the Maven build process to create these JAR files:
 using the following command:
