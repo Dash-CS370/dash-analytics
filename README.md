@@ -8,9 +8,9 @@ Welcome to Dash Analytics, where you can visualize your data with no code or dat
 
 1. Sign up by making an account with Dash Analytics or by logging in with your Google account (coming soon)
 2. After logging in, you can navigate to the [dashboards](https://dash-analytics.solutions/dashboards) page.
-3. Once on your dashboard page, you can view previous projects or create a new one by uploading a csv and providing the necessary context for us to generate all the visualizations you need!
+3. Once on your dashboard page, you can view previous projects or create a new one by uploading a CSV and providing the necessary context for us to generate all the visualizations you need!
 
-## Installation
+## Frontend Installation
 
 To run a local copy of this project:
 
@@ -38,6 +38,44 @@ npm run dev
 ```
 
 4. To view your local front end, visit [http://localhost:3000](http://localhost:3000).
+
+## Backend Installation
+To run the backend, we need to start 4 different Springboot Microservices in the order given below:
+These four microservices can be found in the Dash-Backend folder in the root directory of the project.
+
+1. **Eureka Server**
+   - **Description**: Eureka is a service discovery server. It helps other microservices discover each other and maintain their registration.
+   - **Startup Command**:
+     ```bash
+     java -jar Eureka-Server.jar
+     ```
+
+2. **OAuth Authorization Server**
+   - **Description**: This service handles user authentication and issues OAuth tokens for authorized access to other services.
+   - **Startup Command**:
+     ```bash
+     java -jar OAuthorization-Server.jar
+     ```
+
+3. **Resource Server**
+   - **Description**: The resource server provides protected resources to authenticated clients based on OAuth tokens.
+   - **Startup Command**:
+     ```bash
+     java -jar Resource-Server.jar
+     ```
+
+4. **Dashboard Service**
+   - **Description**: The dashboard service is the central service for which the resources and authentication is handled through in this ecosystem.
+   - **Startup Command**:
+     ```bash
+     java -jar Dashboard-Service.jar
+     ```
+
+## Notes
+- Make sure the TCP ports 8080, 8081, 9000, and 8761 are not occupied before running these commands.
+- To ensure proper communication between servers, add an alias for `127.0.0.1` in `hosts.conf`:
+  ```bash
+  echo "127.0.0.1 auth-server" | sudo tee -a /etc/hosts
 <br>
 
 ## Backend Architecture
