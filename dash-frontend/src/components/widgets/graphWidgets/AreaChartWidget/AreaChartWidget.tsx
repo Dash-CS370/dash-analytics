@@ -37,7 +37,7 @@ export const AreaChartWidget: React.FC<BaseGraphProps> = ({
         ]);
     }, []);
 
-    const data = processAndSliceDF(config.data, 1500, 1);
+    const data = processAndSliceDF(config.data, 1000, 1);
 
     return (
         <WidgetCard

@@ -17,7 +17,7 @@ export default function ChangePassword() {
     let t = searchParams.get('token');
     useEffect(() => {
         if (!t) {
-            window.location.href = '/user/request-new-password';
+            //window.location.href = '/user/request-new-password';
             t = '';
         }
         setToken(t);
@@ -40,7 +40,6 @@ export default function ChangePassword() {
             return;
         }
 
-        // TODO: send request to backend
         const formData = new FormData();
 
         formData.append('token', token);
@@ -65,7 +64,7 @@ export default function ChangePassword() {
                 <BaseForm
                     title="Forgot Your Password?"
                     width="350px"
-                    height="500px"
+                    height="420px"
                 >
                     <div className={styles.textFields}>
                         <TextInput
