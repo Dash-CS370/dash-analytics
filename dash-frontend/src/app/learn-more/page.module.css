@@ -68,7 +68,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .welcomeText {
@@ -86,6 +85,7 @@
 }
 
 .imageContainer {
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;

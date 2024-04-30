@@ -17,7 +17,7 @@ export default function ChangePassword() {
     let t = searchParams.get('token');
     useEffect(() => {
         if (!t) {
-            //window.location.href = '/user/request-new-password';
+            window.location.href = '/user/request-new-password';
             t = '';
         }
         setToken(t);
