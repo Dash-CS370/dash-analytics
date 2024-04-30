@@ -28,7 +28,7 @@ export default function LearnMore() {
                             Welcome to DASH Analytics
                         </h1>
                         <p className={styles.subText}>
-                            Data Visualization Made Easy Harnessing the Power of
+                            Data Visualization Made Easy by Harnessing the Power of
                             AI
                         </p>
                     </div>
@@ -64,7 +64,7 @@ export default function LearnMore() {
                     </div>
                 </div>
                 {/* How To Guide */}
-                <div className={styles.guideText}>How To Use It</div>
+                <div className={styles.guideText}></div>
                 <div className={styles.splitSectionHowTo}>
                     <div className={styles.textSideGuide}>
                         <h1 className={styles.guideHeaderText}>
@@ -101,6 +101,7 @@ export default function LearnMore() {
                         />
                     </div>
                 </div>
+                <br></br>
                 <div className={styles.splitSectionHowTo}>
                     <div className={styles.imageContainerGuide}>
                         <Image
@@ -113,7 +114,7 @@ export default function LearnMore() {
                     </div>
                     <div className={styles.textSideGuide}>
                         <h1 className={styles.guideHeaderText}>
-                            Creating A New Dashboard [Part 1]
+                            Creating A New Dashboard
                         </h1>
                         <p className={styles.guideSubText}>
                             Once signed in, you are met with the home interface.{' '}
@@ -129,10 +130,11 @@ export default function LearnMore() {
                         </p>
                     </div>
                 </div>
+                <br></br>
                 <div className={styles.splitSectionHowTo}>
                     <div className={styles.textSideGuide}>
                         <h1 className={styles.guideHeaderText}>
-                            Creating A New Dashboard [Part 2]
+                            Working With Your Data
                         </h1>
                         <p className={styles.guideSubText}>
                             Next, you enhance the data analysis process by
@@ -160,6 +162,7 @@ export default function LearnMore() {
                         />
                     </div>
                 </div>
+                <br></br>
                 <div className={styles.splitSectionHowTo}>
                     <div className={styles.imageContainerGuide}>
                         <Image

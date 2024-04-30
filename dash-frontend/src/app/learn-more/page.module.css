@@ -64,6 +64,7 @@
 
 .textSide {
     display: flex;
+    height: 87%;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -73,15 +74,18 @@
     font-size: 50px;
     font-weight: bold;
     align-self: center;
+    transform: translateY(0.4rem) translateX(18rem);
 }
 
 .subText {
     margin: 1rem 0;
     font-size: 19px;
     font-style: italic;
+    transform: translateX(18rem);
 }
 
 .imageContainer {
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,9 +94,10 @@
 }
 
 .dashImage {
-    width: 225px;
-    height: 225px;
-    margin: 25px 0;
+    width: 155px;
+    height: 155px;
+    margin: 20px 0;
+    transform: translateY(0.5rem) translateX(-1rem);
 }
 
 .image {
@@ -111,6 +116,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: scroll;
 }
 
 .whatIsText {
@@ -146,6 +152,7 @@
     background-color: var(--on-background);
     color: var(--background);
     gap: 1rem;
+    overflow: scroll;
 }
 
 .textSideGuide {
@@ -171,6 +178,7 @@
     font-size: 30px;
     font-weight: bold;
     align-self: center;
+    text-align: center;
     text-decoration: underline;
     text-underline-offset: 0.3em;
 }

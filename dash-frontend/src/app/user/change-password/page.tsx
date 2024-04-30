@@ -42,7 +42,6 @@ export default function ChangePassword() {
             return;
         }
 
-        // TODO: send request to backend
         const formData = new FormData();
 
         formData.append('token', token);
@@ -70,7 +69,7 @@ export default function ChangePassword() {
                 <BaseForm
                     title="Forgot Your Password?"
                     width="350px"
-                    height="500px"
+                    height="420px"
                 >
                     <div className={styles.textFields}>
                         <TextInput

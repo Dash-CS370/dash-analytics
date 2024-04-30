@@ -22,7 +22,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
                 style={{ width: width, height: height }}
             >
                 <Image
-                    src="assets/DashLogo.svg"
+                    src="/assets/DashLogo.svg"
                     alt="Dash Logo"
                     width="70"
                     height="70"
@@ -38,7 +38,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
             style={{ width: width, height: height }}
         >
             <Image
-                src="assets/DashLogo.svg"
+                src="/assets/DashLogo.svg"
                 alt="Dash Logo"
                 width="70"
                 height="70"
