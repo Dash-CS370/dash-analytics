@@ -3,8 +3,7 @@
 ## Description
 
 Welcome to Dash Analytics, where you can visualize your data with no code or data skills required. To see this website in production, visit [Dash Analytics](https://dash-analytics.solutions).
-You can also watch a complete tour of our
-platform and software here [Dash Analytics Walkthrough](https://drive.google.com/file/d/1zZvENRDF7NT1CA_EdQQcoAjzv-7bfd37/view?usp=drivesdk).
+You can also watch a walkthrough tour of our platform and software here [Dash Analytics Walkthrough](https://drive.google.com/file/d/1zZvENRDF7NT1CA_EdQQcoAjzv-7bfd37/view?usp=drivesdk).
 
 ## How to Use
 
