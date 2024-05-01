@@ -10,7 +10,5 @@ public interface AccountService {
 
     Optional<User> pullUserProfile(OAuth2User oauth2User);
 
-    boolean updateUserPassword(OAuth2User oauth2User, String oldPassword, String newPassword);
-
-    Optional<String> deleteUserById(OAuth2AuthorizedClient client, OAuth2User oauth2User);
+    Optional<String> deleteUser(OAuth2AuthorizedClient client, OAuth2User oauth2User);
 }

@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '@/components/pages/accountPage/AccountPage.module.css';
 import { PrimaryButton } from '@/components/common/buttons/PrimaryButton/PrimaryButton';
 import ProgressBar from '@/components/pages/accountPage/ProgressBar/ProgressBar';
 import { integer } from 'aws-sdk/clients/cloudfront';
-import { FiEdit2 } from 'react-icons/fi';
 import { CiCircleCheck } from 'react-icons/ci';
 import { IoIosArrowRoundBack } from 'react-icons/io';
 
@@ -13,60 +13,80 @@ export interface UserDetails {
     id: string;
     name: string;
     email: string;
-    password: string;
     credits: integer;
     creationDate: string;
 }
 
 export const AccountDetails: FC = () => {
+    const router = useRouter();
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [deleteStatus, setDeleteStatus] = useState('');
+
     const [userDetails, setUserDetails] = useState<UserDetails>({
         id: '',
         name: 'John Smith',
         email: 'johnsmith@gmail.com',
-        password: '***********',
         credits: 60,
         creationDate: '',
     });
-    const oldPass = useRef(null);
-    const newPass = useRef(null);
-    const confirmPass = useRef(null);
 
-    // fetch account details
-    fetch('https://dash-analytics.solutions/api/v1/user/profile', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            credentials: 'include',
-        },
-    })
-        .then((response) => {
-            if (response.status === 200) {
-                response.json().then((data) => {
-                    setUserDetails({
-                        id: data.id,
-                        name: data.name,
-                        email: data.email,
-                        password: data.password,
-                        credits: data.credits,
-                        creationDate: data.creationDate,
-                    });
-                });
-            } else {
-                console.error(
-                    `Error fetching user details. Response status: ${response.status}`,
-                );
-            }
-        })
-        .catch((error) => {
-            console.error(`Error fetching user details: ${error}`);
-        });
-
-    // handle editing password
     const [confirmReset, setConfirmReset] = useState(false);
     const [resetPassSent, setResetPassSent] = useState(false);
-    const editPassword = () => {
-        // fetch to backend to send password reset email
-        // setResetPassSent(true);
+
+    // Effect for fetching account details only on component mount
+    useEffect(() => {
+        fetch('https://dash-analytics.solutions/api/v1/user/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                credentials: 'include',
+            },
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json().then(data => {
+                        setUserDetails({
+                            id: data.id,
+                            name: data.name,
+                            email: data.email,
+                            credits: data.credits,
+                            creationDate: data.creationDate,
+                        });
+                    });
+                } else {
+                    console.error(`Error fetching user details. Response status: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error fetching user details: ${error}`);
+            });
+    }, []); // Ensures this runs only once on mount
+
+    const handleDeleteClick = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const handleDeleteAccount = () => {
+        fetch('https://dash-analytics.solutions/api/v1/user/account', {
+            method: 'DELETE',
+            headers: {
+                credentials: 'include',
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    setDeleteStatus('Account successfully deleted');
+                    router.push("/")
+                } else {
+                    setDeleteStatus('Failed to delete account');
+                }
+            })
+            .catch(error => {
+                setDeleteStatus(`Error: ${error}`);
+            })
+            .finally(() => {
+                setShowDeleteConfirm(false);
+            });
     };
 
     const [completed, setCompleted] = useState(0);
@@ -104,7 +124,7 @@ export const AccountDetails: FC = () => {
             )}
 
             <div className={styles.sidebar}>
-                <div className={styles.sidbarContent}>
+                <div className={styles.sidebarContent}>
                     <a href="/">Home</a>
                     <a href="/dashboards">Projects</a>
                     <a href="/learn-more">Learn More</a>
@@ -113,7 +133,6 @@ export const AccountDetails: FC = () => {
             <div className={styles.infoContainer}>
                 <div className={styles.section}>
                     <h1>Account Details</h1>
-                    {/* Add Edit Icon - ADD ON CLICK FUNCTIONALITY*/}
                     <div className={styles.row}>
                         <div className={styles.title}>
                             <h5>Name</h5>
@@ -125,42 +144,23 @@ export const AccountDetails: FC = () => {
                         <div className={styles.title}>
                             <h5>Email</h5>
                         </div>
-                        <div className={styles.info}>{userDetails.email} </div>
+                        <div className={styles.info}>{userDetails.email}</div>
                     </div>
                     <hr />
-                    <div className={styles.row}>
-                        <div className={styles.title}>
-                            <h5>Password</h5>
-                        </div>
-                        <div className={`${styles.pass}`}>
-                            {userDetails.password}
-                            {confirmReset ? (
-                                <PrimaryButton
-                                    width="120"
-                                    height="50"
-                                    className={styles.confirmReset}
-                                    onClick={() => setResetPassSent(true)}
-                                >
-                                    Confirm Reset
-                                </PrimaryButton>
-                            ) : (
-                                <FiEdit2
-                                    className={styles.editIcon}
-                                    onClick={() => setConfirmReset(true)}
-                                />
-                            )}
-                        </div>
+                    <br />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <PrimaryButton width="475px" height="50px" className={styles.button}
+                                       onClick={() => setResetPassSent(true)}>
+                            Reset Password
+                        </PrimaryButton>
+                        <PrimaryButton width="475px" height="50px" className={styles.button}
+                                       onClick={handleDeleteClick}>
+                            Delete Account
+                        </PrimaryButton>
                     </div>
-                    <hr />
-
-                    <PrimaryButton
-                        width="500px"
-                        height="50px"
-                        className={styles.deleteBtn}
-                    >
-                        Delete Account
-                    </PrimaryButton>
+                    <br />
                 </div>
+                <br />
                 <div className={styles.section}>
                     <h1 className={styles.title}>Credits</h1>
                     <div className={styles.row}>
@@ -198,6 +198,22 @@ export const AccountDetails: FC = () => {
                     </div>
                 </div>
             </div>
+            {showDeleteConfirm && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <h2>Confirm Account Deletion</h2>
+                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <div>
+                            <PrimaryButton className={styles.button} onClick={handleDeleteAccount}>
+                                Confirm Delete
+                            </PrimaryButton>
+                            <PrimaryButton className={styles.button} onClick={() => setShowDeleteConfirm(false)}>
+                                Cancel
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

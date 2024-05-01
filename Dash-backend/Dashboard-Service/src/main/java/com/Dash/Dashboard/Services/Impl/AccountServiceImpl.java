@@ -54,47 +54,10 @@ public class AccountServiceImpl implements AccountService {
 
 
 
-    /**
-     *
-     * @param oauth2User
-     * @param oldPassword
-     * @param newPassword
-     * @return boolean
-     */
-    public boolean updateUserPassword(OAuth2User oauth2User, String oldPassword, String newPassword) {
+    public Optional<String> deleteUser(OAuth2AuthorizedClient client, OAuth2User oauth2User) {
         try {
             final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
-            Optional<User> queriedUser = Optional.ofNullable(userDAO.findById(userEmail, User.class));
-
-            if (queriedUser.isEmpty()) {
-                log.info("User with account: {} not found", userEmail);
-                return false;
-            }
-
-            final User user = queriedUser.get();
-
-            if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-                log.warn("Success, User is validated");
-                user.setPassword(passwordEncoder.encode(newPassword));
-                userDAO.save(user);
-                return true;
-            }
-
-            log.warn("Passwords do NOT match");
-            return false;
-
-        } catch (Exception e) {
-            log.error("Error updating password for user", e);
-            return false;
-        }
-    }
-
-
-
-    public Optional<String> deleteUserById(OAuth2AuthorizedClient client, OAuth2User oauth2User) {
-        try {
-            final String userEmail = (new CustomAuthUser(oauth2User)).getEmail();
-            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("email").is(oauth2User)), User.class);
+            DeleteResult deleteResult = userDAO.remove(Query.query(Criteria.where("email").is(userEmail)), User.class);
 
             // MAKE HTTP request to Resource Server to delete users S3 dir
             final String deleteUserUrl = UriComponentsBuilder

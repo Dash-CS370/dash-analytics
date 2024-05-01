@@ -57,33 +57,6 @@ public class AccountController {
 
 
     /**
-     * Reset password logic for user after authentication and session initialization.
-     *
-     * @param oauth2User The user whose password is being updated.
-     * @param passwordMap A map containing the old and new passwords.
-     * @return ResponseEntity indicating the success or failure of the password update.
-     */
-    @PostMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@AuthenticationPrincipal OAuth2User oauth2User, @RequestBody Map<String, String> passwordMap) {
-        try {
-            final String oldPassword = passwordMap.get("old-password");
-            final String newPassword = passwordMap.get("new-password");
-
-            if (accountService.updateUserPassword(oauth2User, oldPassword, newPassword)) {
-                return ResponseEntity.ok("Password updated successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update password");
-            }
-        }
-        catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-
-
-
-    /**
      * Deletes a user account from a signed-in context / authenticated session.
      *
      * @param oauth2User The account email of the user to be deleted.
@@ -94,7 +67,7 @@ public class AccountController {
                                                     OAuth2AuthorizedClient authorizedClient,
                                                     @AuthenticationPrincipal OAuth2User oauth2User) {
         try {
-            Optional<String> deletionConfirmation = accountService.deleteUserById(authorizedClient, oauth2User);
+            Optional<String> deletionConfirmation = accountService.deleteUser(authorizedClient, oauth2User);
 
             return deletionConfirmation.map(projects -> ResponseEntity.ok().body("Successfully deleted"))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
