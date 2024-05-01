@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -30,7 +30,6 @@ export const AccountDetails: FC = () => {
         creationDate: '',
     });
 
-    const [confirmReset, setConfirmReset] = useState(false);
     const [resetPassSent, setResetPassSent] = useState(false);
 
     // Effect for fetching account details only on component mount
@@ -42,9 +41,9 @@ export const AccountDetails: FC = () => {
                 credentials: 'include',
             },
         })
-            .then(response => {
+            .then((response) => {
                 if (response.status === 200) {
-                    response.json().then(data => {
+                    response.json().then((data) => {
                         setUserDetails({
                             id: data.id,
                             name: data.name,
@@ -54,10 +53,12 @@ export const AccountDetails: FC = () => {
                         });
                     });
                 } else {
-                    console.error(`Error fetching user details. Response status: ${response.status}`);
+                    console.error(
+                        `Error fetching user details. Response status: ${response.status}`,
+                    );
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error(`Error fetching user details: ${error}`);
             });
     }, []); // Ensures this runs only once on mount
@@ -73,19 +74,35 @@ export const AccountDetails: FC = () => {
                 credentials: 'include',
             },
         })
-            .then(response => {
+            .then((response) => {
                 if (response.ok) {
                     setDeleteStatus('Account successfully deleted');
-                    router.push("/")
+                    router.push('/');
                 } else {
                     setDeleteStatus('Failed to delete account');
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 setDeleteStatus(`Error: ${error}`);
             })
             .finally(() => {
                 setShowDeleteConfirm(false);
+            });
+    };
+
+    const handlePasswordReset = () => {
+        fetch('https://dash-analytics.solutions/api/v1/password/reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain',
+            },
+            body: userDetails.email,
+        })
+            .then(() => {
+                setResetPassSent(true);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
     };
 
@@ -111,7 +128,6 @@ export const AccountDetails: FC = () => {
                         className={styles.backButton}
                         onClick={() => {
                             setResetPassSent(false);
-                            setConfirmReset(false);
                         }}
                     />
                     <div className={styles.successContent}>
@@ -148,13 +164,26 @@ export const AccountDetails: FC = () => {
                     </div>
                     <hr />
                     <br />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <PrimaryButton width="475px" height="50px" className={styles.button}
-                                       onClick={() => setResetPassSent(true)}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <PrimaryButton
+                            width="475px"
+                            height="50px"
+                            className={styles.button}
+                            onClick={handlePasswordReset}
+                        >
                             Reset Password
                         </PrimaryButton>
-                        <PrimaryButton width="475px" height="50px" className={styles.button}
-                                       onClick={handleDeleteClick}>
+                        <PrimaryButton
+                            width="475px"
+                            height="50px"
+                            className={styles.button}
+                            onClick={handleDeleteClick}
+                        >
                             Delete Account
                         </PrimaryButton>
                     </div>
@@ -202,12 +231,21 @@ export const AccountDetails: FC = () => {
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
                         <h2>Confirm Account Deletion</h2>
-                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <p>
+                            Are you sure you want to delete your account? This
+                            action cannot be undone.
+                        </p>
                         <div>
-                            <PrimaryButton className={styles.button} onClick={handleDeleteAccount}>
+                            <PrimaryButton
+                                className={styles.button}
+                                onClick={handleDeleteAccount}
+                            >
                                 Confirm Delete
                             </PrimaryButton>
-                            <PrimaryButton className={styles.button} onClick={() => setShowDeleteConfirm(false)}>
+                            <PrimaryButton
+                                className={styles.button}
+                                onClick={() => setShowDeleteConfirm(false)}
+                            >
                                 Cancel
                             </PrimaryButton>
                         </div>
