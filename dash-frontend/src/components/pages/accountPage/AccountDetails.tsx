@@ -24,9 +24,9 @@ export const AccountDetails: FC = () => {
 
     const [userDetails, setUserDetails] = useState<UserDetails>({
         id: '',
-        name: 'John Smith',
-        email: 'johnsmith@gmail.com',
-        credits: 60,
+        name: '',
+        email: '',
+        credits: 0,
         creationDate: '',
     });
 

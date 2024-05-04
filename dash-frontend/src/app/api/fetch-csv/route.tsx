@@ -10,6 +10,7 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 export async function GET(request: Request): Promise<Response> {
+
     const searchParams = new URL(request.url).searchParams;
     const csvLink = searchParams.get('link');
 

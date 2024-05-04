@@ -43,8 +43,7 @@ export const WidgetLayout: React.FC<WidgetLayoutProps> = ({
             </h1>
             <div className={styles.widgetGrid}>
                 {pinnedConfigs.map((config: WidgetConfig) => {
-
-                    if (config.title === "DO_NOT_RENDER") return null;
+                    if (config.description === "DO_NOT_RENDER") return null;
 
                     return (
                         <>

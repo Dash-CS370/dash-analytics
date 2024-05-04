@@ -29,16 +29,12 @@ export function generateBarChart(dataframe: dfd.DataFrame): dfd.DataFrame {
         }
     });
 
-    if (
-        numerical_columns.length === 0 &&
-        numerical_columns.length !== dataframe.columns.length - 1
-    ) {
-        throw new Error(
-            'Numerical columns found in the DataFrame does not match correct quantity',
-        );
+    if (numerical_columns.length < 1 || numerical_columns.length !== dataframe.columns.length - 1) {
+        console.log('Numerical columns found in the DataFrame does not match correct quantity');
+        return new DataFrame;
     }
 
-    if (categorical_column === null)
+    if (categorical_column === '')
         throw new Error('No categorical column found in the DataFrame');
 
     return preparedBarGraphDf(dataframe, categorical_column, numerical_columns); // 1 numerical column with 1 or more categorical column
@@ -57,15 +53,18 @@ function preparedBarGraphDf(
 
     // Rename the columns to remove the '_mean' suffix
     for (const col of mean_df.columns) {
-        if (col.endsWith('_mean')) mean_df = mean_df.rename({ [col]: col.split('_')[0] });
+        if (col.endsWith('_mean')) {
+            const newColName = col.split('_').slice(0, -1).join('_'); // Remove the last part and rejoin
+            mean_df = mean_df.rename({ [col]: newColName });
+        }
     }
+
     return mean_df; // return the modified DataFrame
 }
 
 export function convertDataItems(dataItems : DataItem[]) {
     return dataItems.map((item) => {
-        const newItem = { ...item }; // Create a copy to avoid mutation
-        // Iterate over each key in the DataItem
+        const newItem = { ...item };
         Object.keys(newItem).forEach((key) => {
             const originalValue = newItem[key];
             // Convert only if the value is a string representing a valid number
